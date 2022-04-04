@@ -12,10 +12,11 @@ public class WelcomeJPanel extends JPanel {
         this.setLayout(new BorderLayout());
 
         welcomeLabel = new JLabel("<html> <h1> Hello racer </h1> </html>");
+        welcomeLabel.setHorizontalAlignment(SwingConstants.CENTER);
         buttons = new ButtonJPanel();
 
         this.add(welcomeLabel, BorderLayout.NORTH);
-        this.add(new JLabel("<html> <h2> voiture </h2> </html>"),BorderLayout.CENTER);
+        //this.add(new JLabel("<html> <h2> voiture </h2> </html>"),BorderLayout.CENTER);
         this.add(buttons,BorderLayout.SOUTH);
 
     }
