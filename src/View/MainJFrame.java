@@ -10,8 +10,7 @@ import java.awt.event.WindowEvent;
 public class MainJFrame extends JFrame {
     private JMenuBar menuBar;
     private JMenu applicationMenu, viewMenu, helpMenu;
-    private JMenuItem close, darkMode, shortcuts, contactsInfos;
-    private JPanel panel;
+    private JMenuItem close, stopAnimation, shortcuts, contactsInfos;
     private Container frameContainer;
 
 
@@ -40,16 +39,17 @@ public class MainJFrame extends JFrame {
         menuBar.add(helpMenu);
 
         close = new JMenuItem("Close");
-        close.addActionListener(new closeListener());
+        close.addActionListener(new menuItemListner());
 
-        darkMode = new JMenuItem("Dark Mode");
+        stopAnimation = new JMenuItem("Stop Animation");
 
         shortcuts = new JMenuItem("Shortcuts");
 
         contactsInfos = new JMenuItem("Contacts Infos");
+        contactsInfos.addActionListener(new menuItemListner());
 
         applicationMenu.add(close);
-        viewMenu.add(darkMode);
+        viewMenu.add(stopAnimation);
         helpMenu.add(shortcuts);
         helpMenu.addSeparator();
         helpMenu.add(contactsInfos);
@@ -59,9 +59,17 @@ public class MainJFrame extends JFrame {
         setVisible(true);
     }
 
-    private class closeListener implements ActionListener {
+    private class menuItemListner implements ActionListener{
         public void actionPerformed(ActionEvent actionEvent) {
-            System.exit(0);
+            if(actionEvent.getSource() == close){
+                System.exit(0);
+            }
+
+            if(actionEvent.getSource() == contactsInfos){
+                frameContainer.removeAll();
+                frameContainer.add(new ContactsInfosJPanel());
+                MainJFrame.this.validate();
+            }
         }
     }
 }
