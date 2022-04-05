@@ -7,7 +7,9 @@ public class TestWindow extends JFrame {
 
     public TestWindow() throws HeadlessException {
         setBounds(10,10,800,800);
-        add(new ShowAccidents());
+        this.setLayout(new BorderLayout());
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.getContentPane().add(new ShowAccidents(), BorderLayout.NORTH);
         this.setVisible(true);
     }
 }
