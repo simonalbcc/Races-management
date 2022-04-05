@@ -9,7 +9,7 @@ public class TestWindow extends JFrame {
         setBounds(10,10,800,800);
         this.setLayout(new BorderLayout());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.getContentPane().add(new ShowAccidents(), BorderLayout.NORTH);
+        this.getContentPane().add(new AccidentsPanel(), BorderLayout.NORTH);
         this.setVisible(true);
     }
 }
