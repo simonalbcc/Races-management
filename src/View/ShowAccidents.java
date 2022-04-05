@@ -1,3 +1,4 @@
+//region package & imports
 package View;
 
 
@@ -10,48 +11,42 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.YearMonth;
-
-
+//endregion
 public class ShowAccidents extends JPanel {
     private JLabel subtitle;
     private ButtonsPanel buttonsPanel;
     private SpinnerPanel spinnerPanel;
+
+    // mettre en constante ?
     String[] months = {"Januari", "Februari", "March", "April", "May", "June", "July", "Augustus", "September", "October", "November", "December"};
 
-
     public ShowAccidents() {
-
         buttonsPanel = new ButtonsPanel();
         spinnerPanel = new SpinnerPanel();
-
-
 
         this.setLayout(new GridBagLayout());
         GridBagConstraints gc = new GridBagConstraints();
         gc.insets = new Insets(5,5,5,5);
 
-
         subtitle = new JLabel("<html> <h3> Select the starting date of the accident : </h3> </html>");
         subtitle.setHorizontalAlignment(SwingConstants.CENTER);
         subtitle.setBorder(new BorderUIResource.TitledBorderUIResource(""));
-
 
         this.add(subtitle, gc);
         gc.gridy = 1;
         this.add(spinnerPanel, gc);
         gc.gridy = 2;
         this.add(buttonsPanel,gc);
-
     }
-
+//region methods
     public void setSubtitle(String subtitle){
         this.subtitle.setText(subtitle);
     }
-
     public ButtonsPanel getButtonsPanel() {
         return buttonsPanel;
     }
-
+//endregion
+//region inner classes
     private class SpinnerPanel extends JPanel{
         private JSpinner day, month, year;
         private JLabel dayLabel, monthLabel, yearLabel;
@@ -106,13 +101,15 @@ public class ShowAccidents extends JPanel {
     private class ButtonsPanel extends JPanel{
         private JButton next, back, ok;
         public ButtonsPanel(){
-            // to comeback to the first panel or menu
+
             back = new JButton("<html> <u>B</u>ack <html>");
             back.addActionListener(new ButtonListener());
 
-            // To enter in the second panel
             next = new JButton("<html> <u>N</u>ext </html>");
             next.addActionListener(new ButtonListener());
+
+            ok = new JButton("<html> <u>O</u>k <html>");
+            ok.addActionListener(new ButtonListener());
 
             this.add(back);
             this.add(next);
@@ -122,26 +119,61 @@ public class ShowAccidents extends JPanel {
 
             @Override
             public void actionPerformed(ActionEvent e) {
+                ShowAccidents.this.removeAll();
                 if(e.getSource() == next){
-                    ShowAccidents.this.removeAll();
+                    ShowAccidents showAccidents = new ShowAccidents();
+                    showAccidents.setSubtitle("<html> <h3> Select the ending date of the accident : </h3> </html>");
+                    showAccidents.buttonsPanel.next.setVisible(false);
+                    showAccidents.buttonsPanel.add(ok);
 
-                    repaint();
+                    ShowAccidents.this.add(showAccidents);
                 }
                 if(e.getSource() == back){
-                    removeAll();
-                    add(new ShowAccidents());
-                    repaint();
-                    validate();
+                    ShowAccidents.this.add(new ShowAccidents());
                 }
                 if(e.getSource() == ok){
-
+                    ShowAccidents.this.add(new AccidentsJTable());
                 }
-                repaint();
+            repaint();
             validate();
             }
         }
     }
+    private class AccidentsJTable extends JPanel{
+        private JTable jTable;
+        private JLabel title;
+        public AccidentsJTable (){
+            // init layout
+            this.setLayout(new BorderLayout());
+
+            // init title
+            title = new JLabel("List drivers");
+            title.setFont(new Font("Arial",Font.TRUETYPE_FONT,20));
+
+            // init of the table (numRows will change)
+
+                // init of headers
+                 String[] headColumns = new String[]{"Date", "Name", "Address", "Locality", "Team"};
+
+                 // init fictive data
+                 Object[][] data = new Object[][] {
+                    {"01/02/2003", "Thomas", "Address 1", "Paris", 1},
+                    {"02/02/2003", "Jean", "Address 2", "Marseille", 2},
+                    {"03/02/2003", "Yvon", "Address 3", "Lyon", 3},
+                    {"04/02/2003", "Yohan", "Address 4","Nice", 4},
+                    {"05/02/2003", "Merlin","Address 5","Dublin", 5}
+            };
+            jTable = new JTable(data, headColumns);
+
+            JScrollPane sp = new JScrollPane(jTable);
+            sp.setPreferredSize(new Dimension(300, 250));
+            jTable.setFillsViewportHeight(true);
 
 
-    //endregion
+            this.add(title, BorderLayout.PAGE_START);
+            this.add(sp, BorderLayout.CENTER);
+        }
+
+    }
+//endregion
 }
