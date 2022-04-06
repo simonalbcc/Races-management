@@ -21,7 +21,7 @@ public class AccidentsPanel extends JPanel {
     private static final String[] months = {"Januari", "Februari", "March", "April", "May", "June", "July", "Augustus", "September", "October", "November", "December"};
 
     public AccidentsPanel() {
-        this.setLayout(new GridBagLayout());
+        this.setLayout(new CardLayout());
         gc = new GridBagConstraints();
         gc.insets = new Insets(5,5,5,5);
 
@@ -125,7 +125,7 @@ public class AccidentsPanel extends JPanel {
                     AccidentsPanel.this.add(new WelcomeJPanel());
                 }
                 if(e.getSource() == ok){
-                    AccidentsPanel.this.add(new AccidentsPanel());
+                    AccidentsPanel.this.add(new AccidentsPanel(), gc);
                     AccidentsPanel.this.gc.gridy = 2 ;
                     AccidentsPanel.this.add(new AccidentsJTable(), gc);
                 }
