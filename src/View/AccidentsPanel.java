@@ -1,17 +1,16 @@
-//region package & imports
+
 package View;
 
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.plaf.BorderUIResource;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.YearMonth;
-//endregion
+
 public class AccidentsPanel extends JPanel {
     private JLabel subtitleStart, subtitleEnd;
     private ButtonsPanel buttonsPanel;
@@ -21,13 +20,14 @@ public class AccidentsPanel extends JPanel {
     private static final String[] months = {"Januari", "Februari", "March", "April", "May", "June", "July", "Augustus", "September", "October", "November", "December"};
 
     public AccidentsPanel() {
-        this.setLayout(new CardLayout());
+        this.setLayout(new GridBagLayout());
         gc = new GridBagConstraints();
         gc.insets = new Insets(5,5,5,5);
 
 
         buttonsPanel = new ButtonsPanel();
         spinnerPanel = new JPanel();
+
         spinnerPanel.setLayout(new GridLayout(2,2, 200,10));
         startSpinner = new SpinnerPanel();
         endSpinner = new SpinnerPanel();
@@ -48,15 +48,6 @@ public class AccidentsPanel extends JPanel {
         gc.gridy = 2;
         this.add(buttonsPanel,gc);
     }
-//region methods
-
-    public GridBagConstraints getGc() {
-        return gc;
-    }
-    public ButtonsPanel getButtonsPanel() {
-        return buttonsPanel;
-    }
-//endregion
 //region inner classes
     private class SpinnerPanel extends JPanel{
         private JSpinner day, month, year;
@@ -122,14 +113,14 @@ public class AccidentsPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 AccidentsPanel.this.removeAll();
                 if(e.getSource() == back){
+                    AccidentsPanel.this.setLayout(new BorderLayout());
                     AccidentsPanel.this.add(new WelcomeJPanel());
                 }
                 if(e.getSource() == ok){
                     AccidentsPanel.this.add(new AccidentsPanel(), gc);
-                    AccidentsPanel.this.gc.gridy = 2 ;
+                    AccidentsPanel.this.gc.gridy = 3 ;
                     AccidentsPanel.this.add(new AccidentsJTable(), gc);
                 }
-            AccidentsPanel.this.repaint();
             AccidentsPanel.this.validate();
             }
         }
@@ -139,7 +130,7 @@ public class AccidentsPanel extends JPanel {
         private JLabel title;
         public AccidentsJTable (){
             // init layout
-            this.setLayout(new BorderLayout());
+            this.setLayout(new GridBagLayout());
 
             // init title
             title = new JLabel("List drivers");
@@ -165,8 +156,9 @@ public class AccidentsPanel extends JPanel {
             jTable.setFillsViewportHeight(true);
 
 
-            this.add(title, BorderLayout.PAGE_START);
-            this.add(sp, BorderLayout.CENTER);
+            this.add(sp, gc);
+            gc.gridy = 1;
+            this.add(title, gc);
         }
 
     }

@@ -2,6 +2,8 @@ package View;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 
 public class WelcomeJPanel extends JPanel {
@@ -38,12 +40,30 @@ public class WelcomeJPanel extends JPanel {
             this.setLayout(new FlowLayout());
 
             pilotsButton = new JButton("Show pilots");
+            pilotsButton.addActionListener(new ButtonListener());
+
             rankingButton = new JButton("Show ranking");
+            rankingButton.addActionListener(new ButtonListener());
+
             carsButton = new JButton("Show cars");
 
             this.add(pilotsButton);
             this.add(rankingButton);
             this.add(carsButton);
+        }
+        private class ButtonListener implements ActionListener{
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                WelcomeJPanel.this.removeAll();
+                if(e.getSource() == pilotsButton){
+                    WelcomeJPanel.this.add(new AccidentsPanel());
+                }
+                if(e.getSource() == rankingButton){
+                    WelcomeJPanel.this.add(new RankingPanel());
+                }
+                WelcomeJPanel.this.validate();
+            }
         }
     }
 }
