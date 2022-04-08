@@ -111,17 +111,7 @@ public class AccidentsPanel extends JPanel {
         private class ButtonListener implements ActionListener{
             @Override
             public void actionPerformed(ActionEvent e) {
-                AccidentsPanel.this.removeAll();
-                if(e.getSource() == back){
-                    AccidentsPanel.this.setLayout(new BorderLayout());
-                    AccidentsPanel.this.add(new WelcomeJPanel());
-                }
-                if(e.getSource() == ok){
-                    AccidentsPanel.this.add(new AccidentsPanel(), gc);
-                    AccidentsPanel.this.gc.gridy = 3 ;
-                    AccidentsPanel.this.add(new AccidentsJTable(), gc);
-                }
-            AccidentsPanel.this.validate();
+
             }
         }
     }
