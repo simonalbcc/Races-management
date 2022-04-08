@@ -15,7 +15,8 @@ public class RankingPanel extends JPanel {
         gc = new GridBagConstraints();
         gc.weighty = 1;
 
-        stateFirstWindow = new StateFirstWindow();
+        stateFirstWindow = new StateNewWindow();
+        stateSecondWindow = new StateNewWindow();
 
         this.add(new CircuitsPanel(), gc);
         gc.gridy = 2;
@@ -48,8 +49,44 @@ public class RankingPanel extends JPanel {
             this.add(datesCombobox);
         }
     }
+    private class RankingTable extends JPanel{
+        private JTable jTable;
+        private JLabel title;
+        public RankingTable (){
+            // init layout
+            this.setLayout(new GridBagLayout());
+
+            // init title
+            title = new JLabel("List drivers");
+            title.setFont(new Font("Arial",Font.TRUETYPE_FONT,20));
+
+
+            // init of headers
+            String[] headColumns = new String[]{"Date", "Name", "Address", "Locality", "Team"};
+
+            // init fictive data
+            Object[][] data = new Object[][] {
+                    {"01/02/2003", "Thomas", "Address 1", "Paris", 1},
+                    {"02/02/2003", "Jean", "Address 2", "Marseille", 2},
+                    {"03/02/2003", "Yvon", "Address 3", "Lyon", 3},
+                    {"04/02/2003", "Yohan", "Address 4","Nice", 4},
+                    {"05/02/2003", "Merlin","Address 5","Dublin", 5}
+            };
+            jTable = new JTable(data, headColumns);
+
+            JScrollPane sp = new JScrollPane(jTable);
+            sp.setPreferredSize(new Dimension(300, 250));
+            jTable.setFillsViewportHeight(true);
+
+
+            this.add(sp, gc);
+            gc.gridy = 1;
+            this.add(title, gc);
+        }
+
+    }
     private class ButtonPanel extends JPanel{
-        private JButton back,next;
+        private JButton back,next, printOut;
         public ButtonPanel(){
             back = new JButton("Back");
             back.addActionListener(new ButtonListener());
@@ -57,11 +94,16 @@ public class RankingPanel extends JPanel {
             next = new JButton("Next");
             next.addActionListener(new ButtonListener());
 
+            printOut = new JButton("Print out");
+            printOut.addActionListener(new ButtonListener());
+
+
             this.add(back);
             this.add(next);
 
         }
         private class ButtonListener implements ActionListener{
+            ButtonPanel buttonPanelTable;
             @Override
             public void actionPerformed(ActionEvent e) {
                 RankingPanel.this.removeAll();
@@ -75,9 +117,23 @@ public class RankingPanel extends JPanel {
                 if(e.getSource() == next){
                    if(currentState.equals(stateFirstWindow)){
                        currentState.nextWindow(RankingPanel.this, gc, new DatePanel(), new ButtonPanel());
+                       currentState = stateSecondWindow;
                    } else {
-
+                       buttonPanelTable = new ButtonPanel();
+                       buttonPanelTable.next.setVisible(false);
+                       buttonPanelTable.add(printOut);
+                       currentState.nextWindow(RankingPanel.this, gc, new RankingTable(), buttonPanelTable);
                    }
+                }
+                if(e.getSource() == printOut){
+                    JOptionPane.showMessageDialog(null, "Ici on sort la table 'prête pour impression'");
+                    buttonPanelTable = new ButtonPanel();
+
+                    buttonPanelTable.back.setText("Go back to the menu");
+                    buttonPanelTable.next.setText("Restart a ranking");
+
+                    currentState.nextWindow(RankingPanel.this, gc, buttonPanelTable);
+                    currentState = stateFirstWindow;
                 }
                 RankingPanel.this.validate();
             }

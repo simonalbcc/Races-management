@@ -3,7 +3,7 @@ package View;
 import javax.swing.*;
 import java.awt.*;
 
-public class StateFirstWindow implements StateChangeWindow {
+public class StateNewWindow implements StateChangeWindow {
     @Override
     public void backWindow(JPanel panel, JPanel previousPanel) {
         panel.add(previousPanel);
