@@ -14,7 +14,7 @@ public class MovementCarThread extends Thread{
     public void run(){
         while(true){
             try{
-                Thread.sleep(1);
+                Thread.sleep(15);
                 this.graphicCar.move();
                 this.panel.repaint();
             }

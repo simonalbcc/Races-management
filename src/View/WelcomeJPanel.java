@@ -9,36 +9,35 @@ import java.awt.event.ActionListener;
 public class WelcomeJPanel extends JPanel {
     private JLabel welcomeLabel;
     private ButtonJPanel buttons;
-    private GraphicCar graphicCar;
+    private CarPanel carPanel;
+    private GridBagConstraints gc;
 
     public WelcomeJPanel(){
-        this.setLayout(new BorderLayout());
+        this.setLayout(new GridBagLayout());
+        gc = new GridBagConstraints();
 
         welcomeLabel = new JLabel("<html> <h1> Hello racer </h1> </html>");
-        welcomeLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        carPanel = new CarPanel();
         buttons = new ButtonJPanel();
 
-        this.graphicCar = new GraphicCar();
+        gc.weighty = 1;
+        gc.gridx = 2;
+        gc.anchor = GridBagConstraints.PAGE_START;
+        this.add(welcomeLabel, gc);
 
-        this.add(welcomeLabel, BorderLayout.NORTH);
-        //this.add(new JLabel("<html> <h2> voiture </h2> </html>"),BorderLayout.CENTER);
-        this.add(buttons,BorderLayout.SOUTH);
+        gc.fill = GridBagConstraints.BOTH;
+        gc.anchor = GridBagConstraints.CENTER;
+        gc.weightx = 1;
+        this.add(carPanel,gc);
 
-        MovementCarThread movementCarThread = new MovementCarThread(this, graphicCar);
-        movementCarThread.start();
-    }
-
-    public void paint(Graphics g){
-        super.paint(g);
-        graphicCar.paint(g);
+        gc.fill = GridBagConstraints.NONE;
+        gc.anchor = GridBagConstraints.PAGE_END;
+        this.add(buttons, gc);
     }
 
     private class ButtonJPanel extends JPanel{
         private JButton pilotsButton, rankingButton, carsButton;
-
             public ButtonJPanel(){
-            this.setLayout(new FlowLayout());
-
             pilotsButton = new JButton("Show pilots");
             pilotsButton.addActionListener(new ButtonListener());
 
@@ -64,6 +63,21 @@ public class WelcomeJPanel extends JPanel {
                 }
                 WelcomeJPanel.this.validate();
             }
+        }
+    }
+
+    private class CarPanel extends JPanel{
+        public GraphicCar graphicCar;
+
+        public CarPanel(){
+            setLayout(new FlowLayout());
+            graphicCar = new GraphicCar();
+            MovementCarThread movementCarThread = new MovementCarThread(this, graphicCar);
+            movementCarThread.start();
+        }
+        public void paint(Graphics g){
+            super.paint(g);
+            graphicCar.paint(g);
         }
     }
 }

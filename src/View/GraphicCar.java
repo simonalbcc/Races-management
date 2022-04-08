@@ -12,7 +12,6 @@ public class GraphicCar extends JPanel {
     private BufferedImage carImage;
     private Rectangle rectangle;
     private int deltaX = 1;
-    private int deltaY = 1;
 
     public GraphicCar(){
         try{
@@ -21,12 +20,11 @@ public class GraphicCar extends JPanel {
             e.printStackTrace();
         }
         repaint();
-        rectangle = new Rectangle(10,100,120,100);
+        rectangle = new Rectangle(0,0,120,100);
     }
 
     public void move(){
         rectangle.x += deltaX;
-
     }
 
     public void paint(Graphics g){
