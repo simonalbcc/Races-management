@@ -22,7 +22,7 @@ public class MainJFrame extends JFrame {
                               }
                           }
         );
-        setBounds(10,10,400,400);
+        setBounds(10,10,650,650);
 
         frameContainer = this.getContentPane();
         frameContainer.setLayout(new BorderLayout());
@@ -57,6 +57,7 @@ public class MainJFrame extends JFrame {
 
         frameContainer.add(new WelcomeJPanel(), BorderLayout.CENTER);
         setVisible(true);
+        //setResizable(false);
     }
 
     private class menuItemListner implements ActionListener{
