@@ -11,20 +11,26 @@ public class RankingPanel extends JPanel {
     private  StateChangeWindow currentState;
     private GridBagConstraints gc;
     public RankingPanel (){
+        // set layout
         this.setLayout(new GridBagLayout());
         gc = new GridBagConstraints();
         gc.weighty = 1;
 
+        // create states of windows
         stateFirstWindow = new StateNewWindow();
         stateSecondWindow = new StateNewWindow();
 
+        // create & add panels
         this.add(new CircuitsPanel(), gc);
         gc.gridy = 2;
         gc.anchor = GridBagConstraints.PAGE_END;
-        this.add(new ButtonPanel(),gc);
+        this.add(new ButtonsPanel(),gc);
+
+        // set current state current window
         currentState = stateFirstWindow;
 
     }
+
     private class CircuitsPanel extends JPanel{
         private JLabel circuitsLabel;
         private JComboBox circuitsCombobox;
@@ -57,20 +63,20 @@ public class RankingPanel extends JPanel {
             this.setLayout(new GridBagLayout());
 
             // init title
-            title = new JLabel("List drivers");
-            title.setFont(new Font("Arial",Font.TRUETYPE_FONT,20));
+            title = new JLabel("Ranking");
+            title.setFont(new Font("Arial",Font.TRUETYPE_FONT,15));
 
 
             // init of headers
-            String[] headColumns = new String[]{"Date", "Name", "Address", "Locality", "Team"};
+            String[] headColumns = new String[]{"Position", "Car number", "Car power", "Name driver", "Record"};
 
             // init fictive data
             Object[][] data = new Object[][] {
-                    {"01/02/2003", "Thomas", "Address 1", "Paris", 1},
-                    {"02/02/2003", "Jean", "Address 2", "Marseille", 2},
-                    {"03/02/2003", "Yvon", "Address 3", "Lyon", 3},
-                    {"04/02/2003", "Yohan", "Address 4","Nice", 4},
-                    {"05/02/2003", "Merlin","Address 5","Dublin", 5}
+                    {"1", "42", "puissance", "Paris", 1},
+                    {"2", "35", "puissance", "Marseille", 2},
+                    {"3", "63", "puissance", "Lyon", 3},
+                    {"4", "23", "puissance","Nice", 4},
+                    {"5", "5","puissance","Dublin", 5}
             };
             jTable = new JTable(data, headColumns);
 
@@ -85,13 +91,13 @@ public class RankingPanel extends JPanel {
         }
 
     }
-    private class ButtonPanel extends JPanel{
+    private class ButtonsPanel extends JPanel{
         private JButton back,next, printOut;
-        public ButtonPanel(){
-            back = new JButton("Back");
+        public ButtonsPanel(){
+            back = new JButton("<html> <u>B</u>ack <html>");
             back.addActionListener(new ButtonListener());
 
-            next = new JButton("Next");
+            next = new JButton("<html> <u>N</u>ext <html>");
             next.addActionListener(new ButtonListener());
 
             printOut = new JButton("Print out");
@@ -103,7 +109,7 @@ public class RankingPanel extends JPanel {
 
         }
         private class ButtonListener implements ActionListener{
-            ButtonPanel buttonPanelTable;
+            private ButtonsPanel buttonPanelTable;
             @Override
             public void actionPerformed(ActionEvent e) {
                 RankingPanel.this.removeAll();
@@ -116,10 +122,12 @@ public class RankingPanel extends JPanel {
                 }
                 if(e.getSource() == next){
                    if(currentState.equals(stateFirstWindow)){
-                       currentState.nextWindow(RankingPanel.this, gc, new DatePanel(), new ButtonPanel());
-                       currentState = stateSecondWindow;
+                       if(inputVerification()){
+                           currentState.nextWindow(RankingPanel.this, gc, new DatePanel(), new ButtonsPanel());
+                           currentState = stateSecondWindow;
+                       }
                    } else {
-                       buttonPanelTable = new ButtonPanel();
+                       buttonPanelTable = new ButtonsPanel();
                        buttonPanelTable.next.setVisible(false);
                        buttonPanelTable.add(printOut);
                        currentState.nextWindow(RankingPanel.this, gc, new RankingTable(), buttonPanelTable);
@@ -127,7 +135,7 @@ public class RankingPanel extends JPanel {
                 }
                 if(e.getSource() == printOut){
                     JOptionPane.showMessageDialog(null, "Ici on sort la table 'prête pour impression'");
-                    buttonPanelTable = new ButtonPanel();
+                    buttonPanelTable = new ButtonsPanel();
 
                     buttonPanelTable.back.setText("Go back to the menu");
                     buttonPanelTable.next.setText("Restart a ranking");
@@ -135,6 +143,7 @@ public class RankingPanel extends JPanel {
                     currentState.nextWindow(RankingPanel.this, gc, buttonPanelTable);
                     currentState = stateFirstWindow;
                 }
+                RankingPanel.this.repaint();
                 RankingPanel.this.validate();
             }
         }

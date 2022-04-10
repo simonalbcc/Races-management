@@ -61,6 +61,7 @@ public class WelcomeJPanel extends JPanel {
                 if(e.getSource() == rankingButton){
                     WelcomeJPanel.this.add(new RankingPanel());
                 }
+                WelcomeJPanel.this.repaint();
                 WelcomeJPanel.this.validate();
             }
         }

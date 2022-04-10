@@ -17,38 +17,56 @@ public class AccidentsPanel extends JPanel {
     private JPanel spinnerPanel;
     private SpinnerPanel startSpinner, endSpinner;
     private GridBagConstraints gc;
-    private static final String[] months = {"Januari", "Februari", "March", "April", "May", "June", "July", "Augustus", "September", "October", "November", "December"};
+    private static final String[] months = {"December", "November", "October", "September", "Augustus", "July", "June", "May", "April", "March", "Februari", "Januari"};
+    private  StateChangeWindow stateFirstWindow, stateSecondWindow;
+    private  StateChangeWindow currentState;
 
     public AccidentsPanel() {
+        // create layout
         this.setLayout(new GridBagLayout());
         gc = new GridBagConstraints();
         gc.insets = new Insets(5,5,5,5);
 
-
+        // create buttons panel
         buttonsPanel = new ButtonsPanel();
+
+        // create main panel that has 2 spinners
         spinnerPanel = new JPanel();
 
+        // create state for windows
+        stateFirstWindow = new StateNewWindow();
+        stateSecondWindow = new StateNewWindow();
+
+        // set specific layout for the spinnerPanel
         spinnerPanel.setLayout(new GridLayout(2,2, 200,10));
+
+        // create left & right spinners
         startSpinner = new SpinnerPanel();
         endSpinner = new SpinnerPanel();
 
+        // create title for each spinner
         subtitleStart = new JLabel("<html> <h4> <u> Select the starting date of the accident : </u> </h4> </html>");
         subtitleStart.setHorizontalAlignment(SwingConstants.CENTER);
 
         subtitleEnd = new JLabel("<html> <h4> <u> Select the ending date of the accident : </u> </h4> </html>");
         subtitleEnd.setHorizontalAlignment(SwingConstants.CENTER);
 
+        // add spinners to spinner panel
         spinnerPanel.add(subtitleStart);
         spinnerPanel.add(subtitleEnd);
         spinnerPanel.add(startSpinner);
         spinnerPanel.add(endSpinner);
 
+        // add both panels
         gc.gridy = 1;
         this.add(spinnerPanel, gc);
         gc.gridy = 2;
         this.add(buttonsPanel,gc);
+
+        // state the state of the current window as the first one
+        currentState = stateFirstWindow;
+
     }
-//region inner classes
     private class SpinnerPanel extends JPanel{
         private JSpinner day, month, year;
         private JLabel dayLabel, monthLabel, yearLabel;
@@ -58,6 +76,7 @@ public class AccidentsPanel extends JPanel {
 
             day = new JSpinner(new SpinnerNumberModel(1,1,31,1));
             month = new JSpinner(new SpinnerListModel(months));
+            month.setValue(months[11]);
             year = new JSpinner(new SpinnerNumberModel(2000,1950, LocalDate.now().getYear(),1));
             year.setEditor(new JSpinner.NumberEditor(year, "#")); // remove comma
 
@@ -106,12 +125,29 @@ public class AccidentsPanel extends JPanel {
 
             this.add(back);
             this.add(ok);
-
         }
         private class ButtonListener implements ActionListener{
+            private ButtonsPanel buttonPanelTable;
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                AccidentsPanel.this.removeAll();
+                if(e.getSource() == back ){
+                    if(currentState.equals(stateFirstWindow)){
+                        currentState.backWindow(AccidentsPanel.this, new WelcomeJPanel());
+                    } else {
+                        currentState.backWindow(AccidentsPanel.this, new RankingPanel());
+                    }
+                }
+                if(e.getSource() == ok ){
+                    if(currentState.equals(stateFirstWindow)){
+                        currentState.nextWindow(AccidentsPanel.this, gc, new AccidentsJTable());
+                        currentState = stateSecondWindow;
+                    } else {
+                        currentState.nextWindow(AccidentsPanel.this, gc, new RankingPanel());
+                    }
+                }
+                AccidentsPanel.this.repaint();
+                AccidentsPanel.this.validate();
             }
         }
     }
@@ -119,19 +155,14 @@ public class AccidentsPanel extends JPanel {
         private JTable jTable;
         private JLabel title;
         public AccidentsJTable (){
-            // init layout
             this.setLayout(new GridBagLayout());
 
-            // init title
-            title = new JLabel("List drivers");
+            title = new JLabel("Drivers list");
             title.setFont(new Font("Arial",Font.TRUETYPE_FONT,20));
 
-            // init of the table (numRows will change)
 
-                // init of headers
                  String[] headColumns = new String[]{"Date", "Name", "Address", "Locality", "Team"};
 
-                 // init fictive data
                  Object[][] data = new Object[][] {
                     {"01/02/2003", "Thomas", "Address 1", "Paris", 1},
                     {"02/02/2003", "Jean", "Address 2", "Marseille", 2},
@@ -152,5 +183,4 @@ public class AccidentsPanel extends JPanel {
         }
 
     }
-//endregion
 }
