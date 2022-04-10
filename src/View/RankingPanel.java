@@ -122,10 +122,8 @@ public class RankingPanel extends JPanel {
                 }
                 if(e.getSource() == next){
                    if(currentState.equals(stateFirstWindow)){
-                       if(inputVerification()){
-                           currentState.nextWindow(RankingPanel.this, gc, new DatePanel(), new ButtonsPanel());
-                           currentState = stateSecondWindow;
-                       }
+                       currentState.nextWindow(RankingPanel.this, gc, new DatePanel(), new ButtonsPanel());
+                       currentState = stateSecondWindow;
                    } else {
                        buttonPanelTable = new ButtonsPanel();
                        buttonPanelTable.next.setVisible(false);

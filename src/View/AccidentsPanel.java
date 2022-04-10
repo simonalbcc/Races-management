@@ -10,12 +10,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.time.ZoneId;
+import java.util.GregorianCalendar;
 
 public class AccidentsPanel extends JPanel {
-    private JLabel subtitleStart, subtitleEnd;
     private ButtonsPanel buttonsPanel;
     private JPanel spinnerPanel;
-    private SpinnerPanel startSpinner, endSpinner;
     private GridBagConstraints gc;
     private static final String[] months = {"December", "November", "October", "September", "Augustus", "July", "June", "May", "April", "March", "Februari", "Januari"};
     private  StateChangeWindow stateFirstWindow, stateSecondWindow;
@@ -27,49 +27,51 @@ public class AccidentsPanel extends JPanel {
         gc = new GridBagConstraints();
         gc.insets = new Insets(5,5,5,5);
 
-        // create buttons panel
-        buttonsPanel = new ButtonsPanel();
-
-        // create main panel that has 2 spinners
-        spinnerPanel = new JPanel();
 
         // create state for windows
         stateFirstWindow = new StateNewWindow();
         stateSecondWindow = new StateNewWindow();
 
-        // set specific layout for the spinnerPanel
-        spinnerPanel.setLayout(new GridLayout(2,2, 200,10));
-
-        // create left & right spinners
-        startSpinner = new SpinnerPanel();
-        endSpinner = new SpinnerPanel();
-
-        // create title for each spinner
-        subtitleStart = new JLabel("<html> <h4> <u> Select the starting date of the accident : </u> </h4> </html>");
-        subtitleStart.setHorizontalAlignment(SwingConstants.CENTER);
-
-        subtitleEnd = new JLabel("<html> <h4> <u> Select the ending date of the accident : </u> </h4> </html>");
-        subtitleEnd.setHorizontalAlignment(SwingConstants.CENTER);
-
-        // add spinners to spinner panel
-        spinnerPanel.add(subtitleStart);
-        spinnerPanel.add(subtitleEnd);
-        spinnerPanel.add(startSpinner);
-        spinnerPanel.add(endSpinner);
-
-        // add both panels
+        // create & add main panel and button panel to the main panel
         gc.gridy = 1;
-        this.add(spinnerPanel, gc);
+        this.add( new MainSpinnerPanel(), gc);
         gc.gridy = 2;
-        this.add(buttonsPanel,gc);
+        this.add(new ButtonsPanel(),gc);
 
         // state the state of the current window as the first one
         currentState = stateFirstWindow;
 
     }
+    private class MainSpinnerPanel extends JPanel{
+        private JLabel subtitleStart, subtitleEnd;
+        private SpinnerPanel start, end;
+        public MainSpinnerPanel(){
+            // set specific layout for the 2 spinnerPanels
+            this.setLayout(new GridLayout(2,2, 200,10));
+
+            // set start & end spinnerpanel
+            start = new SpinnerPanel();
+            end = new SpinnerPanel();
+
+            // create title for each spinnerPanel
+            subtitleStart = new JLabel("<html> <h4> <u> Select the starting date of the accident : </u> </h4> </html>");
+            subtitleStart.setHorizontalAlignment(SwingConstants.CENTER);
+
+            subtitleEnd = new JLabel("<html> <h4> <u> Select the ending date of the accident : </u> </h4> </html>");
+            subtitleEnd.setHorizontalAlignment(SwingConstants.CENTER);
+
+            // add spinners to the main spinner panel
+            this.add(subtitleStart);
+            this.add(subtitleEnd);
+            this.add(start);
+            this.add(end);
+        }
+    }
     private class SpinnerPanel extends JPanel{
         private JSpinner day, month, year;
         private JLabel dayLabel, monthLabel, yearLabel;
+        private GregorianCalendar dateSelectedCal;
+        private LocalDate dateSelected;
         public SpinnerPanel() {
 
             this.setLayout(new GridLayout(3,2, 10, 10));
@@ -80,8 +82,12 @@ public class AccidentsPanel extends JPanel {
             year = new JSpinner(new SpinnerNumberModel(2000,1950, LocalDate.now().getYear(),1));
             year.setEditor(new JSpinner.NumberEditor(year, "#")); // remove comma
 
-            year.addChangeListener(new SpinnerListenerChange());
+            day.addChangeListener(new SpinnerListenerChange());
             month.addChangeListener(new SpinnerListenerChange());
+            year.addChangeListener(new SpinnerListenerChange());
+
+            dateSelectedCal = new GregorianCalendar(Integer.parseInt(year.getValue().toString()), findIndexMonth(month.getValue().toString()), Integer.parseInt(day.getValue().toString()));
+            dateSelected = dateSelectedCal.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
             dayLabel = new JLabel("Select the day : ");
             monthLabel = new JLabel("Select the month : ");
@@ -99,17 +105,25 @@ public class AccidentsPanel extends JPanel {
             while(iMonth != months.length && months[iMonth] != monthRead){
                 iMonth++;
             }
-            return iMonth+1;
+            return (months.length-iMonth)-1;
         }
         public int findLengthMonth(String monthRead){
             int iMonth = findIndexMonth(monthRead);
             return YearMonth.of(Integer.parseInt(year.getValue().toString()), iMonth).lengthOfMonth();
         }
         private class SpinnerListenerChange implements ChangeListener{
-
+            private SpinnerNumberModel spinnerModel;
             @Override
             public void stateChanged(ChangeEvent e) {
-                day.setModel(new SpinnerNumberModel(1,1,findLengthMonth(month.getValue().toString()),1));
+                if(e.getSource() == year || e.getSource() == month){
+                    Object oldValue = day.getValue();
+                    spinnerModel = new SpinnerNumberModel(1,1,findLengthMonth(month.getValue().toString()),1);
+                    day.setModel(spinnerModel);
+                    day.setValue(oldValue);
+                }
+                dateSelectedCal = new GregorianCalendar(Integer.parseInt(year.getValue().toString()), findIndexMonth(month.getValue().toString()), Integer.parseInt(day.getValue().toString()));
+                dateSelected = dateSelectedCal.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                JOptionPane.showMessageDialog(null, dateSelected.toString());
             }
         }
     }
