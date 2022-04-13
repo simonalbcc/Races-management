@@ -22,10 +22,9 @@ public class MainJFrame extends JFrame {
                               }
                           }
         );
-        setBounds(10,10,650,650);
+        setBounds(10,10,1000,1000);
 
         frameContainer = this.getContentPane();
-        frameContainer.setLayout(new BorderLayout());
 
 //region menuBar
         menuBar = new JMenuBar();
@@ -55,7 +54,7 @@ public class MainJFrame extends JFrame {
         helpMenu.add(contactsInfos);
 //endregion
 
-        frameContainer.add(new WelcomeJPanel(), BorderLayout.CENTER);
+        frameContainer.add(new WelcomeJPanel());
         setVisible(true);
         //setResizable(false);
     }

@@ -15,6 +15,8 @@ public class WelcomeJPanel extends JPanel {
     public WelcomeJPanel(){
         this.setLayout(new GridBagLayout());
         gc = new GridBagConstraints();
+        this.setPreferredSize(new Dimension(400,400));
+
 
         welcomeLabel = new JLabel("<html> <h1> Hello racer </h1> </html>");
         carPanel = new CarPanel();
