@@ -27,17 +27,16 @@ public class WelcomeJPanel extends JPanel {
         buttons = new ButtonJPanel();
 
         gc.weighty = 1;
-        gc.gridx = 2;
-        gc.anchor = GridBagConstraints.PAGE_START;
+        gc.weightx = 1;
+        gc.gridy = 0;
         this.add(welcomeLabel, gc);
 
+        gc.gridy = 1;
         gc.fill = GridBagConstraints.BOTH;
-        gc.anchor = GridBagConstraints.CENTER;
-        gc.weightx = 1;
         this.add(carPanel,gc);
 
+        gc.gridy = 2;
         gc.fill = GridBagConstraints.NONE;
-        gc.anchor = GridBagConstraints.PAGE_END;
         this.add(buttons, gc);
     }
 
