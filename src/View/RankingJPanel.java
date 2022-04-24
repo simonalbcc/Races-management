@@ -32,7 +32,6 @@ public class RankingJPanel extends JPanel {
         numWindow = 0;
 
     }
-
     private class CircuitsPanel extends JPanel{
         private JLabel circuitsLabel;
         private JComboBox circuitsCombobox;
