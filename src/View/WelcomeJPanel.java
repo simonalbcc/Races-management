@@ -1,5 +1,7 @@
 package View;
 
+import Model.Car;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -41,46 +43,39 @@ public class WelcomeJPanel extends JPanel {
     }
 
     private class ButtonJPanel extends JPanel{
-        private JButton pilotsButton, rankingButton, carsButton;
+        private JButton speedUpButton, slowDownButton;
             public ButtonJPanel(){
-            pilotsButton = new JButton("Show pilots");
-            pilotsButton.addActionListener(new ButtonListener());
+            speedUpButton = new JButton("Speed up !");
+            speedUpButton.addActionListener(new ButtonListener());
 
-            rankingButton = new JButton("Show ranking");
-            rankingButton.addActionListener(new ButtonListener());
+            slowDownButton = new JButton("Slow down...");
+            slowDownButton.addActionListener(new ButtonListener());
 
-            carsButton = new JButton("Show cars");
-
-            this.add(pilotsButton);
-            this.add(rankingButton);
-            this.add(carsButton);
+            this.add(slowDownButton);
+            this.add(speedUpButton);
         }
         private class ButtonListener implements ActionListener{
-
             @Override
             public void actionPerformed(ActionEvent e) {
-                WelcomeJPanel.this.removeAll();
-                if(e.getSource() == pilotsButton){
-                    WelcomeJPanel.this.add(new AccidentsJPanel());
+                if(e.getSource() == speedUpButton){
+                    WelcomeJPanel.this.carPanel.graphicCar.addSpeed();
                 }
-                if(e.getSource() == rankingButton){
-                    WelcomeJPanel.this.add(new RankingJPanel());
+                if(e.getSource() == slowDownButton){
+                    WelcomeJPanel.this.carPanel.graphicCar.removeSpeed();
                 }
-                WelcomeJPanel.this.repaint();
-                WelcomeJPanel.this.validate();
             }
         }
     }
 
     private class CarPanel extends JPanel{
-        public GraphicCar graphicCar;
-        public Wall leftWall, rightWall;
+        private GraphicCar graphicCar;
+        private Wall leftWall, rightWall;
 
         public CarPanel(){
             setLayout(new BorderLayout());
             graphicCar = new GraphicCar();
-            leftWall = new Wall(0,0,10,150);
-            rightWall = new Wall(975,0,10,150);
+            leftWall = new Wall(0,0,20,150);
+            rightWall = new Wall(965,0,20,150);
             MovementCarThread movementCarThread = new MovementCarThread(this, graphicCar);
             movementCarThread.start();
         }
@@ -103,7 +98,7 @@ public class WelcomeJPanel extends JPanel {
             public void run(){
                 while(true){
                     try{
-                        Thread.sleep(15);
+                        Thread.sleep(graphicCar.speed);
                         this.graphicCar.move();
                         this.panel.repaint();
                     }
@@ -117,7 +112,8 @@ public class WelcomeJPanel extends JPanel {
         private class GraphicCar extends JPanel {
             private BufferedImage carImage;
             private Rectangle rectangle;
-            private int deltaX = 1;
+            private int deltaX;
+            private int speed;
 
             public GraphicCar(){
                 try{
@@ -125,13 +121,27 @@ public class WelcomeJPanel extends JPanel {
                 }catch (IOException e){
                     e.printStackTrace();
                 }
-                repaint();
-                rectangle = new Rectangle(11,0,120,100);
+                rectangle = new Rectangle(20,25,120,100);
+                speed = 11;
+                deltaX = 1;
             }
 
             public void move(){
                 if(carPanel.rightWall.collision(this) || carPanel.leftWall.collision(this)){
                     deltaX *= -1;
+                    if(deltaX == -1){
+                        try{
+                            carImage = ImageIO.read(new FileInputStream("carReversed.png"));
+                        }catch (IOException e){
+                            e.printStackTrace();
+                        }
+                    }else{
+                        try{
+                            carImage = ImageIO.read(new FileInputStream("car.png"));
+                        }catch (IOException e){
+                            e.printStackTrace();
+                        }
+                    }
                 }
                 rectangle.x += deltaX;
             }
@@ -140,24 +150,38 @@ public class WelcomeJPanel extends JPanel {
                 g.drawImage(carImage, rectangle.x, rectangle.y, rectangle.width, rectangle.height, null );
             }
 
-            public Rectangle getRectangle() {
-                return rectangle;
+            public void addSpeed() {
+                if (speed > 10) {
+                    speed -= 10;
+                }
+            }
+
+            public void removeSpeed(){
+                if(speed < 100){
+                    speed += 10;
+                }
             }
         }
 
         private class Wall extends JPanel{
             private Rectangle rectangle;
+            private Image line;
 
             public Wall(int x, int y, int width, int height){
                 this.rectangle = new Rectangle(x,y,width,height);
             }
 
             public void draw(Graphics g){
-                g.fillRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+                try{
+                    line = ImageIO.read(new FileInputStream("line.png"));
+                }catch (IOException e){
+                    e.printStackTrace();
+                }
+                g.drawImage(line, rectangle.x, rectangle.y, rectangle.width, rectangle.height,null);
             }
 
             public boolean collision(GraphicCar graphicCar){
-                return this.rectangle.intersects(graphicCar.getRectangle());
+                return this.rectangle.intersects(graphicCar.rectangle);
             }
         }
     }

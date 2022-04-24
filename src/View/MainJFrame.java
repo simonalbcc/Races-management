@@ -11,8 +11,8 @@ import java.awt.event.WindowEvent;
 
 public class MainJFrame extends JFrame {
     private JMenuBar menuBar;
-    private JMenu applicationMenu, viewMenu, helpMenu, drivers, research;
-    private JMenuItem close, stopAnimation, shortcuts, contactsInfos, addDriver, removeDriver, modifyDriver, showDriverList;
+    private JMenu applicationMenu, helpMenu, drivers, research;
+    private JMenuItem close, shortcuts, contactsInfos, addDriver, removeDriver, modifyDriver, showDriverList;
     private Container frameContainer;
 
     public MainJFrame(){
@@ -34,19 +34,15 @@ public class MainJFrame extends JFrame {
         applicationMenu = new JMenu("Application");
         drivers = new JMenu("Driver");
         research = new JMenu("Research");
-        viewMenu = new JMenu("View");
         helpMenu = new JMenu("Help");
 
         menuBar.add(applicationMenu);
         menuBar.add(drivers);
         menuBar.add(research);
-        menuBar.add(viewMenu);
         menuBar.add(helpMenu);
 
         close = new JMenuItem("Close");
         close.addActionListener(new menuItemListner());
-
-        stopAnimation = new JMenuItem("Stop Animation");
 
         shortcuts = new JMenuItem("Shortcuts");
 
@@ -63,18 +59,17 @@ public class MainJFrame extends JFrame {
         modifyDriver.addActionListener(new menuItemListner());
 
         showDriverList = new JMenuItem("Show driver list");
-        showDriverList.addActionListener(new menuItemListner());;
-
-
+        showDriverList.addActionListener(new menuItemListner());
 
         drivers.add(addDriver);
+        drivers.addSeparator();
         drivers.add(removeDriver);
+        drivers.addSeparator();
         drivers.add(showDriverList);
+        drivers.addSeparator();
         drivers.add(modifyDriver);
 
         applicationMenu.add(close);
-
-        viewMenu.add(stopAnimation);
 
         helpMenu.add(shortcuts);
         helpMenu.addSeparator();
