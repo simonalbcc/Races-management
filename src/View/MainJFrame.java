@@ -2,6 +2,7 @@
 package View;
 
 import javax.swing.*;
+import javax.swing.event.MenuListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,8 +12,8 @@ import java.awt.event.WindowEvent;
 
 public class MainJFrame extends JFrame {
     private JMenuBar menuBar;
-    private JMenu applicationMenu, helpMenu, drivers, research;
-    private JMenuItem close, shortcuts, contactsInfos, addDriver, removeDriver, modifyDriver, showDriverList;
+    private JMenu applicationMenu, helpMenu, driversMenu, researchMenu;
+    private JMenuItem close, shortcuts, contactsInfos, addDriver, removeDriver, modifyDriver, showDriverList, researchAccident, researchCars, researchRanking;
     private Container frameContainer;
 
     public MainJFrame(){
@@ -32,13 +33,13 @@ public class MainJFrame extends JFrame {
         setJMenuBar(menuBar);
 
         applicationMenu = new JMenu("Application");
-        drivers = new JMenu("Driver");
-        research = new JMenu("Research");
+        driversMenu = new JMenu("Driver");
+        researchMenu = new JMenu("Research");
         helpMenu = new JMenu("Help");
 
         menuBar.add(applicationMenu);
-        menuBar.add(drivers);
-        menuBar.add(research);
+        menuBar.add(driversMenu);
+        menuBar.add(researchMenu);
         menuBar.add(helpMenu);
 
         close = new JMenuItem("Close");
@@ -61,15 +62,30 @@ public class MainJFrame extends JFrame {
         showDriverList = new JMenuItem("Show driver list");
         showDriverList.addActionListener(new menuItemListner());
 
-        drivers.add(addDriver);
-        drivers.addSeparator();
-        drivers.add(removeDriver);
-        drivers.addSeparator();
-        drivers.add(showDriverList);
-        drivers.addSeparator();
-        drivers.add(modifyDriver);
+        researchAccident = new JMenuItem("Research Accident");
+        researchAccident.addActionListener(new menuItemListner());
+
+        researchCars = new JMenuItem("Research Cars");
+        researchCars.addActionListener(new menuItemListner());
+
+        researchRanking = new JMenuItem("Research Ranking");
+        researchRanking.addActionListener(new menuItemListner());
+
+        driversMenu.add(addDriver);
+        driversMenu.addSeparator();
+        driversMenu.add(removeDriver);
+        driversMenu.addSeparator();
+        driversMenu.add(showDriverList);
+        driversMenu.addSeparator();
+        driversMenu.add(modifyDriver);
 
         applicationMenu.add(close);
+
+        researchMenu.add(researchAccident);
+        researchMenu.addSeparator();
+        researchMenu.add(researchCars);
+        researchMenu.addSeparator();
+        researchMenu.add(researchRanking);
 
         helpMenu.add(shortcuts);
         helpMenu.addSeparator();
@@ -102,6 +118,15 @@ public class MainJFrame extends JFrame {
             }
             if(actionEvent.getSource() == showDriverList){
 
+            }
+            if(actionEvent.getSource() == researchAccident){
+                frameContainer.add(new AccidentsJPanel());
+            }
+            if(actionEvent.getSource() == researchCars){
+
+            }
+            if(actionEvent.getSource() == researchRanking){
+                frameContainer.add(new RankingJPanel());
             }
             MainJFrame.this.validate();
         }
