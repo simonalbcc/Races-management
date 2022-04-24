@@ -3,6 +3,7 @@ package View;
 import Model.Car;
 
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicBorders;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,26 +11,29 @@ import java.awt.event.ActionListener;
 
 public class RankingJPanel extends JPanel {
     private int numWindow;
-    private GridBagConstraints gcButtons, gcGeneral;
-    public RankingJPanel(){
+    private GridBagConstraints gc;
+    private Container mainFrame;
+    public RankingJPanel(Container mainFrame){
+
+        this.mainFrame = mainFrame;
+
         // set layout
         this.setLayout(new GridBagLayout());
-        gcGeneral = new GridBagConstraints();
-        gcButtons = new GridBagConstraints();
-        gcGeneral.weighty = 1;
-        gcGeneral.insets = new Insets(10,0,10,0);
+        gc = new GridBagConstraints();
 
         // set size
         this.setPreferredSize(new Dimension(400,400));
 
         // create & add panels
-        this.add(new CircuitsPanel(), gcGeneral);
-        gcButtons.gridy = 2;
-        gcButtons.anchor = GridBagConstraints.PAGE_END;
-        this.add(new ButtonsPanel(),gcButtons);
+        this.add(new CircuitsPanel(), gc);
+        gc.gridy = 1;
+        this.add(new ButtonsPanel(),gc);
 
         // set current current number window
         numWindow = 0;
+
+        this.setBorder(new BasicBorders.FieldBorder(Color.BLACK, Color.black, Color.BLACK, Color.BLACK));
+
 
     }
     private class CircuitsPanel extends JPanel{
@@ -86,9 +90,9 @@ public class RankingJPanel extends JPanel {
             jTable.setFillsViewportHeight(true);
 
 
-            this.add(title, gcGeneral);
-            gcGeneral.gridy = 1;
-            this.add(sp, gcGeneral);
+            this.add(sp, gc);
+            gc.gridy = 1;
+            this.add(title, gc);
         }
 
     }
@@ -117,7 +121,7 @@ public class RankingJPanel extends JPanel {
                     RankingJPanel.this.add(new WelcomeJPanel());
                 }
                 if(e.getSource() == restartResearch){
-                    RankingJPanel.this.add(new RankingJPanel());
+                    RankingJPanel.this.add(new RankingJPanel(mainFrame));
                 }
                 RankingJPanel.this.validate();
                 RankingJPanel.this.repaint();
@@ -140,14 +144,14 @@ public class RankingJPanel extends JPanel {
         private class ButtonListener implements ActionListener{
             @Override
             public void actionPerformed(ActionEvent e) {
-                RankingJPanel.this.removeAll();
+                mainFrame.removeAll();
                 if(e.getSource() == back){
                     switch(numWindow){
                         case 0:
                             addPanels(false, new WelcomeJPanel());
                             break;
                         case 1:
-                            addPanels(new RankingJPanel());
+                            addPanels(new RankingJPanel(mainFrame));
                             break;
                         case 2:
                             addPanels(new CircuitsPanel());
@@ -169,16 +173,15 @@ public class RankingJPanel extends JPanel {
                     }
                     numWindow++;
                 }
-                RankingJPanel.this.repaint();
-                RankingJPanel.this.validate();
+                mainFrame.repaint();
+                mainFrame.validate();
             }
             public void addPanels (boolean hasButtons, JPanel ... panels){
                 for(JPanel panel : panels){
-                    RankingJPanel.this.add(panel, gcGeneral);
-                    gcGeneral.gridy += 1;
+                    mainFrame.add(panel);
                 }
                 if(hasButtons){
-                    RankingJPanel.this.add(new ButtonsPanel(), gcButtons);
+                    mainFrame.add(new ButtonsPanel());
                 }
             }
             public void addPanels(JPanel ... panels){

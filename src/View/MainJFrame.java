@@ -126,7 +126,7 @@ public class MainJFrame extends JFrame {
 
             }
             if(actionEvent.getSource() == researchRanking){
-                frameContainer.add(new RankingJPanel());
+                frameContainer.add(new RankingJPanel(frameContainer));
             }
             MainJFrame.this.validate();
         }

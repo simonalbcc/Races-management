@@ -4,6 +4,7 @@ import Model.Car;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicBorders;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,7 +22,6 @@ public class WelcomeJPanel extends JPanel {
     public WelcomeJPanel(){
         this.setLayout(new GridBagLayout());
         gc = new GridBagConstraints();
-        this.setPreferredSize(new Dimension(400,400));
 
 
         welcomeLabel = new JLabel("<html> <h1> Hello racer </h1> </html>");
@@ -40,6 +40,9 @@ public class WelcomeJPanel extends JPanel {
         gc.gridy = 2;
         gc.fill = GridBagConstraints.NONE;
         this.add(buttons, gc);
+
+        this.setBorder(new BasicBorders.FieldBorder(Color.BLACK, Color.black, Color.BLACK, Color.BLACK));
+
     }
 
     private class ButtonJPanel extends JPanel{
@@ -66,7 +69,6 @@ public class WelcomeJPanel extends JPanel {
             }
         }
     }
-
     private class CarPanel extends JPanel{
         private GraphicCar graphicCar;
         private Wall leftWall, rightWall;
