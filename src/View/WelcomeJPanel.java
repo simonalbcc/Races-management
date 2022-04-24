@@ -61,10 +61,10 @@ public class WelcomeJPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 WelcomeJPanel.this.removeAll();
                 if(e.getSource() == pilotsButton){
-                    WelcomeJPanel.this.add(new AccidentsPanel());
+                    WelcomeJPanel.this.add(new AccidentsJPanel());
                 }
                 if(e.getSource() == rankingButton){
-                    WelcomeJPanel.this.add(new RankingPanel());
+                    WelcomeJPanel.this.add(new RankingJPanel());
                 }
                 WelcomeJPanel.this.repaint();
                 WelcomeJPanel.this.validate();
