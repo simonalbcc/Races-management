@@ -13,7 +13,11 @@ import java.awt.event.ActionListener;
 public class DriverForm extends  JPanel{
     private JLabel title;
     private GridBagConstraints gc;
-    public DriverForm() {
+    private Container mainContainer;
+    public DriverForm(Container mainContainer) {
+        //init container
+        this.mainContainer = mainContainer;
+
         // set layout & init gc
         this.setLayout(new GridBagLayout());
         gc = new GridBagConstraints();
@@ -165,20 +169,20 @@ public class DriverForm extends  JPanel{
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                DriverForm.this.removeAll();
+               mainContainer.removeAll();
                 if(e.getSource() == back){
-                    DriverForm.this.add(new WelcomeJPanel());
+                    mainContainer.add(new WelcomeJPanel(mainContainer));
                 }
                 if(e.getSource() == save){ // !! save in DB
                     // confirmation avec validation
                     // pour l'instant,  retourne simplement dans le menu.
-                    DriverForm.this.add(new WelcomeJPanel());
+                    mainContainer.add(new WelcomeJPanel(mainContainer));
                 }
                 if(e.getSource() == reset){
-                    DriverForm.this.add(new DriverForm());
+                    mainContainer.add(new DriverForm(mainContainer));
                 }
-                DriverForm.this.repaint();
-                DriverForm.this.validate();
+                mainContainer.repaint();
+                mainContainer.validate();
             }
         }
     }

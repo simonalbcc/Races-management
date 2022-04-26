@@ -18,8 +18,12 @@ public class WelcomeJPanel extends JPanel {
     private ButtonJPanel buttons;
     private CarPanel carPanel;
     private GridBagConstraints gc;
+    private Container mainContainer;
 
-    public WelcomeJPanel(){
+    public WelcomeJPanel(Container mainContainer){
+
+        this.mainContainer = mainContainer;
+
         this.setLayout(new GridBagLayout());
         gc = new GridBagConstraints();
 
@@ -38,7 +42,6 @@ public class WelcomeJPanel extends JPanel {
         this.add(carPanel,gc);
 
         gc.gridy = 2;
-        gc.fill = GridBagConstraints.NONE;
         this.add(buttons, gc);
 
         this.setBorder(new BasicBorders.FieldBorder(Color.BLACK, Color.black, Color.BLACK, Color.BLACK));

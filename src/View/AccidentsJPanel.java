@@ -7,11 +7,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 //endregion
 
-public class AccidentsJPanel extends JPanel {
+public class AccidentsJPanel extends JPanel{
     private GridBagConstraints gc;
+    private Container mainContainer;
+    private int numWindow;
     private static final String[] months = {"December", "November", "October", "September", "Augustus", "July", "June", "May", "April", "March", "Februari", "Januari"};
 
-    public AccidentsJPanel() {
+    public AccidentsJPanel(Container mainContainer) {
+        // init container
+        this.mainContainer = mainContainer;
+
+        // init number of the window/page
+        numWindow = 0;
+
         // create layout
         this.setLayout(new GridBagLayout());
         gc = new GridBagConstraints();
@@ -22,7 +30,6 @@ public class AccidentsJPanel extends JPanel {
         this.add( new MainSpinnerPanel(), gc);
         gc.gridy = 2;
         this.add(new ButtonsPanel(),gc);
-
 
     }
     private class MainSpinnerPanel extends JPanel{
@@ -67,12 +74,42 @@ public class AccidentsJPanel extends JPanel {
             this.add(ok);
         }
         private class ButtonListener implements ActionListener{
-            private ButtonsPanel buttonPanelTable;
             @Override
             public void actionPerformed(ActionEvent e) {
-                AccidentsJPanel.this.removeAll();
-                AccidentsJPanel.this.repaint();
-                AccidentsJPanel.this.validate();
+                mainContainer.removeAll();
+                if(e.getSource() == back){
+                    switch(numWindow){
+                        case 0:
+
+                            break;
+                        case 1:
+
+                            break;
+                        case 2:
+
+                            break;
+                        case 3:
+
+                            break;
+                    }
+                    numWindow++;
+                }
+                if(e.getSource() == ok){
+                    switch(numWindow){
+                        case 0:
+
+                            break;
+                        case 1:
+
+                            break;
+                        case 2:
+
+                            break;
+                    }
+                    numWindow--;
+                }
+                mainContainer.repaint();
+                mainContainer.validate();
             }
         }
     }

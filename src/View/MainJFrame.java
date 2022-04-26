@@ -92,7 +92,7 @@ public class MainJFrame extends JFrame {
         helpMenu.add(contactsInfos);
 //endregion
 
-        frameContainer.add(new WelcomeJPanel());
+        frameContainer.add(new WelcomeJPanel(frameContainer));
         setVisible(true);
         //setResizable(false);
     }
@@ -105,10 +105,10 @@ public class MainJFrame extends JFrame {
             }
 
             if(actionEvent.getSource() == contactsInfos){
-                frameContainer.add(new ContactsInfosJPanel());
+                frameContainer.add(new ContactsInfosJPanel(frameContainer));
             }
             if(actionEvent.getSource() == addDriver){
-                frameContainer.add(new DriverForm());
+                frameContainer.add(new DriverForm(frameContainer));
             }
             if(actionEvent.getSource() == removeDriver){
 
@@ -120,7 +120,7 @@ public class MainJFrame extends JFrame {
 
             }
             if(actionEvent.getSource() == researchAccident){
-                frameContainer.add(new AccidentsJPanel());
+                frameContainer.add(new AccidentsJPanel(frameContainer));
             }
             if(actionEvent.getSource() == researchCars){
 

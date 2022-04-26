@@ -8,8 +8,12 @@ import java.awt.event.ActionListener;
 public class ContactsInfosJPanel extends JPanel {
     private JLabel contactsInfos;
     private JButton returnButton;
+    private Container mainContainer;
 
-    public ContactsInfosJPanel(){
+    public ContactsInfosJPanel(Container mainContainer){
+
+        this.mainContainer = mainContainer;
+
         this.setLayout(new BorderLayout());
         contactsInfos = new JLabel("<html> <style> h2 {font-style : italic}</style> <h1><u>Developers :</u></h1> " +
                                         "<h2 >Albicocco Simon</h2>" +
@@ -21,13 +25,16 @@ public class ContactsInfosJPanel extends JPanel {
         returnButton.addActionListener(new returnListener());
         this.add(contactsInfos,BorderLayout.NORTH);
         this.add(returnButton,BorderLayout.SOUTH);
+
+        mainContainer.add(this);
+
     }
 
     private class returnListener implements ActionListener {
         public void actionPerformed(ActionEvent actionEvent) {
-            ContactsInfosJPanel.this.removeAll();
-            ContactsInfosJPanel.this.add(new WelcomeJPanel());
-            ContactsInfosJPanel.this.validate();
+            mainContainer.removeAll();
+            mainContainer.add(new WelcomeJPanel(mainContainer));
+            mainContainer.validate();
         }
     }
 }
