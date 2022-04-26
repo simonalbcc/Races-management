@@ -54,8 +54,8 @@ public class DatesJSpinner extends JPanel{
         @Override
         public void stateChanged(ChangeEvent e) {
             if(e.getSource() == year || e.getSource() == month){
-                oldValue = Integer.parseInt(day.getValue().toString());
-                lengthMonth = findLengthMonth(month.getValue().toString());
+                oldValue = (int)day.getValue();
+                lengthMonth = (int)month.getValue();
                 spinnerModel = new SpinnerNumberModel(1,1,lengthMonth,1);
                 day.setModel(spinnerModel);
                 if (oldValue < lengthMonth) {
@@ -64,7 +64,7 @@ public class DatesJSpinner extends JPanel{
                     day.setValue(lengthMonth);
                 }
             }
-            dateSelectedCal = new GregorianCalendar(Integer.parseInt(year.getValue().toString()), findIndexMonth(month.getValue().toString()), Integer.parseInt(day.getValue().toString()));
+            dateSelectedCal = new GregorianCalendar((int) year.getValue(), findIndexMonth(month.getValue().toString()),(int)day.getValue());
             dateSelected = dateSelectedCal.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         }
     }
