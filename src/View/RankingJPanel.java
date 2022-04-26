@@ -12,16 +12,19 @@ public class RankingJPanel extends JPanel {
     private JPanel[] panels;
     private JPanel currentPanel;
     private int iPosition;
+    private ButtonsPanel buttonsPanel;
 
     public RankingJPanel(Container mainContainer){
-        // init container
+        // init container & buttonPanel
         this.mainContainer = mainContainer;
+        buttonsPanel = new ButtonsPanel("Back", "Next");
+        buttonsPanel.addActionListener(new ButtonListener());
 
         // set black borders
         this.setBorder(new BasicBorders.FieldBorder(Color.BLACK, Color.black, Color.BLACK, Color.BLACK));
 
         //init panels & current
-        this.panels = new JPanel[]{new WelcomeJPanel(mainContainer), new CircuitsPanel(), new DatePanel(), new RankingTable()};
+        this.panels = new JPanel[]{new WelcomeJPanel(mainContainer), new CircuitsPanel(), new DatePanel(), new RankingTable(), new FinalePanel()};
         iPosition = 1;
         setCurrentPanel();
 
@@ -30,24 +33,26 @@ public class RankingJPanel extends JPanel {
 
     }
 
-    public void updateWindow(){
-        mainContainer.removeAll();
-        setCurrentPanel();
-        if(iPosition == 0){
-            mainContainer.add(currentPanel);
-        } else {
-            mainContainer.add(new BasicPanel(currentPanel, new ButtonsPanel()));
-        }
-        mainContainer.repaint();
-        mainContainer.validate();
-    }
-
     public void setCurrentPanel(){
         this.currentPanel = panels[iPosition];
     }
 
+    public void updateWindow(){
+        mainContainer.removeAll();
+        setCurrentPanel();
+        if(iPosition == 0 || iPosition == panels.length-1){
+            mainContainer.add(currentPanel);
+        } else {
+            mainContainer.add(new BasicPanel(currentPanel, buttonsPanel));
+        }
+        mainContainer.repaint();
+        mainContainer.validate();
+    }
     public void nextWindow(){
         iPosition++;
+        if(iPosition > panels.length){
+            iPosition = 0;
+        }
     }
     public void previousWindow(){
         iPosition--;
@@ -57,8 +62,8 @@ public class RankingJPanel extends JPanel {
         private JLabel circuitsLabel;
         private JComboBox circuitsCombobox;
             public CircuitsPanel(){
-                circuitsLabel = new JLabel("Select the circuit : ");
-                circuitsCombobox = new JComboBox(new String[]{"test", "test"});
+                circuitsLabel = new JLabel("Choisissez un circuit");
+                circuitsCombobox = new JComboBox(new String[]{"test circuit ", "test circuit"});
                 circuitsCombobox.setPreferredSize(new Dimension(100,30));
 
                 this.add(circuitsLabel);
@@ -71,7 +76,7 @@ public class RankingJPanel extends JPanel {
         private JLabel datesLabel;
         private JComboBox datesCombobox;
         public DatePanel(){
-            datesLabel = new JLabel("Select the date : ");
+            datesLabel = new JLabel("Choisissez une date : ");
             datesCombobox = new JComboBox(new String[]{"test", "test"});
             datesCombobox.setPreferredSize(new Dimension(100,30));
 
@@ -84,17 +89,19 @@ public class RankingJPanel extends JPanel {
     private class RankingTable extends JPanel{
         private JTable jTable;
         private JLabel title;
+        private GridBagConstraints gcTable;
         public RankingTable (){
             // init layout
-            this.setLayout(new GridLayout(2,1));
+            this.setLayout(new GridBagLayout());
+            gcTable = new GridBagConstraints();
 
             // init title
-            title = new JLabel("Ranking");
+            title = new JLabel("Classement");
             title.setFont(new Font("Arial",Font.TRUETYPE_FONT,15));
 
 
             // init of headers
-            String[] headColumns = new String[]{"Position", "Car number", "Car power", "Name driver", "Record"};
+            String[] headColumns = new String[]{"Position", "Numéro de voiture", "Puissance de la voiture", "Nom du pilote", "Meilleur temps"};
 
             // init fictive data
             Object[][] data = new Object[][] {
@@ -110,33 +117,42 @@ public class RankingJPanel extends JPanel {
             sp.setPreferredSize(new Dimension(300, 250));
             jTable.setFillsViewportHeight(true);
 
-            this.add(title);
-            this.add(sp);
+            this.add(title,gcTable);
+            gcTable.gridy = 1;
+            this.add(sp, gcTable);
         }
 
     }
     private class FinalePanel extends  JPanel{
         private JLabel title;
-        private JButton backMainMenu, restartResearch;
+        private ButtonsPanel buttonsFinalePanel;
+        private GridBagConstraints gcFinalePanel;
         public FinalePanel(){
-            title = new JLabel("<html> <u> What do you want to do ? </u> </html>");
+            // set title
+            title = new JLabel("<html> <u> Que voulez-vous faire? </u> </html>");
             title.setHorizontalAlignment(SwingConstants.CENTER);
-            this.setLayout(new GridLayout(3,1, 10,10));
 
-            backMainMenu = new JButton("Go back to the main menu");
-            backMainMenu.addActionListener(new FinalePanelListener());
-            restartResearch = new JButton("Restart a research");
-            restartResearch.addActionListener(new FinalePanelListener());
+            // set layout
+            this.setLayout(new GridBagLayout());
+            gcFinalePanel = new GridBagConstraints();
 
-            this.add(title);
-        }private class FinalePanelListener implements ActionListener {
+            // set buttons panel
+            buttonsFinalePanel = new ButtonsPanel("Retour au menu principal", "Recommencer une recherche");
+            buttonsFinalePanel.addActionListener(new FinaleButtonsListener());
+
+            // add components
+            this.add(title, gcFinalePanel);
+            gcFinalePanel.gridy = 1;
+            this.add(buttonsFinalePanel, gcFinalePanel);
+
+        }private class FinaleButtonsListener implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 mainContainer.removeAll();
-                if(e.getSource() == backMainMenu){
+                if(e.getSource() == buttonsFinalePanel.getBack()){
                     mainContainer.add(new WelcomeJPanel(mainContainer));
                 }
-                if(e.getSource() == restartResearch){
+                if(e.getSource() == buttonsFinalePanel.getNext()){
                     mainContainer.add(new RankingJPanel(mainContainer));
                 }
                 mainContainer.repaint();
@@ -144,32 +160,16 @@ public class RankingJPanel extends JPanel {
             }
         }
     }
-    private class ButtonsPanel extends JPanel{
-        private JButton back,next;
-        public ButtonsPanel(){
-            back = new JButton("<html> <u>B</u>ack <html>");
-            back.addActionListener(new ButtonListener());
-
-            next = new JButton("<html> <u>N</u>ext <html>");
-            next.addActionListener(new ButtonListener());
-
-            this.add(back);
-            this.add(next);
-        }
-
-        private class ButtonListener implements ActionListener{
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(e.getSource() == next){
-                    nextWindow();
-                }
-                 if(e.getSource() == back){
-                    previousWindow();
-                }
-                 updateWindow();
+    private class ButtonListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if(e.getSource() == buttonsPanel.getBack()){
+                previousWindow();
             }
+            if(e.getSource() == buttonsPanel.getNext()){
+                nextWindow();
+            }
+            updateWindow();
         }
     }
-
-
 }

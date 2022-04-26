@@ -23,7 +23,7 @@ public class DriverForm extends  JPanel{
         gc = new GridBagConstraints();
 
         // init & set title
-        title = new JLabel("<html> <h1> <u> Form to add a driver : </u> </h1> </html>");
+        title = new JLabel("<html> <h2> <u> Formulaire d'ajout d'un pilote : </u> </h2> </html>");
 
         //region  add all
         this.add(title, gc);
@@ -38,9 +38,9 @@ public class DriverForm extends  JPanel{
     }
     //region inner classes
     private class Form extends JPanel {
-        private JTextField serialNumber, lastName, firstName, phoneNumber, streetAddress, city, state, zipCode;
+        private JTextField serialNumber, lastName, firstName, phoneNumber, streetAddress, city, land, zipCode;
         private JLabel serialNumberLabel, lastNameLabel, firstNameLabel, phoneNumberLabel,
-                streetAddressLabel, cityLabel, stateLabel, zipCodeLabel, originsLabel, teamsLabel, hasRenewedContractLabel, birthdateLabel;
+                streetAddressLabel, cityLabel, landLabel, zipCodeLabel, originsLabel, teamsLabel, hasRenewedContractLabel, birthdateLabel;
         private JComboBox origins, teams;
         private JCheckBox hasRenewedContract;
         private DatesJSpinner datesJSpinner;
@@ -54,55 +54,55 @@ public class DriverForm extends  JPanel{
 
             //region JTextfields
             serialNumber = new JTextField();
-            serialNumber.setToolTipText("Enter the serial number of the driver, it's a required field");
+            serialNumber.setToolTipText("Veuillez entrer le numéro de série du pilote (obligatoire)");
 
             lastName = new JTextField();
-            lastName.setToolTipText("Enter the driver last name, it's a required field");
+            lastName.setToolTipText("Veuillez entrer le nom de famille du pilote (obligatoire)");
 
             firstName = new JTextField();
-            firstName.setToolTipText("Enter the driver first name, it's a required field");
+            firstName.setToolTipText("Veuillez entrer le prénom du pilote (obligatoire)");
 
             phoneNumber = new JTextField();
-            phoneNumber.setToolTipText("Enter the driver phone number, this field is facultative");
+            phoneNumber.setToolTipText("Veuillez entrer le numéro de téléphone du pilote (facultatif)");
 
             streetAddress = new JTextField();
-            streetAddress.setToolTipText("Enter the driver street address, it's a required field");
+            streetAddress.setToolTipText("Veuillez entrer l'adresse du pilote (obligatoire)");
 
             city = new JTextField();
-            city.setToolTipText("Enter the city where the driver lives, it's a required field");
+            city.setToolTipText("Veuillez entrer la ville où réside le pilote (obligatoire)");
 
             zipCode = new JTextField();
-            zipCode.setToolTipText("Enter the zipcode of the driver city, it's a required field");
+            zipCode.setToolTipText("Veuillez entrer le code postal de la ville du pilote (obligatoire)");
 
-            state = new JTextField();
-            state.setToolTipText("Enter the state where the driver lives, it's a required field");
+            land = new JTextField();
+            land.setToolTipText("Veuillez entrer le code postal de la ville du pilote (obligatoire)");
 
-            serialNumberLabel = new JLabel("Serial number : ");
-            lastNameLabel =new JLabel("Last name : ");
-            firstNameLabel = new JLabel("First name : ");
-            phoneNumberLabel = new JLabel("Phone number : ");
-            streetAddressLabel = new JLabel("Street address : ");
-            cityLabel = new JLabel("City : ");
-            zipCodeLabel = new JLabel("Zipcode : ");
-            stateLabel = new JLabel("State : ");
+            serialNumberLabel = new JLabel("Numéro de série : ");
+            lastNameLabel =new JLabel("Nom : ");
+            firstNameLabel = new JLabel("Prénom : ");
+            phoneNumberLabel = new JLabel("Numéro de téléphone : ");
+            streetAddressLabel = new JLabel("Adresse : ");
+            cityLabel = new JLabel("Ville : ");
+            zipCodeLabel = new JLabel("Code postal : ");
+            landLabel = new JLabel("Pays : ");
             //endregion
 
             // JSpinners
-            birthdateLabel = new JLabel("Birthdate : ");
+            birthdateLabel = new JLabel("Date de naissance : ");
             datesJSpinner = new DatesJSpinner();
 
             // Combobox
             origins = new JComboBox(test);
-            origins.setToolTipText("Choose the origin of the driver");
+            origins.setToolTipText("Choisissez l'origine du pilote : ");
             teams = new JComboBox(test);
-            teams.setToolTipText("Choose the team of the driver ");
-            originsLabel = new JLabel("Origin : ");
-            teamsLabel = new JLabel("Team : ");
+            teams.setToolTipText("Choisissez l'équipe du pilote");
+            originsLabel = new JLabel("Origines : ");
+            teamsLabel = new JLabel("Equipes : ");
 
             // Checkbox
             hasRenewedContract = new JCheckBox();
-            hasRenewedContractLabel = new JLabel("Has renewed commitment contract : ");
-            hasRenewedContract.setToolTipText("Check the case if the driver has renewed commitment contract");
+            hasRenewedContractLabel = new JLabel("A renouvelé son contrat d'engagement : ");
+            hasRenewedContract.setToolTipText("Cochez la case si le pilote a renouvelé son contrat d'engagement");
 
             //region Add all
             this.add(lastNameLabel);
@@ -123,8 +123,8 @@ public class DriverForm extends  JPanel{
             this.add(cityLabel);
             this.add(city);
 
-            this.add(stateLabel);
-            this.add(state);
+            this.add(landLabel);
+            this.add(land);
 
             this.add(birthdateLabel);
             this.add(datesJSpinner);
@@ -150,13 +150,13 @@ public class DriverForm extends  JPanel{
         private JButton back, reset, save;
 
         public ButtonsForm(){
-            back = new JButton("<html> <u>B</u>ack <html>");
+            back = new JButton("<html> <u>R</u>etour <html>");
             back.addActionListener(new ButtonsFormListener());
 
-            reset = new JButton("<html> <u>R</u>eset <html>");
+            reset = new JButton("<html> <u>R</u>éinitialiser <html>");
             reset.addActionListener(new ButtonsFormListener());
 
-            save = new JButton("<html> <u>S</u>ave <html>");
+            save = new JButton("<html> <u>S</u>auvegarder <html>");
             save.addActionListener(new ButtonsFormListener());
 
             this.add(back);

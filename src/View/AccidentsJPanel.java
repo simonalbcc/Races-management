@@ -11,7 +11,6 @@ public class AccidentsJPanel extends JPanel{
     private GridBagConstraints gc;
     private Container mainContainer;
     private int numWindow;
-    private static final String[] months = {"December", "November", "October", "September", "Augustus", "July", "June", "May", "April", "March", "Februari", "Januari"};
 
     public AccidentsJPanel(Container mainContainer) {
         // init container
@@ -44,10 +43,10 @@ public class AccidentsJPanel extends JPanel{
             end = new DatesJSpinner();
 
             // create title for each spinnerPanel
-            subtitleStart = new JLabel("<html> <h4> <u> Select the starting date of the accident : </u> </h4> </html>");
+            subtitleStart = new JLabel("<html> <h4> <u> Choisissez une date de début : </u> </h4> </html>");
             subtitleStart.setHorizontalAlignment(SwingConstants.CENTER);
 
-            subtitleEnd = new JLabel("<html> <h4> <u> Select the ending date of the accident : </u> </h4> </html>");
+            subtitleEnd = new JLabel("<html> <h4> <u> Choisissez une date de fin : </u> </h4> </html>");
             subtitleEnd.setHorizontalAlignment(SwingConstants.CENTER);
 
             // create subtitles
@@ -64,7 +63,7 @@ public class AccidentsJPanel extends JPanel{
         private JButton back, ok;
         public ButtonsPanel(){
 
-            back = new JButton("<html> <u>B</u>ack <html>");
+            back = new JButton("<html> <u>R</u>etour <html>");
             back.addActionListener(new ButtonListener());
 
             ok = new JButton("<html> <u>O</u>k <html>");
@@ -78,35 +77,7 @@ public class AccidentsJPanel extends JPanel{
             public void actionPerformed(ActionEvent e) {
                 mainContainer.removeAll();
                 if(e.getSource() == back){
-                    switch(numWindow){
-                        case 0:
 
-                            break;
-                        case 1:
-
-                            break;
-                        case 2:
-
-                            break;
-                        case 3:
-
-                            break;
-                    }
-                    numWindow++;
-                }
-                if(e.getSource() == ok){
-                    switch(numWindow){
-                        case 0:
-
-                            break;
-                        case 1:
-
-                            break;
-                        case 2:
-
-                            break;
-                    }
-                    numWindow--;
                 }
                 mainContainer.repaint();
                 mainContainer.validate();
@@ -119,11 +90,11 @@ public class AccidentsJPanel extends JPanel{
         public AccidentsJTable (){
             this.setLayout(new GridBagLayout());
 
-            title = new JLabel("Drivers list");
+            title = new JLabel("Liste de pilotes");
             title.setFont(new Font("Arial",Font.TRUETYPE_FONT,20));
 
 
-                 String[] headColumns = new String[]{"Date", "Name", "Address", "Locality", "Team"};
+                 String[] headColumns = new String[]{"Date", "Nom", "Adresse", "Localité", "Equipe"};
 
                  Object[][] data = new Object[][] {
                     {"01/02/2003", "Thomas", "Address 1", "Paris", 1},

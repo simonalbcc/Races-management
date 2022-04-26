@@ -3,6 +3,7 @@ package View;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import java.awt.*;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.ZoneId;
@@ -12,8 +13,9 @@ public class DatesJSpinner extends JPanel{
     private JSpinner day, month, year;
     private GregorianCalendar dateSelectedCal;
     private LocalDate dateSelected;
-    private static final String[] months = {"December", "November", "October", "September", "Augustus", "July", "June", "May", "April", "March", "Februari", "Januari"};
+    private static final String[] months = {"Décembre", "Novembre", "Octobre", "Septembre", "Août", "Juillet", "Juin", "Mai", "Avril", "Mars", "Février", "Janvier"};
     public DatesJSpinner(){
+
 
         day = new JSpinner(new SpinnerNumberModel(1,1,31,1));
         month = new JSpinner(new SpinnerListModel(months));
@@ -21,16 +23,21 @@ public class DatesJSpinner extends JPanel{
         year = new JSpinner(new SpinnerNumberModel(2000,1950, LocalDate.now().getYear(),1));
         year.setEditor(new JSpinner.NumberEditor(year, "#")); // remove comma
 
+        day.setPreferredSize(new Dimension(75,30));
+        month.setPreferredSize(new Dimension(75,30));
+        year.setPreferredSize(new Dimension(75,30));
+
         day.addChangeListener(new SpinnerListenerChange());
         month.addChangeListener(new SpinnerListenerChange());
         year.addChangeListener(new SpinnerListenerChange());
 
+
         dateSelectedCal = new GregorianCalendar(Integer.parseInt(year.getValue().toString()), findIndexMonth(month.getValue().toString()), Integer.parseInt(day.getValue().toString()));
         dateSelected = dateSelectedCal.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
-        year.setToolTipText("Select the year");
-        month.setToolTipText("Select the month");
-        day.setToolTipText("Select the day");
+        year.setToolTipText("Selectionnez l'année");
+        month.setToolTipText("Selectionnez le mois");
+        day.setToolTipText("Selectionnez le jour");
 
         this.add(year);
         this.add(month);
@@ -45,7 +52,7 @@ public class DatesJSpinner extends JPanel{
     }
     public int findLengthMonth(String monthRead){
         int iMonth = findIndexMonth(monthRead);
-        return YearMonth.of(Integer.parseInt(year.getValue().toString()), iMonth).lengthOfMonth();
+        return YearMonth.of((int)(year.getValue()), iMonth).lengthOfMonth();
     }
     private class SpinnerListenerChange implements ChangeListener {
         private SpinnerNumberModel spinnerModel;
@@ -53,9 +60,9 @@ public class DatesJSpinner extends JPanel{
         private int lengthMonth;
         @Override
         public void stateChanged(ChangeEvent e) {
+            oldValue = (int)(day.getValue());
+            lengthMonth = findLengthMonth(month.getValue().toString());
             if(e.getSource() == year || e.getSource() == month){
-                oldValue = (int)day.getValue();
-                lengthMonth = (int)month.getValue();
                 spinnerModel = new SpinnerNumberModel(1,1,lengthMonth,1);
                 day.setModel(spinnerModel);
                 if (oldValue < lengthMonth) {
