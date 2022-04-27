@@ -24,7 +24,7 @@ public class RankingJPanel extends JPanel {
         this.setBorder(new BasicBorders.FieldBorder(Color.BLACK, Color.black, Color.BLACK, Color.BLACK));
 
         //init panels & current
-        this.panels = new JPanel[]{new WelcomeJPanel(mainContainer), new CircuitsPanel(), new DatePanel(), new RankingTable(), new FinalePanel()};
+        this.panels = new JPanel[]{new WelcomeJPanel(mainContainer), new CircuitsPanel(), new DatePanel(), new RankingTable(), new FinaleResearchJPanel(mainContainer, new RankingJPanel(mainContainer))};
         iPosition = 1;
         setCurrentPanel();
 
@@ -122,43 +122,6 @@ public class RankingJPanel extends JPanel {
             this.add(sp, gcTable);
         }
 
-    }
-    private class FinalePanel extends  JPanel{
-        private JLabel title;
-        private ButtonsPanel buttonsFinalePanel;
-        private GridBagConstraints gcFinalePanel;
-        public FinalePanel(){
-            // set title
-            title = new JLabel("<html> <u> Que voulez-vous faire? </u> </html>");
-            title.setHorizontalAlignment(SwingConstants.CENTER);
-
-            // set layout
-            this.setLayout(new GridBagLayout());
-            gcFinalePanel = new GridBagConstraints();
-
-            // set buttons panel
-            buttonsFinalePanel = new ButtonsPanel("Retour au menu principal", "Recommencer une recherche");
-            buttonsFinalePanel.addActionListener(new FinaleButtonsListener());
-
-            // add components
-            this.add(title, gcFinalePanel);
-            gcFinalePanel.gridy = 1;
-            this.add(buttonsFinalePanel, gcFinalePanel);
-
-        }private class FinaleButtonsListener implements ActionListener {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                mainContainer.removeAll();
-                if(e.getSource() == buttonsFinalePanel.getBack()){
-                    mainContainer.add(new WelcomeJPanel(mainContainer));
-                }
-                if(e.getSource() == buttonsFinalePanel.getNext()){
-                    mainContainer.add(new RankingJPanel(mainContainer));
-                }
-                mainContainer.repaint();
-                mainContainer.validate();
-            }
-        }
     }
     private class ButtonListener implements ActionListener{
         @Override

@@ -7,28 +7,31 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 //endregion
 
-public class AccidentsJPanel extends JPanel{
+public class AccidentsResearchJPanel extends JPanel{
     private GridBagConstraints gc;
     private Container mainContainer;
-    private int numWindow;
+    private ButtonsPanel buttonsPanel;
+    private int iNumWindow;
 
-    public AccidentsJPanel(Container mainContainer) {
-        // init container
+    public AccidentsResearchJPanel(Container mainContainer) {
+        // init container & buttonsPanel
         this.mainContainer = mainContainer;
-
-        // init number of the window/page
-        numWindow = 0;
+        buttonsPanel = new ButtonsPanel("Back", "Next");
+        buttonsPanel.addActionListener(new ButtonListener());
 
         // create layout
         this.setLayout(new GridBagLayout());
         gc = new GridBagConstraints();
         gc.insets = new Insets(5,5,5,5);
 
+        // set num window
+        iNumWindow = 0;
+
         // create & add main panel and button panel to the main panel
         gc.gridy = 1;
         this.add( new MainSpinnerPanel(), gc);
         gc.gridy = 2;
-        this.add(new ButtonsPanel(),gc);
+        this.add(buttonsPanel,gc);
 
     }
     private class MainSpinnerPanel extends JPanel{
@@ -59,31 +62,30 @@ public class AccidentsJPanel extends JPanel{
             this.add(end);
         }
     }
-    private class ButtonsPanel extends JPanel{
-        private JButton back, ok;
-        public ButtonsPanel(){
-
-            back = new JButton("<html> <u>R</u>etour <html>");
-            back.addActionListener(new ButtonListener());
-
-            ok = new JButton("<html> <u>O</u>k <html>");
-            ok.addActionListener(new ButtonListener());
-
-            this.add(back);
-            this.add(ok);
-        }
-        private class ButtonListener implements ActionListener{
+    private class ButtonListener implements ActionListener{
             @Override
             public void actionPerformed(ActionEvent e) {
                 mainContainer.removeAll();
-                if(e.getSource() == back){
-
+                if(e.getSource() == buttonsPanel.getBack()){
+                    if(iNumWindow == 0){
+                        mainContainer.add(new WelcomeJPanel(mainContainer));
+                    } else {
+                        mainContainer.add(new AccidentsResearchJPanel(mainContainer));
+                    }
+                    iNumWindow--;
+                }
+                if(e.getSource() == buttonsPanel.getNext()){
+                    if(iNumWindow == 1){
+                        mainContainer.add(new FinaleResearchJPanel(mainContainer, new AccidentsResearchJPanel(mainContainer)));
+                    } else {
+                        mainContainer.add(new BasicPanel(new AccidentsJTable(), buttonsPanel));
+                    }
+                    iNumWindow++;
                 }
                 mainContainer.repaint();
                 mainContainer.validate();
             }
         }
-    }
     private class AccidentsJTable extends JPanel{
         private JTable jTable;
         private JLabel title;
@@ -114,6 +116,6 @@ public class AccidentsJPanel extends JPanel{
             gc.gridy = 1;
             this.add(title, gc);
         }
-
     }
+
 }

@@ -2,7 +2,6 @@
 package View;
 
 import javax.swing.*;
-import javax.swing.event.MenuListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,6 +14,7 @@ public class MainJFrame extends JFrame {
     private JMenu applicationMenu, helpMenu, driversMenu, researchMenu;
     private JMenuItem close, shortcuts, contactsInfos, addDriver, removeDriver, modifyDriver, showDriverList, researchAccident, researchCars, researchRanking;
     private Container frameContainer;
+    private DriverJTable driverJTable;
 
     public MainJFrame(){
         super("Application de gestion de courses automobiles");
@@ -108,19 +108,20 @@ public class MainJFrame extends JFrame {
                 frameContainer.add(new ContactsInfosJPanel(frameContainer));
             }
             if(actionEvent.getSource() == addDriver){
-                frameContainer.add(new DriverForm(frameContainer));
+                frameContainer.add(new DriverForm(frameContainer)); // aura  besoin de driverJTable
             }
-            if(actionEvent.getSource() == removeDriver){
+            if(actionEvent.getSource() == removeDriver){ // aura  besoin de driverJTable
 
             }
-            if(actionEvent.getSource() == modifyDriver){
+            if(actionEvent.getSource() == modifyDriver){ // aura  besoin de driverJTable
 
             }
             if(actionEvent.getSource() == showDriverList){
-
+                driverJTable = new DriverJTable();
+                frameContainer.add(driverJTable);
             }
             if(actionEvent.getSource() == researchAccident){
-                frameContainer.add(new AccidentsJPanel(frameContainer));
+                frameContainer.add(new AccidentsResearchJPanel(frameContainer));
             }
             if(actionEvent.getSource() == researchCars){
 
