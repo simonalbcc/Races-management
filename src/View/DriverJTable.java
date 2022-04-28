@@ -23,7 +23,7 @@ public class DriverJTable extends JTable {
         // init fictive data
         Object[][] data = new Object[][] {
                 {"1", "Albicocco", "Simon", "0457469786", "Andenne, Place des Tilleuls", "Belge", "20"},
-                {"2", "De Winter", "Alexis","0498568675", "Ohey", "Russe"}
+                {"2", "De Winter", "Alexis","0498568675", "Ohey", "Russe", "20"}
         };
         jTable = new JTable(data, headColumns);
 

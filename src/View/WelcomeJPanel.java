@@ -18,11 +18,8 @@ public class WelcomeJPanel extends JPanel {
     private ButtonJPanel buttons;
     private CarPanel carPanel;
     private GridBagConstraints gc;
-    private Container mainContainer;
 
-    public WelcomeJPanel(Container mainContainer){
-
-        this.mainContainer = mainContainer;
+    public WelcomeJPanel(){
 
         this.setLayout(new GridBagLayout());
         gc = new GridBagConstraints();

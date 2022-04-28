@@ -14,7 +14,6 @@ public class MainJFrame extends JFrame {
     private JMenu applicationMenu, helpMenu, driversMenu, researchMenu;
     private JMenuItem close, shortcuts, contactsInfos, addDriver, removeDriver, modifyDriver, showDriverList, researchAccident, researchCars, researchRanking;
     private Container frameContainer;
-    private DriverJTable driverJTable;
 
     public MainJFrame(){
         super("Application de gestion de courses automobiles");
@@ -32,43 +31,43 @@ public class MainJFrame extends JFrame {
         menuBar = new JMenuBar();
         setJMenuBar(menuBar);
 
-        applicationMenu = new JMenu("<html> <u>A</u>pplication </html> ");
-        driversMenu = new JMenu("<html> <u>P</u>ilotes </html>");
-        researchMenu = new JMenu("<html> <u>R</u>echerches </html>");
-        helpMenu = new JMenu("<html> <u>A</u>ide </html>");
+        applicationMenu = new JMenu("Application");
+        driversMenu = new JMenu("Pilotes");
+        researchMenu = new JMenu("Recherches");
+        helpMenu = new JMenu("Aide");
 
         menuBar.add(applicationMenu);
         menuBar.add(driversMenu);
         menuBar.add(researchMenu);
         menuBar.add(helpMenu);
 
-        close = new JMenuItem("<html> <u>F</u>ermeture </html>");
+        close = new JMenuItem("Fermeture");
         close.addActionListener(new menuItemListner());
 
-        shortcuts = new JMenuItem("<html> <u>R</u>accourcis </html>");
+        shortcuts = new JMenuItem("Raccourcis");
 
-        contactsInfos = new JMenuItem("<html> <u>C</u>ontact </html>");
+        contactsInfos = new JMenuItem("Contact ");
         contactsInfos.addActionListener(new menuItemListner());
 
-        addDriver = new JMenuItem("<html> <u>A</u>jouter </html>");
+        addDriver = new JMenuItem("Ajouter");
         addDriver.addActionListener(new menuItemListner());
 
-        removeDriver = new JMenuItem("<html> <u>S</u>upprimer </html>");
+        removeDriver = new JMenuItem("Supprimer");
         removeDriver.addActionListener(new menuItemListner());
 
-        modifyDriver = new JMenuItem("<html> <u>M</u>odifier un pilote </html>");
+        modifyDriver = new JMenuItem("Modifier un pilote");
         modifyDriver.addActionListener(new menuItemListner());
 
-        showDriverList = new JMenuItem("<html> <u>A</u>fficher la liste des pilotes </html>");
+        showDriverList = new JMenuItem("Afficher la liste des pilotes");
         showDriverList.addActionListener(new menuItemListner());
 
-        researchAccident = new JMenuItem("<html> <u>R</u>echerche d'accident </html>");
+        researchAccident = new JMenuItem("Recherche d'accident");
         researchAccident.addActionListener(new menuItemListner());
 
-        researchCars = new JMenuItem("<html> <u>R</u>echerche d'une voiture </html>");
+        researchCars = new JMenuItem("Recherche d'une voiture");
         researchCars.addActionListener(new menuItemListner());
 
-        researchRanking = new JMenuItem("<html> <u>R</u>echerche d'un classement </html>");
+        researchRanking = new JMenuItem("Recherche d'un classement");
         researchRanking.addActionListener(new menuItemListner());
 
         driversMenu.add(addDriver);
@@ -92,7 +91,7 @@ public class MainJFrame extends JFrame {
         helpMenu.add(contactsInfos);
 //endregion
 
-        frameContainer.add(new WelcomeJPanel(frameContainer));
+        frameContainer.add(new WelcomeJPanel());
         setVisible(true);
         //setResizable(false);
     }
@@ -117,8 +116,7 @@ public class MainJFrame extends JFrame {
 
             }
             if(actionEvent.getSource() == showDriverList){
-                driverJTable = new DriverJTable();
-                frameContainer.add(driverJTable);
+                frameContainer.add(new DriverJTable());
             }
             if(actionEvent.getSource() == researchAccident){
                 frameContainer.add(new AccidentsResearchJPanel(frameContainer));

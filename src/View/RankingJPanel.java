@@ -13,18 +13,20 @@ public class RankingJPanel extends JPanel {
     private JPanel currentPanel;
     private int iPosition;
     private ButtonsPanel buttonsPanel;
+    private GridBagConstraints gc;
 
     public RankingJPanel(Container mainContainer){
-        // init container & buttonPanel
+        // init container, buttonPanel, and layout
         this.mainContainer = mainContainer;
-        buttonsPanel = new ButtonsPanel("Back", "Next");
+        buttonsPanel = new ButtonsPanel("Précédent", "Suivant");
         buttonsPanel.addActionListener(new ButtonListener());
+        gc = new GridBagConstraints();
 
         // set black borders
         this.setBorder(new BasicBorders.FieldBorder(Color.BLACK, Color.black, Color.BLACK, Color.BLACK));
 
         //init panels & current
-        this.panels = new JPanel[]{new WelcomeJPanel(mainContainer), new CircuitsPanel(), new DatePanel(), new RankingTable(), new FinaleResearchJPanel(mainContainer, new RankingJPanel(mainContainer))};
+        this.panels = new JPanel[]{new WelcomeJPanel(), new CircuitsPanel(), new DatePanel(), new RankingTable()};
         iPosition = 1;
         setCurrentPanel();
 
@@ -39,18 +41,15 @@ public class RankingJPanel extends JPanel {
 
     public void updateWindow(){
         mainContainer.removeAll();
-        setCurrentPanel();
-        if(iPosition == 0 || iPosition == panels.length-1){
-            mainContainer.add(currentPanel);
-        } else {
-            mainContainer.add(new BasicPanel(currentPanel, buttonsPanel));
-        }
+
+
+        mainContainer.add(this);
         mainContainer.repaint();
         mainContainer.validate();
     }
     public void nextWindow(){
         iPosition++;
-        if(iPosition > panels.length){
+        if(iPosition == panels.length){
             iPosition = 0;
         }
     }

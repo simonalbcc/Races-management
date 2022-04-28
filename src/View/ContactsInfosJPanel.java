@@ -43,7 +43,7 @@ public class ContactsInfosJPanel extends JPanel {
         public void actionPerformed(ActionEvent actionEvent) {
             // manage the back button
             mainContainer.removeAll();
-            mainContainer.add(new WelcomeJPanel(mainContainer));
+            mainContainer.add(new WelcomeJPanel());
             mainContainer.validate();
         }
     }

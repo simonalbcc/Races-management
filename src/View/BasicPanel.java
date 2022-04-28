@@ -1,20 +1,23 @@
 package View;
 
-import javax.swing.*;
-import javax.swing.plaf.basic.BasicBorders;
-import java.awt.*;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import javax.swing.JPanel;
 
-public class BasicPanel extends JPanel{
+public class BasicPanel extends JPanel {
     private GridBagConstraints gc;
-    public BasicPanel (JPanel...panels){
-        // init layout
-        this.setLayout(new GridBagLayout());
-        gc = new GridBagConstraints();
 
-        for(JPanel panel : panels){
-            gc.gridy++;
-            this.add(panel, gc);
+    public BasicPanel(JPanel... panels) {
+        this.setLayout(new GridBagLayout());
+        this.gc = new GridBagConstraints();
+        JPanel[] var2 = panels;
+        int var3 = panels.length;
+
+        for(int var4 = 0; var4 < var3; ++var4) {
+            JPanel panel = var2[var4];
+            ++this.gc.gridy;
+            this.add(panel, this.gc);
         }
+
     }
 }
-

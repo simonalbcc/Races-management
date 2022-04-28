@@ -11,7 +11,7 @@ public class AccidentsResearchJPanel extends JPanel{
     private GridBagConstraints gc;
     private Container mainContainer;
     private ButtonsPanel buttonsPanel;
-    private int iNumWindow;
+    private int iNumPanel;
 
     public AccidentsResearchJPanel(Container mainContainer) {
         // init container & buttonsPanel
@@ -25,7 +25,7 @@ public class AccidentsResearchJPanel extends JPanel{
         gc.insets = new Insets(5,5,5,5);
 
         // set num window
-        iNumWindow = 0;
+        iNumPanel = 0;
 
         // create & add main panel and button panel to the main panel
         gc.gridy = 1;
@@ -67,20 +67,20 @@ public class AccidentsResearchJPanel extends JPanel{
             public void actionPerformed(ActionEvent e) {
                 mainContainer.removeAll();
                 if(e.getSource() == buttonsPanel.getBack()){
-                    if(iNumWindow == 0){
-                        mainContainer.add(new WelcomeJPanel(mainContainer));
+                    if(iNumPanel == 0){
+                        mainContainer.add(new WelcomeJPanel());
                     } else {
                         mainContainer.add(new AccidentsResearchJPanel(mainContainer));
                     }
-                    iNumWindow--;
+                    iNumPanel--;
                 }
                 if(e.getSource() == buttonsPanel.getNext()){
-                    if(iNumWindow == 1){
+                    if(iNumPanel == 1){
                         mainContainer.add(new FinaleResearchJPanel(mainContainer, new AccidentsResearchJPanel(mainContainer)));
                     } else {
-                        mainContainer.add(new BasicPanel(new AccidentsJTable(), buttonsPanel));
+                        mainContainer.add(new AccidentsJTable());
                     }
-                    iNumWindow++;
+                    iNumPanel++;
                 }
                 mainContainer.repaint();
                 mainContainer.validate();
@@ -91,6 +91,7 @@ public class AccidentsResearchJPanel extends JPanel{
         private JLabel title;
         public AccidentsJTable (){
             this.setLayout(new GridBagLayout());
+
 
             title = new JLabel("Liste de pilotes");
             title.setFont(new Font("Arial",Font.TRUETYPE_FONT,20));
@@ -111,10 +112,12 @@ public class AccidentsResearchJPanel extends JPanel{
             sp.setPreferredSize(new Dimension(300, 250));
             jTable.setFillsViewportHeight(true);
 
-
-            this.add(sp, gc);
             gc.gridy = 1;
             this.add(title, gc);
+            gc.gridy = 2;
+            this.add(sp, gc);
+            gc.gridy = 3;
+            this.add(buttonsPanel, gc);
         }
     }
 

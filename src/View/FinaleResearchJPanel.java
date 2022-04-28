@@ -40,7 +40,7 @@ public class FinaleResearchJPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 mainContainer.removeAll();
                 if(e.getSource() == buttonsFinalePanel.getBack()){
-                    mainContainer.add(new WelcomeJPanel(mainContainer));
+                    mainContainer.add(new WelcomeJPanel());
                 }
                 if(e.getSource() == buttonsFinalePanel.getNext()){
                     mainContainer.add(panel);

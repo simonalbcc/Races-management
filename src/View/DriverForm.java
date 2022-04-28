@@ -171,12 +171,12 @@ public class DriverForm extends  JPanel{
             public void actionPerformed(ActionEvent e) {
                mainContainer.removeAll();
                 if(e.getSource() == back){
-                    mainContainer.add(new WelcomeJPanel(mainContainer));
+                    mainContainer.add(new WelcomeJPanel());
                 }
                 if(e.getSource() == save){ // !! save in DB
                     // confirmation avec validation
                     // pour l'instant,  retourne simplement dans le menu.
-                    mainContainer.add(new WelcomeJPanel(mainContainer));
+                    mainContainer.add(new WelcomeJPanel());
                 }
                 if(e.getSource() == reset){
                     mainContainer.add(new DriverForm(mainContainer));
