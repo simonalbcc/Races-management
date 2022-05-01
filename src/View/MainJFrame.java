@@ -122,7 +122,7 @@ public class MainJFrame extends JFrame {
                 frameContainer.add(new AccidentsResearchJPanel(frameContainer));
             }
             if(actionEvent.getSource() == researchCars){
-
+                frameContainer.add(new CarsResearchJPanel(frameContainer));
             }
             if(actionEvent.getSource() == researchRanking){
                 frameContainer.add(new RankingJPanel(frameContainer));
