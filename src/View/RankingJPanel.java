@@ -16,45 +16,51 @@ public class RankingJPanel extends JPanel {
     private GridBagConstraints gc;
 
     public RankingJPanel(Container mainContainer){
-        // init container, buttonPanel, and layout
+        // init container, buttonPanel
         this.mainContainer = mainContainer;
         buttonsPanel = new ButtonsPanel("Précédent", "Suivant");
         buttonsPanel.addActionListener(new ButtonListener());
+
+        // set layout & constraints
+        this.setLayout(new GridBagLayout());
         gc = new GridBagConstraints();
 
-        // set black borders
+        // set black borders & size
         this.setBorder(new BasicBorders.FieldBorder(Color.BLACK, Color.black, Color.BLACK, Color.BLACK));
 
-        //init panels & current
+        //init panels & current panel
         this.panels = new JPanel[]{new WelcomeJPanel(), new CircuitsPanel(), new DatePanel(), new RankingTable()};
         iPosition = 1;
-        setCurrentPanel();
+        currentPanel = panels[iPosition];
 
-        //update window for the first one
         updateWindow();
-
     }
 
-    public void setCurrentPanel(){
-        this.currentPanel = panels[iPosition];
-    }
-
-    public void updateWindow(){
-        mainContainer.removeAll();
-
-
-        mainContainer.add(this);
-        mainContainer.repaint();
-        mainContainer.validate();
-    }
-    public void nextWindow(){
-        iPosition++;
-        if(iPosition == panels.length){
-            iPosition = 0;
+    void updateWindow(){
+        this.removeAll();
+        gc.gridy = 1;
+        this.add(currentPanel, gc);
+        if(iPosition > 0 && iPosition < 4){
+            gc.gridy = 2;
+            this.add(buttonsPanel, gc);
         }
     }
-    public void previousWindow(){
+
+    void nextPanel(){
+        iPosition++;
+        if(iPosition < panels.length){
+            currentPanel = panels[iPosition];
+        } else {
+            currentPanel = new FinaleResearchJPanel(mainContainer, new RankingJPanel(mainContainer));
+        }
+    }
+    void previousPanel(){
         iPosition--;
+        if(iPosition == 0){
+            mainContainer.add(new WelcomeJPanel());
+        } else {
+            currentPanel = panels[iPosition];
+        }
     }
 
     private class CircuitsPanel extends JPanel{
@@ -125,13 +131,25 @@ public class RankingJPanel extends JPanel {
     private class ButtonListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
+            mainContainer.removeAll();
+
             if(e.getSource() == buttonsPanel.getBack()){
-                previousWindow();
+                previousPanel();
             }
+
             if(e.getSource() == buttonsPanel.getNext()){
-                nextWindow();
+                nextPanel();
             }
+
             updateWindow();
+            if(iPosition > 0){
+                mainContainer.add(RankingJPanel.this);
+            }
+            mainContainer.repaint();
+            mainContainer.validate();
         }
     }
+
+
+
 }

@@ -52,9 +52,6 @@ public class AccidentsResearchJPanel extends JPanel{
             subtitleEnd = new JLabel("<html> <h4> <u> Choisissez une date de fin : </u> </h4> </html>");
             subtitleEnd.setHorizontalAlignment(SwingConstants.CENTER);
 
-            // create subtitles
-
-
             // add spinners to the main spinner panel
             this.add(subtitleStart);
             this.add(subtitleEnd);

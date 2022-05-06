@@ -107,12 +107,12 @@ public class MainJFrame extends JFrame {
                 frameContainer.add(new ContactsInfosJPanel(frameContainer));
             }
             if(actionEvent.getSource() == addDriver){
-                frameContainer.add(new DriverForm(frameContainer)); // aura  besoin de driverJTable
+                frameContainer.add(new DriverForm(frameContainer));
             }
-            if(actionEvent.getSource() == removeDriver){ // aura  besoin de driverJTable
+            if(actionEvent.getSource() == removeDriver){
 
             }
-            if(actionEvent.getSource() == modifyDriver){ // aura  besoin de driverJTable
+            if(actionEvent.getSource() == modifyDriver){
 
             }
             if(actionEvent.getSource() == showDriverList){

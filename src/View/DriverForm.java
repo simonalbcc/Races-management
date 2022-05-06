@@ -8,6 +8,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 // endregion
 
 public class DriverForm extends  JPanel{
@@ -28,6 +29,7 @@ public class DriverForm extends  JPanel{
         //region  add all
         this.add(title, gc);
         gc.gridy = 1;
+
         // add padding
         gc.insets = new Insets(30,0,0,0);
         this.add(new Form(), gc);
@@ -36,15 +38,19 @@ public class DriverForm extends  JPanel{
         //endregion
 
     }
+
+
     //region inner classes
     private class Form extends JPanel {
         private JTextField serialNumber, lastName, firstName, phoneNumber, streetAddress, city, land, zipCode;
+        private ArrayList<JTextField> textFieldsMandatory;
         private JLabel serialNumberLabel, lastNameLabel, firstNameLabel, phoneNumberLabel,
                 streetAddressLabel, cityLabel, landLabel, zipCodeLabel, originsLabel, teamsLabel, hasRenewedContractLabel, birthdateLabel;
         private JComboBox origins, teams;
         private JCheckBox hasRenewedContract;
         private DatesJSpinner datesJSpinner;
         private Border border, margin;
+
         // test
         private String[] test = new String[]{"Test", "1", "2"};
 
@@ -53,29 +59,37 @@ public class DriverForm extends  JPanel{
             this.setLayout(new GridLayout(11,2, 5,10));
 
             //region JTextfields
+
             serialNumber = new JTextField();
             serialNumber.setToolTipText("Veuillez entrer le numéro de série du pilote (obligatoire)");
+            textFieldsMandatory.add(serialNumber);
 
             lastName = new JTextField();
             lastName.setToolTipText("Veuillez entrer le nom de famille du pilote (obligatoire)");
+            textFieldsMandatory.add(serialNumber);
 
             firstName = new JTextField();
             firstName.setToolTipText("Veuillez entrer le prénom du pilote (obligatoire)");
+            textFieldsMandatory.add(serialNumber);
 
             phoneNumber = new JTextField();
             phoneNumber.setToolTipText("Veuillez entrer le numéro de téléphone du pilote (facultatif)");
 
             streetAddress = new JTextField();
             streetAddress.setToolTipText("Veuillez entrer l'adresse du pilote (obligatoire)");
+            textFieldsMandatory.add(serialNumber);
 
             city = new JTextField();
             city.setToolTipText("Veuillez entrer la ville où réside le pilote (obligatoire)");
+            textFieldsMandatory.add(serialNumber);
 
             zipCode = new JTextField();
             zipCode.setToolTipText("Veuillez entrer le code postal de la ville du pilote (obligatoire)");
+            textFieldsMandatory.add(serialNumber);
 
             land = new JTextField();
             land.setToolTipText("Veuillez entrer le code postal de la ville du pilote (obligatoire)");
+            textFieldsMandatory.add(serialNumber);
 
             serialNumberLabel = new JLabel("Numéro de série : ");
             lastNameLabel =new JLabel("Nom : ");
@@ -145,7 +159,23 @@ public class DriverForm extends  JPanel{
             margin = new EmptyBorder(10,10,10,10);
             this.setBorder(new CompoundBorder(border, margin));
         }
+
+        public boolean isCorrect(){
+            boolean correct = true;
+            for (JTextField textField : textFieldsMandatory) {
+                correct = textField.getText().equals("");
+            }
+
+            correct = phoneNumber.getText().matches("\\+?\\d{4,6}(\\/?)(\\d+.?)+");
+
+
+            return correct;
+        }
+
+
+
     }
+
     private class ButtonsForm extends JPanel{
         private JButton back, reset, save;
 
@@ -165,6 +195,7 @@ public class DriverForm extends  JPanel{
 
 
         }
+
         private class ButtonsFormListener implements ActionListener {
 
             @Override
@@ -174,6 +205,7 @@ public class DriverForm extends  JPanel{
                     mainContainer.add(new WelcomeJPanel());
                 }
                 if(e.getSource() == save){ // !! save in DB
+
                     // confirmation avec validation
                     // pour l'instant,  retourne simplement dans le menu.
                     mainContainer.add(new WelcomeJPanel());

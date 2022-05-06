@@ -18,7 +18,7 @@ public class DriverDBAccess {
             ResultSet data = statement.executeQuery();
             data.next();
         } catch (SQLException exception){
-            throw new ADriverException();
+
         }
     }
 

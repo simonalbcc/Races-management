@@ -12,7 +12,7 @@ public class FinaleResearchJPanel extends JPanel {
     private Container mainContainer;
     private JPanel panel;
 
-        public FinaleResearchJPanel(Container mainContainer, JPanel panelResearch){
+    public FinaleResearchJPanel(Container mainContainer, JPanel panelResearch){
             // set mainContainer & panel received
             this.mainContainer = mainContainer;
             this.panel = panelResearch;
@@ -35,7 +35,9 @@ public class FinaleResearchJPanel extends JPanel {
             this.add(buttonsFinalePanel, gcFinalePanel);
 
         }
-        private class FinaleButtonsListener implements ActionListener {
+
+
+    private class FinaleButtonsListener implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 mainContainer.removeAll();
