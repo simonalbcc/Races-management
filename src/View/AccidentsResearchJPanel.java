@@ -73,7 +73,7 @@ public class AccidentsResearchJPanel extends JPanel{
                 }
                 if(e.getSource() == buttonsPanel.getNext()){
                     if(iNumPanel == 1){
-                        mainContainer.add(new FinaleResearchJPanel(mainContainer, new AccidentsResearchJPanel(mainContainer)));
+                        mainContainer.add(new FinaleJPanel(mainContainer, new AccidentsResearchJPanel(mainContainer)));
                     } else {
                         mainContainer.add(new AccidentsJTable());
                     }

@@ -12,4 +12,18 @@ public class Team {
         this.name = name;
         this.webSiteAdress = webSiteAdress;
     }
+
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getWebSiteAdress() {
+        return webSiteAdress;
+    }
+    public void setWebSiteAdress(String webSiteAdress) {
+        this.webSiteAdress = webSiteAdress;
+    }
 }

@@ -61,7 +61,7 @@ public class CarsResearchJPanel extends JPanel {
             }
             if(e.getSource() == buttonsPanel.getNext()){
                 if(iNumPanel == 1){
-                    mainContainer.add(new FinaleResearchJPanel(mainContainer, new CarsResearchJPanel(mainContainer)));
+                    mainContainer.add(new FinaleJPanel(mainContainer, new CarsResearchJPanel(mainContainer)));
                 } else {
                     mainContainer.add(new BasicPanel(new CarsResearchJPanel.carsJTable(), buttonsPanel));
                 }

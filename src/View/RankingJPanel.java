@@ -51,7 +51,7 @@ public class RankingJPanel extends JPanel {
         if(iPosition < panels.length){
             currentPanel = panels[iPosition];
         } else {
-            currentPanel = new FinaleResearchJPanel(mainContainer, new RankingJPanel(mainContainer));
+            currentPanel = new FinaleJPanel(mainContainer, new RankingJPanel(mainContainer));
         }
     }
     void previousPanel(){

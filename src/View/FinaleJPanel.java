@@ -5,14 +5,14 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class FinaleResearchJPanel extends JPanel {
+public class FinaleJPanel extends JPanel {
     private JLabel title;
     private ButtonsPanel buttonsFinalePanel;
     private GridBagConstraints gcFinalePanel;
     private Container mainContainer;
     private JPanel panel;
 
-    public FinaleResearchJPanel(Container mainContainer, JPanel panelResearch){
+    public FinaleJPanel(Container mainContainer, JPanel panelResearch){
             // set mainContainer & panel received
             this.mainContainer = mainContainer;
             this.panel = panelResearch;
@@ -26,7 +26,7 @@ public class FinaleResearchJPanel extends JPanel {
             gcFinalePanel = new GridBagConstraints();
 
             // set buttons panel
-            buttonsFinalePanel = new ButtonsPanel("Retour au menu principal", "Recommencer cette recherche");
+            buttonsFinalePanel = new ButtonsPanel("Retour au menu principal", "Recommencer");
             buttonsFinalePanel.addActionListener(new FinaleButtonsListener());
 
             // add components
