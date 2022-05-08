@@ -2,7 +2,12 @@
 package View;
 
 import Business.DriverManager;
+import DataAccess.DriverDBAccess;
 import DataAccess.RacesDataAccess;
+import DataAccess.SingletonConnexion;
+import Model.Driver;
+import Model.Locality;
+import Model.Team;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -12,6 +17,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 // endregion
 
 public class DriverForm extends  JPanel{
@@ -21,6 +27,7 @@ public class DriverForm extends  JPanel{
     private StringBuilder errorInputMessage;
     private Form form;
     private DriverManager driverManager;
+    private static String[] continents = new String[]{"Europe", "Afrique", "Amérique", "Océanie", "Asie"};
 
     public DriverForm(Container mainContainer) {
         //init container & form
@@ -58,15 +65,14 @@ public class DriverForm extends  JPanel{
         private JCheckBox hasRenewedContract;
         private DatesJSpinner datesJSpinner;
         private Border border, margin;
-        private RacesDataAccess dataAccess;
 
-        // test
-        private String[] test = new String[]{"Test", "1", "2"};
+        private ArrayList<Team> teamsDB;
 
         public Form(){
             this.setBounds(10,80,500,150);
             this.setLayout(new GridLayout(11,2, 5,10));
             textFieldsMandatory = new ArrayList<>();
+            driverManager = new DriverManager();
 
             //region JTextfields
 
@@ -112,9 +118,10 @@ public class DriverForm extends  JPanel{
             datesJSpinner = new DatesJSpinner();
 
             // Combobox
-            origins = new JComboBox(test);
+            origins = new JComboBox(continents);
             origins.setToolTipText("Choisissez l'origine du pilote : ");
-            teams = new JComboBox(test);
+            teamsDB = driverManager.getAllTeams();
+            teams = new JComboBox(teamsDB.stream().map(t -> t.getName()).toArray());
             teams.setToolTipText("Choisissez l'équipe du pilote");
             originsLabel = new JLabel("Origines : ");
             teamsLabel = new JLabel("Equipes : ");
@@ -213,9 +220,11 @@ public class DriverForm extends  JPanel{
                 correct = false;
             }
 
-
-
             return correct;
+        }
+        public Driver createDriver(){
+            return new Driver(lastName.getText()+" "+firstName.getText(), Integer.parseInt(phoneNumber.getText()), streetAddress.getText(), continents[origins.getSelectedIndex()],
+                    teamsDB.get(teams.getSelectedIndex()), hasRenewedContract.isSelected(), datesJSpinner.getDateSelectedCal(), new Locality(Integer.parseInt(zipCode.getText()), city.getText()));
         }
 
     }
@@ -252,12 +261,10 @@ public class DriverForm extends  JPanel{
                     if(form.isCorrect()){
                         mainContainer.removeAll();
                         JOptionPane.showMessageDialog(null, "Sauvegarde effectuée", "Information", JOptionPane.INFORMATION_MESSAGE);
-                        mainContainer.add(new FinaleJPanel(mainContainer, new DriverForm(mainContainer)));
+                        driverManager.addDriver(form.createDriver());
                     } else {
                         JOptionPane.showMessageDialog(null, errorInputMessage.toString(), "Erreur", JOptionPane.ERROR_MESSAGE);
                     }
-                    // confirmation avec validation
-                    // pour l'instant,  retourne simplement dans le menu.
                 }
                 if(e.getSource() == reset){
                     mainContainer.removeAll();

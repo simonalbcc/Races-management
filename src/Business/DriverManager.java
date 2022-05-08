@@ -1,19 +1,23 @@
 package Business;
 
 import DataAccess.DriverDBAccess;
-import DataAccess.RacesDataAccess;
-import Model.Driver;
+import Model.*;
+
+import java.util.ArrayList;
 
 public class DriverManager {
-    private DriverDBAccess dataAccess = new DriverDBAccess();
+    private DriverDBAccess dataAccess;
+
+    public DriverManager() {
+        dataAccess = new DriverDBAccess();
+    }
 
     public void addDriver(Driver driver){
         dataAccess.addDriver(driver);
     }
-
-
-
-
+    public ArrayList<Team> getAllTeams(){
+        return dataAccess.getAllTeams();
+    }
 
 
 

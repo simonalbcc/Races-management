@@ -4,7 +4,6 @@ import java.sql.Date;
 import java.util.GregorianCalendar;
 
 public class Driver {
-    private int serialNumber;
     private String lastNameFirstName;
     private String streetAndNumber;
     private String nationality;
@@ -14,8 +13,7 @@ public class Driver {
     private GregorianCalendar birthdate;
     private Locality home;
 
-    public Driver(int serialNumber, String lastNameFirstName, int phoneNumber, String streetAndNumber, String nationality, Team stable, boolean hasRenewedCommitmentContract, GregorianCalendar birthdate, Locality home) {
-        this.serialNumber = serialNumber;
+    public Driver(String lastNameFirstName, int phoneNumber, String streetAndNumber, String nationality, Team stable, boolean hasRenewedCommitmentContract, GregorianCalendar birthdate, Locality home) {
         this.lastNameFirstName = lastNameFirstName;
         this.phoneNumber = phoneNumber;
         this.streetAndNumber = streetAndNumber;
@@ -24,13 +22,6 @@ public class Driver {
         this.hasRenewedCommitmentContract = hasRenewedCommitmentContract;
         this.birthdate = birthdate;
         this.home = home;
-    }
-
-    public int getSerialNumber() {
-        return serialNumber;
-    }
-    public void setSerialNumber(int serialNumber) {
-        this.serialNumber = serialNumber;
     }
 
     public String getLastNameFirstName() {

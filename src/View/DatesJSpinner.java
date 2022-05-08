@@ -12,7 +12,6 @@ import java.util.GregorianCalendar;
 public class DatesJSpinner extends JPanel{
     private JSpinner day, month, year;
     private GregorianCalendar dateSelectedCal;
-    private LocalDate dateSelected;
     private static final String[] months = {"Décembre", "Novembre", "Octobre", "Septembre", "Août", "Juillet", "Juin", "Mai", "Avril", "Mars", "Février", "Janvier"};
     public DatesJSpinner(){
 
@@ -33,7 +32,6 @@ public class DatesJSpinner extends JPanel{
 
 
         dateSelectedCal = new GregorianCalendar(Integer.parseInt(year.getValue().toString()), findIndexMonth(month.getValue().toString()), Integer.parseInt(day.getValue().toString()));
-        dateSelected = dateSelectedCal.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
         year.setToolTipText("Selectionnez l'année");
         month.setToolTipText("Selectionnez le mois");
@@ -54,6 +52,11 @@ public class DatesJSpinner extends JPanel{
         int iMonth = findIndexMonth(monthRead);
         return YearMonth.of((int)(year.getValue()), iMonth).lengthOfMonth();
     }
+
+    public GregorianCalendar getDateSelectedCal() {
+        return dateSelectedCal;
+    }
+
     private class SpinnerListenerChange implements ChangeListener {
         private SpinnerNumberModel spinnerModel;
         private int oldValue;
@@ -72,7 +75,6 @@ public class DatesJSpinner extends JPanel{
                 }
             }
             dateSelectedCal = new GregorianCalendar((int) year.getValue(), findIndexMonth(month.getValue().toString()),(int)day.getValue());
-            dateSelected = dateSelectedCal.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         }
     }
 }
