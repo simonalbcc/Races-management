@@ -4,8 +4,8 @@ import java.util.Date;
 
 public class Circuit {
     private String name;
-    private double distance;
-    private int nbChicanesPerRound;
+    private Double distance;
+    private Integer nbChicanesPerRound;
     private Date renewalDate;
 
     public Circuit(String name, double distance, int nbChicanesPerRound, Date renewalDate) {

@@ -65,7 +65,6 @@ public class DriverForm extends  JPanel{
         private JCheckBox hasRenewedContract;
         private DatesJSpinner datesJSpinner;
         private Border border, margin;
-
         private ArrayList<Team> teamsDB;
 
         public Form(){
@@ -223,8 +222,15 @@ public class DriverForm extends  JPanel{
             return correct;
         }
         public Driver createDriver(){
-            return new Driver(lastName.getText()+" "+firstName.getText(), Integer.parseInt(phoneNumber.getText()), streetAddress.getText(), continents[origins.getSelectedIndex()],
-                    teamsDB.get(teams.getSelectedIndex()), hasRenewedContract.isSelected(), datesJSpinner.getDateSelectedCal(), new Locality(Integer.parseInt(zipCode.getText()), city.getText()));
+            return new Driver(  null,
+                     lastName.getText()+" "+firstName.getText(),
+                                Integer.parseInt(phoneNumber.getText()),
+                                streetAddress.getText(),
+                                continents[origins.getSelectedIndex()],
+                                teamsDB.get(teams.getSelectedIndex()),
+                                hasRenewedContract.isSelected(),
+                                datesJSpinner.getDateSelectedCal(),
+                                new Locality(Integer.parseInt(zipCode.getText()), city.getText(), land.getText()));
         }
 
     }

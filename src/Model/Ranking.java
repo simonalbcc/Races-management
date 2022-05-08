@@ -3,10 +3,10 @@ package Model;
 public class Ranking {
     private Car car;
     private Race race;
-    private int position;
-    private int nbStopsPits;
-    private int abandonmentRoundNumber;
-    private double record;
+    private Integer position;
+    private Integer nbStopsPits;
+    private Integer abandonmentRoundNumber;
+    private Double record;
     private Driver driver;
 
     public Ranking(Car car, Race race, int position, int nbStopsPits, int abandonmentRoundNumber, double record, Driver driver) {

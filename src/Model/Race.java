@@ -3,9 +3,12 @@ package Model;
 import java.util.Date;
 
 public class Race {
-    private int serialNumber;
+    private Integer serialNumber;
     private Circuit circuit;
     private Date departureHour;
     private Date date;
-    private int nbRounds;
+    private Integer nbRounds;
+
+
+
 }

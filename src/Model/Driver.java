@@ -1,19 +1,19 @@
 package Model;
 
-import java.sql.Date;
 import java.util.GregorianCalendar;
 
 public class Driver {
+    private Integer serialNumber;
     private String lastNameFirstName;
     private String streetAndNumber;
     private String nationality;
-    private int phoneNumber;
+    private Integer phoneNumber;
     private Team stable;
-    private boolean hasRenewedCommitmentContract;
+    private Boolean hasRenewedCommitmentContract;
     private GregorianCalendar birthdate;
     private Locality home;
 
-    public Driver(String lastNameFirstName, int phoneNumber, String streetAndNumber, String nationality, Team stable, boolean hasRenewedCommitmentContract, GregorianCalendar birthdate, Locality home) {
+    public Driver(Integer serialNumber, String lastNameFirstName, Integer phoneNumber, String streetAndNumber, String nationality, Team stable, boolean hasRenewedCommitmentContract, GregorianCalendar birthdate, Locality home) {
         this.lastNameFirstName = lastNameFirstName;
         this.phoneNumber = phoneNumber;
         this.streetAndNumber = streetAndNumber;
@@ -22,6 +22,13 @@ public class Driver {
         this.hasRenewedCommitmentContract = hasRenewedCommitmentContract;
         this.birthdate = birthdate;
         this.home = home;
+    }
+
+    public Integer getSerialNumber() {
+        return serialNumber;
+    }
+    public void setSerialNumber(Integer serialNumber) {
+        this.serialNumber = serialNumber;
     }
 
     public String getLastNameFirstName() {
@@ -45,10 +52,10 @@ public class Driver {
         this.nationality = nationality;
     }
 
-    public int getPhoneNumber() {
+    public Integer getPhoneNumber() {
         return phoneNumber;
     }
-    public void setPhoneNumber(int phoneNumber) {
+    public void setPhoneNumber(Integer phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
@@ -59,10 +66,10 @@ public class Driver {
         this.stable = stable;
     }
 
-    public boolean isHasRenewedCommitmentContract() {
+    public Boolean isHasRenewedCommitmentContract() {
         return hasRenewedCommitmentContract;
     }
-    public void setHasRenewedCommitmentContract(boolean hasRenewedCommitmentContract) {
+    public void setHasRenewedCommitmentContract(Boolean hasRenewedCommitmentContract) {
         this.hasRenewedCommitmentContract = hasRenewedCommitmentContract;
     }
 

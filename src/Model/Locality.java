@@ -1,14 +1,22 @@
 package Model;
 
 public class Locality {
-    private int postalCode;
+    private Integer postalCode;
     private String city;
+    private String country;
 
-    public Locality(int postalCode, String city) {
+    public Locality(int postalCode, String city, String country) {
         this.postalCode = postalCode;
         this.city = city;
+        this.country = country;
     }
 
+    public String getCountry() {
+        return country;
+    }
+    public void setCountry(String country) {
+        this.country = country;
+    }
 
     public int getPostalCode() {
         return postalCode;

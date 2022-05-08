@@ -1,11 +1,11 @@
 package Model;
 
 public class Car {
-    private int number;
-    private double averageConsumption;
-    private double power;
+    private Integer number;
+    private Double averageConsumption;
+    private Double power;
     private Team membership;
-    private boolean improved;// voir dossier !!
+    private Boolean improved;// voir dossier !!
 
     public Car(int number, double averageConsumption, double power, Team membership, boolean improved) {
         this.number = number;
