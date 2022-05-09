@@ -20,6 +20,10 @@ public interface DAO {
     public ArrayList<Date> getRaceDatesOfACircuit(String circuitName);
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+>>>>>>> 4c5b31be510f19fd55532ae96d20b11816263a78
+>>>>>>> Stashed changes
 =======
 >>>>>>> 4c5b31be510f19fd55532ae96d20b11816263a78
 >>>>>>> Stashed changes

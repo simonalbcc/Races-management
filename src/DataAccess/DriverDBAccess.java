@@ -133,6 +133,11 @@ public class DriverDBAccess implements DAO {
     }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> Stashed changes
 =======
 <<<<<<< HEAD
 =======
@@ -144,9 +149,15 @@ public class DriverDBAccess implements DAO {
 
             String sql = "select name from Circuit";
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
             PreparedStatement statement = SingletonConnexion.getInstance().prepareStatement(sql);
 
+=======
+
+            PreparedStatement statement = SingletonConnexion.getInstance().prepareStatement(sql);
+
+>>>>>>> Stashed changes
             ResultSet data = statement.executeQuery();
 
             while(data.next()){
@@ -163,6 +174,7 @@ public class DriverDBAccess implements DAO {
         ArrayList<Date> dates = new ArrayList<Date>();
         try{
 
+<<<<<<< Updated upstream
 =======
 
             PreparedStatement statement = SingletonConnexion.getInstance().prepareStatement(sql);
@@ -183,6 +195,8 @@ public class DriverDBAccess implements DAO {
         ArrayList<Date> dates = new ArrayList<Date>();
         try{
 
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
             String sql = "select date from Race where circuit = ? ";
 
@@ -201,6 +215,10 @@ public class DriverDBAccess implements DAO {
         return dates;
     }
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+>>>>>>> 4c5b31be510f19fd55532ae96d20b11816263a78
+>>>>>>> Stashed changes
 =======
 >>>>>>> 4c5b31be510f19fd55532ae96d20b11816263a78
 >>>>>>> Stashed changes
