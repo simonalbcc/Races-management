@@ -20,11 +20,11 @@ public class WelcomeJPanel extends JPanel {
     private GridBagConstraints gc;
 
     public WelcomeJPanel(){
-
+        // set layout
         this.setLayout(new GridBagLayout());
+
+        // init private attributes
         gc = new GridBagConstraints();
-
-
         welcomeLabel = new JLabel("<html> <h1> Hello racer </h1> </html>");
         carPanel = new CarPanel();
         buttons = new ButtonJPanel();

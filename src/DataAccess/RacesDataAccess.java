@@ -11,6 +11,7 @@ public interface RacesDataAccess {
     public void showDriver();
     public void deleteDriver();
     public ArrayList<Team> getAllTeams();
+    public ArrayList<Driver> getAllDrivers();
 
 
 }

@@ -224,7 +224,7 @@ public class DriverForm extends  JPanel{
         public Driver createDriver(){
             return new Driver(  null,
                      lastName.getText()+" "+firstName.getText(),
-                                Integer.parseInt(phoneNumber.getText()),
+                                Long.parseLong(phoneNumber.getText()),
                                 streetAddress.getText(),
                                 continents[origins.getSelectedIndex()],
                                 teamsDB.get(teams.getSelectedIndex()),

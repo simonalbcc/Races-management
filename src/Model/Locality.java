@@ -5,7 +5,7 @@ public class Locality {
     private String city;
     private String country;
 
-    public Locality(int postalCode, String city, String country) {
+    public Locality(Integer postalCode, String city, String country) {
         this.postalCode = postalCode;
         this.city = city;
         this.country = country;
@@ -18,10 +18,10 @@ public class Locality {
         this.country = country;
     }
 
-    public int getPostalCode() {
+    public Integer getPostalCode() {
         return postalCode;
     }
-    public void setPostalCode(int postalCode) {
+    public void setPostalCode(Integer postalCode) {
         this.postalCode = postalCode;
     }
 

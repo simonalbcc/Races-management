@@ -18,6 +18,10 @@ public class DriverManager {
     public ArrayList<Team> getAllTeams(){
         return dataAccess.getAllTeams();
     }
+    public ArrayList<Driver> getAllDrivers(){
+        return dataAccess.getAllDrivers();
+    }
+
 
 
 

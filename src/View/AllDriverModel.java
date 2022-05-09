@@ -4,38 +4,41 @@ package View;
 import Model.*;
 
 import javax.swing.table.AbstractTableModel;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class AllDriverModel extends AbstractTableModel {
     private ArrayList<String> columnNames;
     private ArrayList<Model.Driver> drivers;
 
-    public AllDriverModel(){
-        columnNames = new ArrayList<>(); 
-        columnNames.add("Numéro de série");
+    public AllDriverModel(ArrayList<Model.Driver> drivers){
+        columnNames = new ArrayList<>();
+        this.drivers = drivers;
+        columnNames.add("Numéro");
         columnNames.add("Nom et prénom");
         columnNames.add("Numéro de téléphone");
         columnNames.add("Adresse");
         columnNames.add("Nationalité");
         columnNames.add("Equipe");
-        columnNames.add("A déjà renouvelé son contrat");
+        columnNames.add("Contrat renouvelé");
         columnNames.add("Date de naissance");
         columnNames.add("Domicile");
     }
-
-
+    public String getColumnName(int col){
+        return columnNames.get(col);
+    }
     @Override
     public int getRowCount() {
         return columnNames.size();
     }
     @Override
     public int getColumnCount() {
-        return drivers.size();
+        return columnNames.size();
     }
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-
         Model.Driver driver = drivers.get(rowIndex);
         switch (columnIndex){
             case 0: return driver.getSerialNumber();
@@ -67,7 +70,7 @@ public class AllDriverModel extends AbstractTableModel {
                 break;
             case 6: c = Boolean.class;
                 break;
-            case 7: c = Date.class;
+            case 7: c = GregorianCalendar.class;
                 break;
             case 8: c = Locality.class;
                 break;
