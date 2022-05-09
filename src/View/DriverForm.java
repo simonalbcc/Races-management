@@ -196,26 +196,33 @@ public class DriverForm extends  JPanel{
                 if(!phoneNumber.getText().matches("\\d{10,12}|\\+?\\d{3,5}(\\/?)(\\d{8}.?)+") || (phoneNumber.getText().length() > 12 && phoneNumber.getText().length() < 10)){
                     errorInputMessage.append("- Le numéro de téléphone entré n'est pas juste (uniquement des chiffres et une taille max de 5 chiffres)\n");
                     errorInputMessage.append((phoneNumber.getText().length() > 12 ? "(trop long)" : ""));
+                    phoneNumber.setText("");
                 } else {
                     if(!zipCode.getText().matches("\\d{4,5}")){
                         errorInputMessage.append("- Le code postal entrée n'est pas valide (uniquement des chiffres et une taille max de 5 chiffres)\n");
+                        zipCode.setText("");
                     } else{
                         if(!lastName.getText().matches("[a-zA-Z-]{2,15}") ||  lastName.getText().length() > 15){
                             errorInputMessage.append("- Le nom de famille entré est trop long ou contient des chiffres\n");
+                            lastName.setText("");
                         } else {
                             if(!firstName.getText().matches("[a-zA-Z-]{2,15}") ||  firstName.getText().length() > 15){
                                 errorInputMessage.append("- Le prénom de famille entré est trop long ou contient des chiffres\n");
+                                firstName.setText("");
                             } else {
                                 if(!streetAddress.getText().matches("(\\d{1,3},?\\s?)([a-zA-Z-]+\\s?)+|([a-zA-Z-]+\\s?)+(,?\\s?\\d{1,3})") ||  streetAddress.getText().length() > 30){
                                     errorInputMessage.append("- L'adresse entrée n'est pas valide\n");
                                     errorInputMessage.append(streetAddress.getText().length() > 30 ? "(trop long)" : "ne contient pas de numéro ou de nom)");
+                                    streetAddress.setText("");
                                 } else {
                                     if(!city.getText().matches("[a-zA-Z-]{4,20}")|| city.getText().length() > 20){
                                         errorInputMessage.append("- La ville entrée n'est pas valide (uniquement des lettres et une taille max de 20 caractères)\n");
+                                        city.setText("");
                                     } else {
                                         if(!land.getText().matches("[a-zA-Z-]{4,15}") || land.getText().length() > 15){
                                             errorInputMessage.append("- Le pays entrée n'est pas valide \n");
                                             errorInputMessage.append(land.getText().length() > 15 ? "(trop long)" : "ne contient pas de numéro ou de nom)");
+                                            land.setText("");
                                         } else {
                                             correct = true;
                                         }
