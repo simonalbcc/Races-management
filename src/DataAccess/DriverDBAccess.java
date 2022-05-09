@@ -58,8 +58,8 @@ public class DriverDBAccess implements DAO {
         return localityDB;
     }
     public void updateDriver(){
-
     }
+
     public void deleteDriver(){
 
     }
@@ -132,50 +132,12 @@ public class DriverDBAccess implements DAO {
         return drivers;
     }
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
-=======
->>>>>>> Stashed changes
-=======
-<<<<<<< HEAD
-=======
->>>>>>> Stashed changes
     public ArrayList<String> getAllCircuitsNames(){
         ArrayList<String> circuits = new ArrayList<String>();
         try{
             String circuit;
 
             String sql = "select name from Circuit";
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-
-            PreparedStatement statement = SingletonConnexion.getInstance().prepareStatement(sql);
-
-=======
-
-            PreparedStatement statement = SingletonConnexion.getInstance().prepareStatement(sql);
-
->>>>>>> Stashed changes
-            ResultSet data = statement.executeQuery();
-
-            while(data.next()){
-                circuit = data.getString(1);
-                circuits.add(circuit);
-            }
-
-        } catch (SQLException exception){
-            exception.printStackTrace(); // à changer
-        }
-        return circuits;
-    }
-    public ArrayList<Date> getRaceDatesOfACircuit(String circuitName){
-        ArrayList<Date> dates = new ArrayList<Date>();
-        try{
-
-<<<<<<< Updated upstream
-=======
 
             PreparedStatement statement = SingletonConnexion.getInstance().prepareStatement(sql);
 
@@ -195,9 +157,6 @@ public class DriverDBAccess implements DAO {
         ArrayList<Date> dates = new ArrayList<Date>();
         try{
 
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
             String sql = "select date from Race where circuit = ? ";
 
             PreparedStatement statement = SingletonConnexion.getInstance().prepareStatement(sql);
@@ -214,15 +173,8 @@ public class DriverDBAccess implements DAO {
         }
         return dates;
     }
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
->>>>>>> 4c5b31be510f19fd55532ae96d20b11816263a78
->>>>>>> Stashed changes
-=======
->>>>>>> 4c5b31be510f19fd55532ae96d20b11816263a78
->>>>>>> Stashed changes
 }
+
 
 
     // close connection = close program

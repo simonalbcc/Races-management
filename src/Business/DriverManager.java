@@ -23,22 +23,10 @@ public class DriverManager {
         return dataAccess.getAllDrivers();
     }
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
-=======
->>>>>>> Stashed changes
-=======
-<<<<<<< HEAD
-=======
->>>>>>> Stashed changes
+
     public ArrayList<String> getAllCircuitsNames(){
         return dataAccess.getAllCircuitsNames();
     }
     public ArrayList<Date> getRaceDatesOfACircuit(String circuitName) {return dataAccess.getRaceDatesOfACircuit(circuitName);}
 
-
-
->>>>>>> 4c5b31be510f19fd55532ae96d20b11816263a78
 }

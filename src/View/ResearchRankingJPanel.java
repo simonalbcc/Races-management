@@ -6,6 +6,8 @@ import javax.swing.plaf.basic.BasicBorders;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 
 public class ResearchRankingJPanel extends JPanel {
@@ -17,6 +19,10 @@ public class ResearchRankingJPanel extends JPanel {
     private GridBagConstraints gc;
     private JLabel circuitsLabel;
     private JComboBox circuitsCombobox;
+    private String circuitName;
+    private JLabel datesLabel;
+    private JComboBox datesCombobox;
+
 
     public ResearchRankingJPanel(Container mainContainer){
         // init container, buttonPanel
@@ -38,8 +44,10 @@ public class ResearchRankingJPanel extends JPanel {
 
         updateWindow();
     }
-
-    void updateWindow(){
+    public void setCurrentCircuit(String circuitName){
+        this.circuitName = circuitName;
+    }
+    public void updateWindow(){
         this.removeAll();
         gc.gridy = 1;
         this.add(currentPanel, gc);
@@ -47,9 +55,9 @@ public class ResearchRankingJPanel extends JPanel {
             gc.gridy = 2;
             this.add(buttonsPanel, gc);
         }
+        setCurrentCircuit(circuitsCombobox.getSelectedItem().toString());
     }
-
-    void nextPanel(){
+    public void nextPanel(){
         iPosition++;
         if(iPosition < panels.length){
             currentPanel = panels[iPosition];
@@ -57,7 +65,7 @@ public class ResearchRankingJPanel extends JPanel {
             currentPanel = new FinaleJPanel(mainContainer, new ResearchRankingJPanel(mainContainer));
         }
     }
-    void previousPanel(){
+    public void previousPanel(){
         iPosition--;
         if(iPosition == 0){
             mainContainer.add(new WelcomeJPanel());
@@ -67,31 +75,24 @@ public class ResearchRankingJPanel extends JPanel {
     }
 
     private class CircuitsPanel extends JPanel{
-
             public CircuitsPanel(){
                 circuitsLabel = new JLabel("Choisissez un circuit");
                 circuitsCombobox = new JComboBox(new DriverManager().getAllCircuitsNames().toArray());
                 circuitsCombobox.setPreferredSize(new Dimension(100,30));
+                circuitsCombobox.addItemListener(new ComboboxListener());
 
                 this.add(circuitsLabel);
                 this.add(circuitsCombobox);
-
                 this.setBorder(new BasicBorders.FieldBorder(Color.BLACK, Color.black, Color.BLACK, Color.BLACK));
             }
     }
     private class DatePanel extends JPanel{
-        private JLabel datesLabel;
-        private JComboBox datesCombobox;
-
         public DatePanel(){
             datesLabel = new JLabel("Choisissez une date : ");
-            System.out.println(circuitsCombobox.getSelectedItem().toString());
-            datesCombobox = new JComboBox(new DriverManager().getRaceDatesOfACircuit(circuitsCombobox.getSelectedItem().toString()).toArray());
+            datesCombobox = new JComboBox(new DriverManager().getRaceDatesOfACircuit(circuitName).toArray());
             datesCombobox.setPreferredSize(new Dimension(100,30));
-
             this.add(datesLabel);
             this.add(datesCombobox);
-
             this.setBorder(new BasicBorders.FieldBorder(Color.BLACK, Color.black, Color.BLACK, Color.BLACK));
         }
     }
@@ -143,6 +144,7 @@ public class ResearchRankingJPanel extends JPanel {
 
             if(e.getSource() == buttonsPanel.getNext()){
                 nextPanel();
+
             }
 
             updateWindow();
@@ -153,7 +155,12 @@ public class ResearchRankingJPanel extends JPanel {
             mainContainer.validate();
         }
     }
-
-
+    private class ComboboxListener implements ItemListener{
+        @Override
+        public void itemStateChanged(ItemEvent e) {
+            setCurrentCircuit(circuitsCombobox.getSelectedItem().toString());
+            datesCombobox = new JComboBox(new DriverManager().getRaceDatesOfACircuit(circuitName).toArray());
+        }
+    }
 
 }
