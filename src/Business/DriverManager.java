@@ -3,6 +3,7 @@ package Business;
 import DataAccess.DriverDBAccess;
 import Model.*;
 
+import javax.swing.*;
 import java.util.ArrayList;
 
 public class DriverManager {
@@ -13,7 +14,7 @@ public class DriverManager {
     }
 
     public void addDriver(Driver driver){
-        dataAccess.addDriver(driver);
+        JOptionPane.showMessageDialog(null,  dataAccess.addDriver(driver)+" lignes mises à jour");
     }
     public ArrayList<Team> getAllTeams(){
         return dataAccess.getAllTeams();

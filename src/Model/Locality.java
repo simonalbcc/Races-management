@@ -1,11 +1,14 @@
 package Model;
 
 public class Locality {
+    private Integer number;
     private Integer postalCode;
     private String city;
     private String country;
 
-    public Locality(Integer postalCode, String city, String country) {
+
+    public Locality(Integer number, Integer postalCode, String city, String country) {
+        this.number = number;
         this.postalCode = postalCode;
         this.city = city;
         this.country = country;
@@ -30,5 +33,12 @@ public class Locality {
     }
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public Integer getNumber() {
+        return number;
+    }
+    public void setNumber(Integer number) {
+        this.number = number;
     }
 }

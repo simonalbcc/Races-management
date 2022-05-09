@@ -27,9 +27,10 @@ public class MainJFrame extends JFrame {
                               }
                           }
         );
-        setBounds(10,10,1000,1000);
+        setBounds(10,10,1100,1000);
 
         frameContainer = this.getContentPane();
+        this.setResizable(false);
 
 //region menuBar
         menuBar = new JMenuBar();

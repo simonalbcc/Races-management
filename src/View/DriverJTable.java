@@ -9,49 +9,48 @@ import java.awt.*;
 public class DriverJTable extends JTable {
     private JTable jTable;
     private JLabel title;
-    private GridBagConstraints gcTable;
     private DriverManager driverManager;
+    private GridBagConstraints gc;
+    private ImageIcon imageIcon;
 
     public DriverJTable(){
-        // init layout & size
-        this.setLayout(new GridBagLayout());
-        this.setPreferredSize(new Dimension(1000, 500));
-
-        // init private attributes
-        gcTable = new GridBagConstraints();
         driverManager = new DriverManager();
-
-        title = new JLabel("Liste des pilotes");
-        title.setFont(new Font("Arial",Font.TRUETYPE_FONT,15));
+        this.setLayout(new GridBagLayout());
 
         jTable = new JTable(new AllDriverModel(driverManager.getAllDrivers()));
+        gc = new GridBagConstraints();
+        gc.weightx = 1;
+        gc.fill = GridBagConstraints.HORIZONTAL;
 
+        title = new JLabel(" Liste des pilotes");
+        title.setFont(new Font("Serif",Font.TRUETYPE_FONT,30));
+        imageIcon = new ImageIcon("volant.png");
+        imageIcon.setImage(imageIcon.getImage().getScaledInstance(75,50, Image.SCALE_SMOOTH));
+        title.setIcon(imageIcon);
 
-        // resize & center columns
-        jTable.setPreferredSize(new Dimension(1000,500));
-        jTable.getColumnModel( ).getColumn(0).setPreferredWidth(50);
-        jTable.getColumnModel( ).getColumn(1).setPreferredWidth(150);
-        jTable.getColumnModel( ).getColumn(2).setPreferredWidth(100);
-        jTable.getColumnModel( ).getColumn(3).setPreferredWidth(180);
-        jTable.setRowHeight(20);
+        jTable.getColumnModel( ).getColumn(0).setPreferredWidth(40);
+        for(int iCell = 1; iCell < jTable.getColumnCount()-1; iCell++){
+            jTable.getColumnModel( ).getColumn(iCell).setPreferredWidth(132);
+        }
+        jTable.getColumnModel( ).getColumn(jTable.getColumnCount()-1).setPreferredWidth(101);
+
+        jTable.setRowHeight(40);
 
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-        centerRenderer.setHorizontalAlignment( JLabel.CENTER );
-        jTable.getColumnModel().getColumn(1).setCellRenderer( centerRenderer );
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        for(int cell=0; cell < jTable.getColumnCount();cell++){
+            if(cell != 6){
+                jTable.getColumnModel().getColumn(cell).setCellRenderer(centerRenderer);
+            }
+        }
 
-        // add scroll pane
+        jTable.getTableHeader().setReorderingAllowed(false);
+
         JScrollPane sp = new JScrollPane(jTable);
         jTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-        // add components with constraints
-        gcTable.weightx = 1;
-
-
-        this.add(title,gcTable);
-        gcTable.gridy = 1;
-        gcTable.fill = GridBagConstraints.HORIZONTAL;
-        this.add(sp, gcTable);
+        this.add(title, gc);
+        gc.gridy = 1;
+        this.add(sp, gc);
     }
-
-
 }

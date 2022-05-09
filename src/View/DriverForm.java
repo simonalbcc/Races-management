@@ -16,7 +16,11 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.TimeZone;
 import java.util.stream.Collectors;
 // endregion
 
@@ -63,7 +67,7 @@ public class DriverForm extends  JPanel{
                 streetAddressLabel, cityLabel, landLabel, zipCodeLabel, originsLabel, teamsLabel, hasRenewedContractLabel, birthdateLabel;
         private JComboBox origins, teams;
         private JCheckBox hasRenewedContract;
-        private DatesJSpinner datesJSpinner;
+        private JSpinner date;
         private Border border, margin;
         private ArrayList<Team> teamsDB;
 
@@ -75,13 +79,14 @@ public class DriverForm extends  JPanel{
 
             //region JTextfields
 
-
             lastName = new JTextField();
             lastName.setToolTipText("Veuillez entrer le nom de famille du pilote (obligatoire)");
+            lastName.setName("nom");
             textFieldsMandatory.add(lastName);
 
             firstName = new JTextField();
             firstName.setToolTipText("Veuillez entrer le prénom du pilote (obligatoire)");
+            firstName.setName("prénom");
             textFieldsMandatory.add(firstName);
 
             phoneNumber = new JTextField();
@@ -89,18 +94,22 @@ public class DriverForm extends  JPanel{
 
             streetAddress = new JTextField();
             streetAddress.setToolTipText("Veuillez entrer l'adresse du pilote (obligatoire)");
+            streetAddress.setName("adresse");
             textFieldsMandatory.add(streetAddress);
 
             city = new JTextField();
             city.setToolTipText("Veuillez entrer la ville où réside le pilote (obligatoire)");
+            city.setName("ville");
             textFieldsMandatory.add(city);
 
             zipCode = new JTextField();
             zipCode.setToolTipText("Veuillez entrer le code postal de la ville du pilote (obligatoire)");
+            zipCode.setName("code postal");
             textFieldsMandatory.add(zipCode);
 
             land = new JTextField();
             land.setToolTipText("Veuillez entrer le code postal de la ville du pilote (obligatoire)");
+            land.setName("pays");
             textFieldsMandatory.add(land);
 
             lastNameLabel =new JLabel("Nom : ");
@@ -114,7 +123,8 @@ public class DriverForm extends  JPanel{
 
             // JSpinners
             birthdateLabel = new JLabel("Date de naissance : ");
-            datesJSpinner = new DatesJSpinner();
+            date = new JSpinner(new SpinnerDateModel());
+            date.setEditor(new JSpinner.DateEditor(date, "dd-MM-yyyy"));
 
             // Combobox
             origins = new JComboBox(continents);
@@ -153,7 +163,7 @@ public class DriverForm extends  JPanel{
             this.add(land);
 
             this.add(birthdateLabel);
-            this.add(datesJSpinner);
+            this.add(date);
 
             this.add(originsLabel);
             this.add(origins);
@@ -174,54 +184,52 @@ public class DriverForm extends  JPanel{
 
         public boolean isCorrect(){
             errorInputMessage = new StringBuilder("Action requise : \n");
-            boolean correct = true;
+            boolean filled = true;
+            boolean correct = false;
             for (JTextField textField : textFieldsMandatory) {
                 if(textField.getText().equals("")){
-                    correct = false;
+                    filled = false;
+                    errorInputMessage.append("- Le champs '"+ textField.getName() +"' doit être remplis \n");
                 }
             }
-            if(!correct){
-                errorInputMessage.append("- Un ou plusieurs champs obligatoires sont vides\n");
+            if(filled){
+                if(!phoneNumber.getText().matches("\\d{10,12}|\\+?\\d{3,5}(\\/?)(\\d{8}.?)+") || (phoneNumber.getText().length() > 12 && phoneNumber.getText().length() < 10)){
+                    errorInputMessage.append("- Le numéro de téléphone entré n'est pas juste (uniquement des chiffres et une taille max de 5 chiffres)\n");
+                    errorInputMessage.append((phoneNumber.getText().length() > 12 ? "(trop long)" : ""));
+                } else {
+                    if(!zipCode.getText().matches("\\d{4,5}")){
+                        errorInputMessage.append("- Le code postal entrée n'est pas valide (uniquement des chiffres et une taille max de 5 chiffres)\n");
+                    } else{
+                        if(!lastName.getText().matches("[a-zA-Z-]{2,15}") ||  lastName.getText().length() > 15){
+                            errorInputMessage.append("- Le nom de famille entré est trop long ou contient des chiffres\n");
+                        } else {
+                            if(!firstName.getText().matches("[a-zA-Z-]{2,15}") ||  firstName.getText().length() > 15){
+                                errorInputMessage.append("- Le prénom de famille entré est trop long ou contient des chiffres\n");
+                            } else {
+                                if(!streetAddress.getText().matches("(\\d{1,3},?\\s?)([a-zA-Z-]+\\s?)+|([a-zA-Z-]+\\s?)+(,?\\s?\\d{1,3})") ||  streetAddress.getText().length() > 30){
+                                    errorInputMessage.append("- L'adresse entrée n'est pas valide\n");
+                                    errorInputMessage.append(streetAddress.getText().length() > 30 ? "(trop long)" : "ne contient pas de numéro ou de nom)");
+                                } else {
+                                    if(!city.getText().matches("[a-zA-Z-]{4,20}")|| city.getText().length() > 20){
+                                        errorInputMessage.append("- La ville entrée n'est pas valide (uniquement des lettres et une taille max de 20 caractères)\n");
+                                    } else {
+                                        if(!land.getText().matches("[a-zA-Z-]{4,15}") || land.getText().length() > 15){
+                                            errorInputMessage.append("- Le pays entrée n'est pas valide \n");
+                                            errorInputMessage.append(land.getText().length() > 15 ? "(trop long)" : "ne contient pas de numéro ou de nom)");
+                                        } else {
+                                            correct = true;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
-
-            if(!phoneNumber.getText().matches("\\+?\\d{3,5}(\\/?)(\\d{8}.?)+") || (phoneNumber.getText().length() > 12 && phoneNumber.getText().length() < 10)){
-                errorInputMessage.append("- Le numéro de téléphone entré n'est pas juste (uniquement des chiffres et une taille max de 5 chiffres)\n");
-                correct = false;
-            }
-
-            if(!zipCode.getText().matches("\\d{4,5}")){
-                errorInputMessage.append("- le code postal entrée n'est pas valide (uniquement des chiffres et une taille max de 5 chiffres)\n");
-                correct = false;
-            }
-
-            if(!lastName.getText().matches("[a-zA-Z-]{2,10}") ||  lastName.getText().length() > 10){
-                errorInputMessage.append("- Le nom de famille entré est trop long ou contient des chiffres\n");
-                correct = false;
-            }
-
-            if(!firstName.getText().matches("[a-zA-Z-]{2,10}") ||  firstName.getText().length() > 10){
-                errorInputMessage.append("- Le prénom de famille entré est trop long ou contient des chiffres\n");
-                correct = false;
-            }
-
-            if(!streetAddress.getText().matches("(\\d{1,3},)?(\\s?([a-zA-Z]+-?)+){2,}(,\\s?\\d)?") ||  streetAddress.getText().length() < 30){
-                errorInputMessage.append("- l'adresse entrée n'est pas valide (uniquement des lettres et une taille max de 30 caractères)\n");
-                correct = false;
-            }
-
-            if(!city.getText().matches("[a-zA-Z-]{4,20}")){
-                errorInputMessage.append("- la ville entrée n'est pas valide (uniquement des lettres et une taille max de 20 caractères)\n");
-                correct = false;
-            }
-
-            if(!land.getText().matches("[a-zA-Z-]{4,15}")){
-                errorInputMessage.append("- le pays entrée n'est pas valide (uniquement des lettres et une taille max de 15 caractères)\n");
-                correct = false;
-            }
-
-            return correct;
+            return correct & filled;
         }
         public Driver createDriver(){
+            GregorianCalendar birtdate = new GregorianCalendar(Integer.parseInt(new SimpleDateFormat("yyyy").format(date.getValue())), Integer.parseInt(new SimpleDateFormat("MM").format(date.getValue()))-1, Integer.parseInt(new SimpleDateFormat("dd").format(date.getValue())));
             return new Driver(  null,
                      lastName.getText()+" "+firstName.getText(),
                                 Long.parseLong(phoneNumber.getText()),
@@ -229,10 +237,24 @@ public class DriverForm extends  JPanel{
                                 continents[origins.getSelectedIndex()],
                                 teamsDB.get(teams.getSelectedIndex()),
                                 hasRenewedContract.isSelected(),
-                                datesJSpinner.getDateSelectedCal(),
-                                new Locality(Integer.parseInt(zipCode.getText()), city.getText(), land.getText()));
+                                birtdate,
+                                new Locality(null, Integer.parseInt(zipCode.getText()), city.getText(), land.getText()));
         }
+        public boolean dateIsCorrect(){
+            boolean correct = false;
+            GregorianCalendar birthdate;
+            Date current;
 
+            birthdate = new GregorianCalendar(Integer.parseInt(new SimpleDateFormat("yyyy").format(date.getValue())), Integer.parseInt(new SimpleDateFormat("MM").format(date.getValue()))-1, Integer.parseInt(new SimpleDateFormat("dd").format(date.getValue())));
+            current = new Date();
+
+            if(birthdate.getTime().after(current)){
+                errorInputMessage.append(" - La date de début est après la date de ce jour");
+            } else {
+                correct = true;
+            }
+            return correct;
+        }
     }
 
     private class ButtonsForm extends JPanel{

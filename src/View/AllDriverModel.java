@@ -4,10 +4,9 @@ package View;
 import Model.*;
 
 import javax.swing.table.AbstractTableModel;
-import java.sql.Date;
-import java.time.LocalDate;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
+
 
 public class AllDriverModel extends AbstractTableModel {
     private ArrayList<String> columnNames;
@@ -16,7 +15,7 @@ public class AllDriverModel extends AbstractTableModel {
     public AllDriverModel(ArrayList<Model.Driver> drivers){
         columnNames = new ArrayList<>();
         this.drivers = drivers;
-        columnNames.add("Numéro");
+        columnNames.add("№");
         columnNames.add("Nom et prénom");
         columnNames.add("Numéro de téléphone");
         columnNames.add("Adresse");
@@ -31,7 +30,7 @@ public class AllDriverModel extends AbstractTableModel {
     }
     @Override
     public int getRowCount() {
-        return columnNames.size();
+        return drivers.size();
     }
     @Override
     public int getColumnCount() {
@@ -43,41 +42,43 @@ public class AllDriverModel extends AbstractTableModel {
         switch (columnIndex){
             case 0: return driver.getSerialNumber();
             case 1: return driver.getLastNameFirstName();
-            case 2: return driver.getPhoneNumber();
+            case 2: return getPhoneOutput(driver);
             case 3: return driver.getStreetAndNumber();
             case 4: return driver.getNationality();
-            case 5: return driver.getTeam();
+            case 5: return teamNameOfDriver(driver);
             case 6: return driver.isHasRenewedCommitmentContract();
-            case 7: return driver.getBirthdate();
-            case 8: return driver.getHome();
+            case 7: return getBirthdateOutput(driver);
+            case 8: return getCityName(driver);
             default:return null;
         }
     }
     public Class getColumnClass (int column)
     { Class c;
         switch (column)
-        { case 0: c = Integer.class;
-            break;
-            case 1: c = String.class;
-                break;
-            case 2: c = Integer.class;
-                break;
-            case 3: c = String.class;
-                break;
-            case 4: c = String.class;
-                break;
-            case 5: c = Team.class;
+        {   case 0: c = Integer.class;
                 break;
             case 6: c = Boolean.class;
                 break;
-            case 7: c = GregorianCalendar.class;
-                break;
-            case 8: c = Locality.class;
-                break;
-
             default: c = String.class;
         }
         return c;
+    }
+
+    public String teamNameOfDriver(Driver driver){
+        return driver.getTeam().getName();
+    }
+    public String getBirthdateOutput(Driver driver){
+        SimpleDateFormat output = new SimpleDateFormat("dd-MM-yyyy");
+        output.setCalendar(driver.getBirthdate());
+        return output.format(driver.getBirthdate().getTime());
+    }
+    public String getPhoneOutput(Driver driver){
+        String output = String.valueOf(driver.getPhoneNumber());
+        output = "+"+output.substring(0,2) +" "+  output.substring(2) ;
+        return output;
+    }
+    public String getCityName(Driver driver){
+        return driver.getHome().getCity();
     }
 
 }

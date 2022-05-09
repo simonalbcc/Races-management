@@ -5,6 +5,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Month;
+import java.util.*;
 //endregion
 
 public class AccidentsResearchJPanel extends JPanel{
@@ -12,6 +17,9 @@ public class AccidentsResearchJPanel extends JPanel{
     private Container mainContainer;
     private ButtonsPanel buttonsPanel;
     private int iNumPanel;
+    private JLabel subtitleStart, subtitleEnd;
+    private JSpinner startSpinner, endSpinner;
+    private StringBuilder errorDate;
 
     public AccidentsResearchJPanel(Container mainContainer) {
         // init container & buttonsPanel
@@ -34,36 +42,64 @@ public class AccidentsResearchJPanel extends JPanel{
         this.add(buttonsPanel,gc);
 
     }
+    public boolean dateIsCorrect(){
+        boolean correct = false;
+        GregorianCalendar start, end;
+        Date current;
+
+        start = new GregorianCalendar(Integer.parseInt(new SimpleDateFormat("yyyy").format(startSpinner.getValue())), Integer.parseInt(new SimpleDateFormat("MM").format(startSpinner.getValue()))-1, Integer.parseInt(new SimpleDateFormat("dd").format(startSpinner.getValue())));
+        end = new GregorianCalendar(Integer.parseInt(new SimpleDateFormat("yyyy").format(endSpinner.getValue())), Integer.parseInt(new SimpleDateFormat("MM").format(endSpinner.getValue())), Integer.parseInt(new SimpleDateFormat("dd").format(endSpinner.getValue())));
+        current = new Date();
+
+        errorDate = new StringBuilder("Erreur : ");
+
+        if(start.getTime().after(current)){
+            errorDate.append(" la date de début est après la date de ce jour");
+        } else {
+            if(end.getTime().after(current)){
+                errorDate.append(" la date de fin est après la date de ce jour");
+            } else{
+                if(start.getTime().after(end.getTime())){
+                    errorDate.append(" la date de début se situe après celle de fin");
+                } else {
+                    correct = true;
+                }
+            }
+        }
+
+        return correct;
+
+    }
     private class MainSpinnerPanel extends JPanel{
-        private JLabel subtitleStart, subtitleEnd, startLabel, endLabel;
-        private DatesJSpinner start, end;
         public MainSpinnerPanel(){
-            // set specific layout for the 2 spinnerPanels
-            this.setLayout(new GridLayout(2,2, 150,10));
+            this.setLayout(new GridLayout(2,2, 20,30));
 
-            // set start & end spinnerpanel
-            start = new DatesJSpinner();
-            end = new DatesJSpinner();
+            startSpinner = new JSpinner(new SpinnerDateModel());
+            startSpinner.setEditor(new JSpinner.DateEditor(startSpinner, "dd-MM-yyyy"));
+            startSpinner.setPreferredSize(new Dimension(150,50));
 
-            // create title for each spinnerPanel
-            subtitleStart = new JLabel("<html> <h4> <u> Choisissez une date de début : </u> </h4> </html>");
+            endSpinner = new JSpinner(new SpinnerDateModel());
+            endSpinner.setEditor(new JSpinner.DateEditor(endSpinner, "dd-MM-yyyy"));
+            endSpinner.setPreferredSize(new Dimension(150,50));
+            subtitleStart = new JLabel("Choisissez une date de début : ");
+            subtitleStart.setFont(new Font("SansSerif",Font.TRUETYPE_FONT,15));
             subtitleStart.setHorizontalAlignment(SwingConstants.CENTER);
 
-            subtitleEnd = new JLabel("<html> <h4> <u> Choisissez une date de fin : </u> </h4> </html>");
+            subtitleEnd = new JLabel("Choisissez une date de fin : ");
             subtitleEnd.setHorizontalAlignment(SwingConstants.CENTER);
+            subtitleEnd.setFont(new Font("SansSerif",Font.TRUETYPE_FONT,15));
 
-            // add spinners to the main spinner panel
             this.add(subtitleStart);
+            this.add(startSpinner);
             this.add(subtitleEnd);
-            this.add(start);
-            this.add(end);
+            this.add(endSpinner);
         }
     }
     private class ButtonListener implements ActionListener{
             @Override
             public void actionPerformed(ActionEvent e) {
-                mainContainer.removeAll();
                 if(e.getSource() == buttonsPanel.getBack()){
+                    mainContainer.removeAll();
                     if(iNumPanel == 0){
                         mainContainer.add(new WelcomeJPanel());
                     } else {
@@ -73,11 +109,17 @@ public class AccidentsResearchJPanel extends JPanel{
                 }
                 if(e.getSource() == buttonsPanel.getNext()){
                     if(iNumPanel == 1){
+                        mainContainer.removeAll();
                         mainContainer.add(new FinaleJPanel(mainContainer, new AccidentsResearchJPanel(mainContainer)));
                     } else {
-                        mainContainer.add(new AccidentsJTable());
+                        if(dateIsCorrect()){
+                            mainContainer.removeAll();
+                            mainContainer.add(new AccidentsJTable());
+                            iNumPanel++;
+                        } else {
+                            JOptionPane.showMessageDialog(null, errorDate.toString());
+                        }
                     }
-                    iNumPanel++;
                 }
                 mainContainer.repaint();
                 mainContainer.validate();

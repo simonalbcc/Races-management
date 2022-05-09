@@ -8,23 +8,22 @@ public class Driver {
     private String streetAndNumber;
     private String nationality;
     private Long phoneNumber;
-    private Team stable;
+    private Team team;
     private Boolean hasRenewedCommitmentContract;
     private GregorianCalendar birthdate;
     private Locality home;
 
-    public Driver(Integer serialNumber, String lastNameFirstName, Long phoneNumber, String streetAndNumber, String nationality, Team stable, Boolean hasRenewedCommitmentContract, GregorianCalendar birthdate, Locality home) {
+    public Driver(Integer serialNumber, String lastNameFirstName, Long phoneNumber, String streetAndNumber, String nationality, Team team, Boolean hasRenewedCommitmentContract, GregorianCalendar birthdate, Locality home) {
         setSerialNumber(serialNumber);
         this.lastNameFirstName = lastNameFirstName;
         this.phoneNumber = phoneNumber;
         this.streetAndNumber = streetAndNumber;
         this.nationality = nationality;
-        this.stable = stable;
+        this.team = team;
         this.hasRenewedCommitmentContract = hasRenewedCommitmentContract;
         this.birthdate = birthdate;
         this.home = home;
     }
-
 
     public Integer getSerialNumber() {
         return serialNumber;
@@ -64,10 +63,10 @@ public class Driver {
     }
 
     public Team getTeam() {
-        return stable;
+        return team;
     }
     public void setTeam(Team stable) {
-        this.stable = stable;
+        this.team = stable;
     }
 
     public Boolean isHasRenewedCommitmentContract() {

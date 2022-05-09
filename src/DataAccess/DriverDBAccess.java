@@ -10,43 +10,47 @@ import java.util.GregorianCalendar;
 
 public class DriverDBAccess {
 
-    public void addDriver(Model.Driver driver){
+    public int addDriver(Model.Driver driver){
+        int insertedLinesNumber = 0;
         try{
-            String sql = "insert into Driver values(?,?,?,?,?,?,?,?,?)";
+            String sql = "insert into Driver (last_name_first_name, phone_number, street_and_number, nationality, team, has_renewed_commitment_contract, birthdate)values(?,?,?,?,?,?,?)";
 
             PreparedStatement statement = SingletonConnexion.getInstance().prepareStatement(sql);
 
-            statement.setString(2, driver.getLastNameFirstName());
-            statement.setLong(3, driver.getPhoneNumber());
-            statement.setString(4, driver.getStreetAndNumber());
-            statement.setString(5, driver.getNationality());
-            statement.setString(6, driver.getTeam().getName());
-            statement.setBoolean(7, driver.isHasRenewedCommitmentContract()); // à mettre sous forme de case cochée
-            statement.setDate(8, new java.sql.Date(driver.getBirthdate().getTimeInMillis()));
-            addLocality(driver);
+            statement.setString(1, driver.getLastNameFirstName());
+            statement.setLong(2, driver.getPhoneNumber());
+            statement.setString(3, driver.getStreetAndNumber());
+            statement.setString(4, driver.getNationality());
+            statement.setString(5, driver.getTeam().getName());
+            statement.setBoolean(6, driver.isHasRenewedCommitmentContract());
+            statement.setDate(7, new java.sql.Date(driver.getBirthdate().getTimeInMillis()));
+            insertedLinesNumber += addLocality(driver);
 
 
-            int insertedLinesNumber = statement.executeUpdate();
+            insertedLinesNumber += statement.executeUpdate();
 
         } catch (SQLException exception){
-
+            JOptionPane.showMessageDialog(null, exception.getMessage());
         }
+        return insertedLinesNumber;
     }
-    public void addLocality(Model.Driver driver){
+    public int addLocality(Model.Driver driver){
+        int insertedLinesNumber = 0;
         try{
-            String sql = "insert into Locality values(?,?,?,?)";
+            String sql = "insert into Locality (city_name, postal_code, country) values(?,?,?) inner join Driver d on l.number = d.home ";
 
             PreparedStatement statement = SingletonConnexion.getInstance().prepareStatement(sql);
 
-            statement.setString(2, driver.getStreetAndNumber());
-            statement.setInt(3, driver.getHome().getPostalCode());
-            statement.setString(4, driver.getHome().getCountry());
+            statement.setString(1, driver.getHome().getCity());
+            statement.setInt(2, driver.getHome().getPostalCode());
+            statement.setString(3, driver.getHome().getCountry());
 
-            int insertedLinesNumber = statement.executeUpdate();
+            insertedLinesNumber += statement.executeUpdate();
 
         } catch (SQLException exception){
-
+            exception.printStackTrace();
         }
+        return insertedLinesNumber;
     }
 
 
@@ -73,21 +77,33 @@ public class DriverDBAccess {
         ArrayList<Driver> drivers = new  ArrayList<Driver>();
         try{
             Driver driver;
-            Team team;
-            java.sql.Date date;
-            GregorianCalendar birthdate = new GregorianCalendar();
-            Locality home;
 
-            String sql = "select driver.number, last_name_first_name, phone_number, street_and_number, nationality, team,web_site_address, has_renewed_commitment_contract, birthdate,postal_code,city_name, country from Driver driver inner join Team team on driver.team = team.name inner join Locality loc on driver.home = loc.number";
+            String sql = "select driver.number, " +
+                    "            last_name_first_name, " +
+                                "phone_number, " +
+                                "street_and_number, " +
+                                "nationality, " +
+
+                                "team," +
+                                "web_site_address, " +
+
+                                "has_renewed_commitment_contract, " +
+                                "birthdate, " +
+
+                                "loc.number, " +
+                                "postal_code, " +
+                                "city_name, " +
+                                "country " +
+                                "from Driver driver inner join Team team on driver.team = team.name inner join Locality loc on driver.home = loc.number" +
+                                " order by driver.number";
 
             PreparedStatement statement = SingletonConnexion.getInstance().prepareStatement(sql);
 
             ResultSet data = statement.executeQuery();
 
             while(data.next()){
-
-                date = data.getDate(9);
-                birthdate.setTime(date);
+                GregorianCalendar birthdate = new GregorianCalendar();
+                birthdate.setTime(data.getDate(9));
 
                 driver = new Driver(data.getInt(1),
                                     data.getString(2),
@@ -97,11 +113,12 @@ public class DriverDBAccess {
                                     new Team(data.getString(6), data.getString(7)),
                                     data.getBoolean(8),
                                     birthdate,
-                                    new Locality(data.getInt(10), data.getString(11), data.getString(12)));
+                                    new Locality(data.getInt(10), data.getInt(11), data.getString(12), data.getString(13)));
                 drivers.add(driver);
             }
+
         } catch (SQLException exception){
-            exception.printStackTrace();
+            exception.printStackTrace(); // à changer
         }
         return drivers;
     }

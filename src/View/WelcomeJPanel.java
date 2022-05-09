@@ -77,7 +77,7 @@ public class WelcomeJPanel extends JPanel {
             setLayout(new BorderLayout());
             graphicCar = new GraphicCar();
             leftWall = new Wall(0,0,20,150);
-            rightWall = new Wall(965,0,20,150);
+            rightWall = new Wall(1060,0,20,150);
             MovementCarThread movementCarThread = new MovementCarThread(this, graphicCar);
             movementCarThread.start();
         }
@@ -121,7 +121,7 @@ public class WelcomeJPanel extends JPanel {
                 try{
                     carImage = ImageIO.read(new FileInputStream("car.png"));
                 }catch (IOException e){
-                    e.printStackTrace();
+                    e.printStackTrace(); // à changer
                 }
                 rectangle = new Rectangle(20,25,120,100);
                 speed = 11;
