@@ -27,4 +27,20 @@ public class Ranking {
         this.record = record;
         this.driver = driver;
     }
+
+    public Integer getPosition() {
+        return position;
+    }
+
+    public Double getRecord() {
+        return record;
+    }
+
+    public Driver getDriver() {
+        return driver;
+    }
+
+    public Car getCar() {
+        return car;
+    }
 }
