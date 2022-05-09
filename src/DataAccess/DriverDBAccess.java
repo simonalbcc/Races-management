@@ -8,7 +8,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
-public class DriverDBAccess {
+public class DriverDBAccess implements DAO {
 
     public int addDriver(Model.Driver driver){
         int insertedLinesNumber = 0;
@@ -52,7 +52,12 @@ public class DriverDBAccess {
         }
         return insertedLinesNumber;
     }
+    public void updateDriver(){
 
+    }
+    public void deleteDriver(){
+
+    }
 
     public ArrayList<Team> getAllTeams(){
         ArrayList<Team> teams = new  ArrayList<Team>();

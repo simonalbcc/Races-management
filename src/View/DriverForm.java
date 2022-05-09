@@ -2,9 +2,7 @@
 package View;
 
 import Business.DriverManager;
-import DataAccess.DriverDBAccess;
-import DataAccess.RacesDataAccess;
-import DataAccess.SingletonConnexion;
+import Controller.Controller;
 import Model.Driver;
 import Model.Locality;
 import Model.Team;
@@ -20,8 +18,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.TimeZone;
-import java.util.stream.Collectors;
 // endregion
 
 public class DriverForm extends  JPanel{
@@ -30,7 +26,7 @@ public class DriverForm extends  JPanel{
     private Container mainContainer;
     private StringBuilder errorInputMessage;
     private Form form;
-    private DriverManager driverManager;
+    private Controller controller;
     private static String[] continents = new String[]{"Europe", "Afrique", "Amérique", "Océanie", "Asie"};
 
     public DriverForm(Container mainContainer) {
@@ -75,7 +71,7 @@ public class DriverForm extends  JPanel{
             this.setBounds(10,80,500,150);
             this.setLayout(new GridLayout(11,2, 5,10));
             textFieldsMandatory = new ArrayList<>();
-            driverManager = new DriverManager();
+            controller = new Controller();
 
             //region JTextfields
 
@@ -129,7 +125,7 @@ public class DriverForm extends  JPanel{
             // Combobox
             origins = new JComboBox(continents);
             origins.setToolTipText("Choisissez l'origine du pilote : ");
-            teamsDB = driverManager.getAllTeams();
+            teamsDB = controller.getAllTeams();
             teams = new JComboBox(teamsDB.stream().map(t -> t.getName()).toArray());
             teams.setToolTipText("Choisissez l'équipe du pilote");
             originsLabel = new JLabel("Origines : ");
@@ -296,7 +292,7 @@ public class DriverForm extends  JPanel{
                     if(form.isCorrect()){
                         mainContainer.removeAll();
                         JOptionPane.showMessageDialog(null, "Sauvegarde effectuée", "Information", JOptionPane.INFORMATION_MESSAGE);
-                        driverManager.addDriver(form.createDriver());
+                        controller.addDriver(form.createDriver());
                     } else {
                         JOptionPane.showMessageDialog(null, errorInputMessage.toString(), "Erreur", JOptionPane.ERROR_MESSAGE);
                     }

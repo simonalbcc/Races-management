@@ -1,20 +1,21 @@
 package Business;
 
 import DataAccess.DriverDBAccess;
+import DataAccess.DAO;
 import Model.*;
 
 import javax.swing.*;
 import java.util.ArrayList;
 
 public class DriverManager {
-    private DriverDBAccess dataAccess;
+    private DAO dataAccess;
 
     public DriverManager() {
         dataAccess = new DriverDBAccess();
     }
 
     public void addDriver(Driver driver){
-        JOptionPane.showMessageDialog(null,  dataAccess.addDriver(driver)+" lignes mises à jour");
+        dataAccess.addDriver(driver);
     }
     public ArrayList<Team> getAllTeams(){
         return dataAccess.getAllTeams();
