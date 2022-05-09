@@ -13,45 +13,49 @@ public class DriverDBAccess implements DAO {
 
     public int addDriver(Model.Driver driver){
         int insertedLinesNumber = 0;
+        Locality locality;
         try{
-            String sql = "insert into Driver (last_name_first_name, phone_number, street_and_number, nationality, team, has_renewed_commitment_contract, birthdate)values(?,?,?,?,?,?,?)";
+            String sql = "insert into Driver (number, last_name_first_name, phone_number, street_and_number, nationality, team, has_renewed_commitment_contract, birthdate, home)values(?,?,?,?,?,?,?,?,?)";
 
             PreparedStatement statement = SingletonConnexion.getInstance().prepareStatement(sql);
 
-            statement.setString(1, driver.getLastNameFirstName());
-            statement.setLong(2, driver.getPhoneNumber());
-            statement.setString(3, driver.getStreetAndNumber());
-            statement.setString(4, driver.getNationality());
-            statement.setString(5, driver.getTeam().getName());
-            statement.setBoolean(6, driver.isHasRenewedCommitmentContract());
-            statement.setDate(7, new java.sql.Date(driver.getBirthdate().getTimeInMillis()));
-            insertedLinesNumber += addLocality(driver);
+            statement.setInt(1, driver.getSerialNumber());
+            statement.setString(2, driver.getLastNameFirstName());
+            statement.setLong(3, driver.getPhoneNumber());
+            statement.setString(4, driver.getStreetAndNumber());
+            statement.setString(5, driver.getNationality());
+            statement.setString(6, driver.getTeam().getName());
+            statement.setBoolean(7, driver.isHasRenewedCommitmentContract());
+            statement.setDate(8, new java.sql.Date(driver.getBirthdate().getTimeInMillis()));
+            locality = checkLocality(driver.getHome());
 
+            if(locality != null){
+                statement.setInt(9, locality.getNumber());
+            } else {
+
+            }
 
             insertedLinesNumber += statement.executeUpdate();
 
         } catch (SQLException exception){
-            JOptionPane.showMessageDialog(null, exception.getMessage());
+            JOptionPane.showMessageDialog(null, exception.getMessage()); // changer
         }
         return insertedLinesNumber;
     }
-    public int addLocality(Model.Driver driver){
-        int insertedLinesNumber = 0;
-        try{
-            String sql = "insert into Locality (city_name, postal_code, country) values(?,?,?) inner join Driver d on l.number = d.home ";
 
+    public Locality checkLocality(Locality locality){
+        Locality localityDB = null;
+        try{
+            String sql = "select * from Locality where city_name = "+locality.getCity()+" and postal_code = "+locality.getPostalCode()+" and country = "+locality.getCountry();
             PreparedStatement statement = SingletonConnexion.getInstance().prepareStatement(sql);
 
-            statement.setString(1, driver.getHome().getCity());
-            statement.setInt(2, driver.getHome().getPostalCode());
-            statement.setString(3, driver.getHome().getCountry());
-
-            insertedLinesNumber += statement.executeUpdate();
+            ResultSet data = statement.executeQuery();
+            localityDB = new Locality(data.getInt(1), data.getInt(3), data.getString(2), data.getString(4));
 
         } catch (SQLException exception){
-            exception.printStackTrace();
+            JOptionPane.showMessageDialog(null, exception.getMessage()); // changer
         }
-        return insertedLinesNumber;
+        return localityDB;
     }
     public void updateDriver(){
 
@@ -66,7 +70,6 @@ public class DriverDBAccess implements DAO {
             String sql = "select * from Team";
 
             PreparedStatement statement = SingletonConnexion.getInstance().prepareStatement(sql);
-
             ResultSet data = statement.executeQuery();
 
             while(data.next()){
@@ -129,12 +132,18 @@ public class DriverDBAccess implements DAO {
         return drivers;
     }
 
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> Stashed changes
     public ArrayList<String> getAllCircuitsNames(){
         ArrayList<String> circuits = new ArrayList<String>();
         try{
             String circuit;
 
             String sql = "select name from Circuit";
+<<<<<<< Updated upstream
 
             PreparedStatement statement = SingletonConnexion.getInstance().prepareStatement(sql);
 
@@ -154,6 +163,27 @@ public class DriverDBAccess implements DAO {
         ArrayList<Date> dates = new ArrayList<Date>();
         try{
 
+=======
+
+            PreparedStatement statement = SingletonConnexion.getInstance().prepareStatement(sql);
+
+            ResultSet data = statement.executeQuery();
+
+            while(data.next()){
+                circuit = data.getString(1);
+                circuits.add(circuit);
+            }
+
+        } catch (SQLException exception){
+            exception.printStackTrace(); // à changer
+        }
+        return circuits;
+    }
+    public ArrayList<Date> getRaceDatesOfACircuit(String circuitName){
+        ArrayList<Date> dates = new ArrayList<Date>();
+        try{
+
+>>>>>>> Stashed changes
             String sql = "select date from Race where circuit = ? ";
 
             PreparedStatement statement = SingletonConnexion.getInstance().prepareStatement(sql);
@@ -170,6 +200,10 @@ public class DriverDBAccess implements DAO {
         }
         return dates;
     }
+<<<<<<< Updated upstream
+=======
+>>>>>>> 4c5b31be510f19fd55532ae96d20b11816263a78
+>>>>>>> Stashed changes
 }
 
 

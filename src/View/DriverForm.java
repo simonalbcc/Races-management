@@ -57,7 +57,7 @@ public class DriverForm extends  JPanel{
         private JTextField number, lastName, firstName, phoneNumber, streetAddress, city, land, zipCode;
         private ArrayList<JTextField> textFieldsMandatory;
         private JLabel numberLabel, lastNameLabel, firstNameLabel, phoneNumberLabel, streetAddressLabel, cityLabel, landLabel, zipCodeLabel, originsLabel, teamsLabel, hasRenewedContractLabel, birthdateLabel;
-        private JComboBox origins, teams;
+        private JComboBox origin, team, locality;
         private JCheckBox hasRenewedContract;
         private JSpinner date;
         private Border border, margin;
@@ -125,11 +125,13 @@ public class DriverForm extends  JPanel{
             date.setEditor(new JSpinner.DateEditor(date, "dd-MM-yyyy"));
 
             // Combobox
-            origins = new JComboBox(continents);
-            origins.setToolTipText("Choisissez l'origine du pilote : ");
+            origin = new JComboBox(continents);
+            origin.setToolTipText("Choisissez l'origine du pilote : ");
+
             teamsDB = controller.getAllTeams();
-            teams = new JComboBox(teamsDB.stream().map(t -> t.getName()).toArray());
-            teams.setToolTipText("Choisissez l'équipe du pilote");
+            team = new JComboBox(teamsDB.stream().map(t -> t.getName()).toArray());
+            team.setToolTipText("Choisissez l'équipe du pilote");
+
             originsLabel = new JLabel("Origines : ");
             teamsLabel = new JLabel("Equipes : ");
 
@@ -167,10 +169,10 @@ public class DriverForm extends  JPanel{
             this.add(date);
 
             this.add(originsLabel);
-            this.add(origins);
+            this.add(origin);
 
             this.add(teamsLabel);
-            this.add(teams);
+            this.add(team);
 
             this.add(hasRenewedContractLabel);
             this.add(hasRenewedContract);
@@ -232,8 +234,8 @@ public class DriverForm extends  JPanel{
                      lastName.getText()+" "+firstName.getText(),
                                 Long.parseLong(phoneNumber.getText()),
                                 streetAddress.getText(),
-                                continents[origins.getSelectedIndex()],
-                                teamsDB.get(teams.getSelectedIndex()),
+                                continents[origin.getSelectedIndex()],
+                                teamsDB.get(team.getSelectedIndex()),
                                 hasRenewedContract.isSelected(),
                                 birtdate,
                                 new Locality(null, Integer.parseInt(zipCode.getText()), city.getText(), land.getText()));
