@@ -173,7 +173,28 @@ public class DriverDBAccess implements DAO {
         }
         return dates;
     }
+    public ArrayList<Ranking> getARaceRanking(String circuitName, Date raceDate){
+        ArrayList<Ranking> rankings = new ArrayList<Ranking>();
+        try{
+
+            String sql = "select date from Race where circuit = ? ";
+
+            PreparedStatement statement = SingletonConnexion.getInstance().prepareStatement(sql);
+            statement.setString(1,circuitName);
+
+            ResultSet data = statement.executeQuery();
+
+            while(data.next()){
+                rankings.add(data.getDate(1));
+            }
+
+        } catch (SQLException exception){
+            exception.printStackTrace(); // à changer
+        }
+        return rankings;
+    }
 }
+
 
 
 

@@ -1,6 +1,8 @@
 package View;
 
 import Business.DriverManager;
+import Controller.Controller;
+
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicBorders;
 import java.awt.*;
@@ -98,6 +100,7 @@ public class ResearchRankingJPanel extends JPanel {
         private JTable jTable;
         private JLabel title;
         private GridBagConstraints gcTable;
+        private Controller controller;
         public RankingTable (){
             // init layout
             this.setLayout(new GridBagLayout());
@@ -119,7 +122,7 @@ public class ResearchRankingJPanel extends JPanel {
                     {"4", "23", "puissance","Nice", 4},
                     {"5", "5","puissance","Dublin", 5}
             };
-            jTable = new JTable(data, headColumns);
+            jTable = new JTable(new RankingModel(controller.));
 
             JScrollPane sp = new JScrollPane(jTable);
             sp.setPreferredSize(new Dimension(300, 250));
