@@ -1,6 +1,7 @@
 package View;
 
-import Business.DriverManager;
+
+import Controller.Controller;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -9,15 +10,15 @@ import java.awt.*;
 public class DriverJTable extends JTable {
     private JTable jTable;
     private JLabel title;
-    private DriverManager driverManager;
+    private Controller controller;
     private GridBagConstraints gc;
     private ImageIcon imageIcon;
 
     public DriverJTable(){
-        driverManager = new DriverManager();
+        controller = new Controller();
         this.setLayout(new GridBagLayout());
 
-        jTable = new JTable(new AllDriverModel(driverManager.getAllDrivers()));
+        jTable = new JTable(new AllDriverModel(controller.getAllDrivers()));
         gc = new GridBagConstraints();
         gc.weightx = 1;
         gc.fill = GridBagConstraints.HORIZONTAL;

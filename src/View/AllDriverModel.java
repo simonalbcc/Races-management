@@ -1,12 +1,10 @@
 package View;
 
-
 import Model.*;
 
 import javax.swing.table.AbstractTableModel;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
 
 public class AllDriverModel extends AbstractTableModel {
     private ArrayList<String> columnNames;
