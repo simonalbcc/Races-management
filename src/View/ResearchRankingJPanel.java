@@ -7,7 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
-public class RankingJPanel extends JPanel {
+public class ResearchRankingJPanel extends JPanel {
     private Container mainContainer;
     private JPanel[] panels;
     private JPanel currentPanel;
@@ -15,7 +15,7 @@ public class RankingJPanel extends JPanel {
     private ButtonsPanel buttonsPanel;
     private GridBagConstraints gc;
 
-    public RankingJPanel(Container mainContainer){
+    public ResearchRankingJPanel(Container mainContainer){
         // init container, buttonPanel
         this.mainContainer = mainContainer;
         buttonsPanel = new ButtonsPanel("Précédent", "Suivant");
@@ -51,7 +51,7 @@ public class RankingJPanel extends JPanel {
         if(iPosition < panels.length){
             currentPanel = panels[iPosition];
         } else {
-            currentPanel = new FinaleJPanel(mainContainer, new RankingJPanel(mainContainer));
+            currentPanel = new FinaleJPanel(mainContainer, new ResearchRankingJPanel(mainContainer));
         }
     }
     void previousPanel(){
@@ -143,7 +143,7 @@ public class RankingJPanel extends JPanel {
 
             updateWindow();
             if(iPosition > 0){
-                mainContainer.add(RankingJPanel.this);
+                mainContainer.add(ResearchRankingJPanel.this);
             }
             mainContainer.repaint();
             mainContainer.validate();

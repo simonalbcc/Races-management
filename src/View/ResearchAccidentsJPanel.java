@@ -5,14 +5,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.Month;
 import java.util.*;
 //endregion
 
-public class AccidentsResearchJPanel extends JPanel{
+public class ResearchAccidentsJPanel extends JPanel{
     private GridBagConstraints gc;
     private Container mainContainer;
     private ButtonsPanel buttonsPanel;
@@ -21,7 +18,7 @@ public class AccidentsResearchJPanel extends JPanel{
     private JSpinner startSpinner, endSpinner;
     private StringBuilder errorDate;
 
-    public AccidentsResearchJPanel(Container mainContainer) {
+    public ResearchAccidentsJPanel(Container mainContainer) {
         // init container & buttonsPanel
         this.mainContainer = mainContainer;
         buttonsPanel = new ButtonsPanel("Back", "Next");
@@ -103,14 +100,14 @@ public class AccidentsResearchJPanel extends JPanel{
                     if(iNumPanel == 0){
                         mainContainer.add(new WelcomeJPanel());
                     } else {
-                        mainContainer.add(new AccidentsResearchJPanel(mainContainer));
+                        mainContainer.add(new ResearchAccidentsJPanel(mainContainer));
                     }
                     iNumPanel--;
                 }
                 if(e.getSource() == buttonsPanel.getNext()){
                     if(iNumPanel == 1){
                         mainContainer.removeAll();
-                        mainContainer.add(new FinaleJPanel(mainContainer, new AccidentsResearchJPanel(mainContainer)));
+                        mainContainer.add(new FinaleJPanel(mainContainer, new ResearchAccidentsJPanel(mainContainer)));
                     } else {
                         if(dateIsCorrect()){
                             mainContainer.removeAll();

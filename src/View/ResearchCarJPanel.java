@@ -5,14 +5,14 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class CarsResearchJPanel extends JPanel {
+public class ResearchCarJPanel extends JPanel {
     private Container mainContainer;
     private ButtonsPanel buttonsPanel;
     private CircuitsPanel circuitsPanel;
     private GridBagConstraints gc;
     private int iNumPanel;
 
-    public CarsResearchJPanel(Container mainContainer){
+    public ResearchCarJPanel(Container mainContainer){
         this.setLayout(new GridBagLayout());
         this.gc = new GridBagConstraints();
         this.mainContainer = mainContainer;
@@ -82,13 +82,13 @@ public class CarsResearchJPanel extends JPanel {
                 if(iNumPanel == 0){
                     mainContainer.add(new WelcomeJPanel());
                 } else {
-                    mainContainer.add(new CarsResearchJPanel(mainContainer));
+                    mainContainer.add(new ResearchCarJPanel(mainContainer));
                 }
                 iNumPanel--;
             }
             if(e.getSource() == buttonsPanel.getNext()){
                 if(iNumPanel == 1){
-                    mainContainer.add(new FinaleJPanel(mainContainer, new CarsResearchJPanel(mainContainer)));
+                    mainContainer.add(new FinaleJPanel(mainContainer, new ResearchCarJPanel(mainContainer)));
                 } else {
                     mainContainer.add(new CarsJTable());
                 }

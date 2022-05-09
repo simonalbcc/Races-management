@@ -120,13 +120,13 @@ public class MainJFrame extends JFrame {
                 frameContainer.add(new DriverJTable());
             }
             if(actionEvent.getSource() == researchAccident){
-                frameContainer.add(new AccidentsResearchJPanel(frameContainer));
+                frameContainer.add(new ResearchAccidentsJPanel(frameContainer));
             }
             if(actionEvent.getSource() == researchCars){
-                frameContainer.add(new CarsResearchJPanel(frameContainer));
+                frameContainer.add(new ResearchCarJPanel(frameContainer));
             }
             if(actionEvent.getSource() == researchRanking){
-                frameContainer.add(new RankingJPanel(frameContainer));
+                frameContainer.add(new ResearchRankingJPanel(frameContainer));
             }
             frameContainer.repaint();
             frameContainer.validate();

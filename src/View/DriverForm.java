@@ -51,16 +51,12 @@ public class DriverForm extends  JPanel{
         gc.gridy = 2;
         this.add(new ButtonsForm(), gc);
         //endregion
-
     }
 
-
-    //region inner classes
     private class Form extends JPanel {
-        private JTextField lastName, firstName, phoneNumber, streetAddress, city, land, zipCode;
+        private JTextField number, lastName, firstName, phoneNumber, streetAddress, city, land, zipCode;
         private ArrayList<JTextField> textFieldsMandatory;
-        private JLabel lastNameLabel, firstNameLabel, phoneNumberLabel,
-                streetAddressLabel, cityLabel, landLabel, zipCodeLabel, originsLabel, teamsLabel, hasRenewedContractLabel, birthdateLabel;
+        private JLabel numberLabel, lastNameLabel, firstNameLabel, phoneNumberLabel, streetAddressLabel, cityLabel, landLabel, zipCodeLabel, originsLabel, teamsLabel, hasRenewedContractLabel, birthdateLabel;
         private JComboBox origins, teams;
         private JCheckBox hasRenewedContract;
         private JSpinner date;
@@ -69,11 +65,16 @@ public class DriverForm extends  JPanel{
 
         public Form(){
             this.setBounds(10,80,500,150);
-            this.setLayout(new GridLayout(11,2, 5,10));
+            this.setLayout(new GridLayout(13,2, 5,10));
             textFieldsMandatory = new ArrayList<>();
             controller = new Controller();
 
             //region JTextfields
+
+            number = new JTextField();
+            number.setToolTipText("Veuillez entrer le numéro du pilote");
+            number.setName("numéro");
+            textFieldsMandatory.add(number);
 
             lastName = new JTextField();
             lastName.setToolTipText("Veuillez entrer le nom de famille du pilote (obligatoire)");
@@ -108,6 +109,7 @@ public class DriverForm extends  JPanel{
             land.setName("pays");
             textFieldsMandatory.add(land);
 
+            numberLabel = new JLabel("Numéro : ");
             lastNameLabel =new JLabel("Nom : ");
             firstNameLabel = new JLabel("Prénom : ");
             phoneNumberLabel = new JLabel("Numéro de téléphone : ");
@@ -137,6 +139,9 @@ public class DriverForm extends  JPanel{
             hasRenewedContract.setToolTipText("Cochez la case si le pilote a renouvelé son contrat d'engagement");
 
             //region Add all
+            this.add(numberLabel);
+            this.add(number);
+
             this.add(lastNameLabel);
             this.add(lastName);
 
@@ -189,51 +194,41 @@ public class DriverForm extends  JPanel{
                 }
             }
             if(filled){
-                if(!phoneNumber.getText().matches("\\d{10,12}|\\+?\\d{3,5}(\\/?)(\\d{8}.?)+") || (phoneNumber.getText().length() > 12 && phoneNumber.getText().length() < 10)){
-                    errorInputMessage.append("- Le numéro de téléphone entré n'est pas juste (uniquement des chiffres et une taille max de 5 chiffres)\n");
-                    errorInputMessage.append((phoneNumber.getText().length() > 12 ? "(trop long)" : ""));
+                if(!number.getText().matches("\\d{1,3}")){
+                    errorInputMessage.append("- Le numéro de téléphone entré n'est pas juste (uniquement des chiffres et une taille max de 3 chiffres)\n");
+                    number.setText("");
+                } else if(!phoneNumber.getText().matches("\\d{10,12}|\\+?\\d{3,5}(\\/?)(\\d{8}.?)+") || (phoneNumber.getText().length() > 12 && phoneNumber.getText().length() < 10)){
+                    errorInputMessage.append("- Le numéro de téléphone entré n'est pas juste (uniquement des chiffres et une taille de 10 à 12 chiffres)\n");
                     phoneNumber.setText("");
+                } else if(!zipCode.getText().matches("\\d{4,5}")){
+                    errorInputMessage.append("- Le code postal entrée n'est pas valide (uniquement des chiffres et une taille max de 5 chiffres)\n");
+                    zipCode.setText("");
+                } else if(!lastName.getText().matches("[a-zA-Z-]{2,15}") ||  lastName.getText().length() > 15){
+                    errorInputMessage.append("- Le nom de famille entré est trop long ou contient des chiffres\n");
+                    lastName.setText("");
+                } else if(!firstName.getText().matches("[a-zA-Z-]{2,15}") ||  firstName.getText().length() > 15){
+                    errorInputMessage.append("- Le prénom de famille entré est trop long ou contient des chiffres\n");
+                    firstName.setText("");
+                } else if(!streetAddress.getText().matches("(\\d{1,3},?\\s?)([a-zA-Z-]+\\s?)+|([a-zA-Z-]+\\s?)+(,?\\s?\\d{1,3})") ||  streetAddress.getText().length() > 30){
+                    errorInputMessage.append("- L'adresse entrée n'est pas valide\n");
+                    errorInputMessage.append(streetAddress.getText().length() > 30 ? "(trop long)" : "ne contient pas de numéro ou de nom)");
+                    streetAddress.setText("");
+                } else if(!city.getText().matches("[a-zA-Z-]{4,20}")|| city.getText().length() > 20){
+                    errorInputMessage.append("- La ville entrée n'est pas valide (uniquement des lettres et une taille max de 20 caractères)\n");
+                    city.setText("");
+                } else if(!land.getText().matches("[a-zA-Z-]{4,15}") || land.getText().length() > 15){
+                    errorInputMessage.append("- Le pays entrée n'est pas valide \n");
+                    errorInputMessage.append(land.getText().length() > 15 ? "(trop long)" : "ne contient pas de numéro ou de nom)");
+                    land.setText("");
                 } else {
-                    if(!zipCode.getText().matches("\\d{4,5}")){
-                        errorInputMessage.append("- Le code postal entrée n'est pas valide (uniquement des chiffres et une taille max de 5 chiffres)\n");
-                        zipCode.setText("");
-                    } else{
-                        if(!lastName.getText().matches("[a-zA-Z-]{2,15}") ||  lastName.getText().length() > 15){
-                            errorInputMessage.append("- Le nom de famille entré est trop long ou contient des chiffres\n");
-                            lastName.setText("");
-                        } else {
-                            if(!firstName.getText().matches("[a-zA-Z-]{2,15}") ||  firstName.getText().length() > 15){
-                                errorInputMessage.append("- Le prénom de famille entré est trop long ou contient des chiffres\n");
-                                firstName.setText("");
-                            } else {
-                                if(!streetAddress.getText().matches("(\\d{1,3},?\\s?)([a-zA-Z-]+\\s?)+|([a-zA-Z-]+\\s?)+(,?\\s?\\d{1,3})") ||  streetAddress.getText().length() > 30){
-                                    errorInputMessage.append("- L'adresse entrée n'est pas valide\n");
-                                    errorInputMessage.append(streetAddress.getText().length() > 30 ? "(trop long)" : "ne contient pas de numéro ou de nom)");
-                                    streetAddress.setText("");
-                                } else {
-                                    if(!city.getText().matches("[a-zA-Z-]{4,20}")|| city.getText().length() > 20){
-                                        errorInputMessage.append("- La ville entrée n'est pas valide (uniquement des lettres et une taille max de 20 caractères)\n");
-                                        city.setText("");
-                                    } else {
-                                        if(!land.getText().matches("[a-zA-Z-]{4,15}") || land.getText().length() > 15){
-                                            errorInputMessage.append("- Le pays entrée n'est pas valide \n");
-                                            errorInputMessage.append(land.getText().length() > 15 ? "(trop long)" : "ne contient pas de numéro ou de nom)");
-                                            land.setText("");
-                                        } else {
-                                            correct = true;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    correct = true;
                 }
             }
-            return correct & filled;
+            return (correct & filled) && dateIsCorrect();
         }
         public Driver createDriver(){
             GregorianCalendar birtdate = new GregorianCalendar(Integer.parseInt(new SimpleDateFormat("yyyy").format(date.getValue())), Integer.parseInt(new SimpleDateFormat("MM").format(date.getValue()))-1, Integer.parseInt(new SimpleDateFormat("dd").format(date.getValue())));
-            return new Driver(  null,
+            return new Driver(  Integer.parseInt(number.getText()),
                      lastName.getText()+" "+firstName.getText(),
                                 Long.parseLong(phoneNumber.getText()),
                                 streetAddress.getText(),
@@ -259,7 +254,6 @@ public class DriverForm extends  JPanel{
             return correct;
         }
     }
-
     private class ButtonsForm extends JPanel{
         private JButton back, reset, save;
 
@@ -306,6 +300,6 @@ public class DriverForm extends  JPanel{
             }
         }
     }
-    //endregion
+
 }
 
