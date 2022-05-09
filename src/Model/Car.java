@@ -14,4 +14,12 @@ public class Car {
         this.membership = membership;
         this.improved = improved;
     }
+
+    public Integer getNumber() {
+        return number;
+    }
+
+    public Double getPower() {
+        return power;
+    }
 }
