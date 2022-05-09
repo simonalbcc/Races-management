@@ -4,6 +4,7 @@ import DataAccess.DriverDBAccess;
 import DataAccess.DAO;
 import Model.*;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class DriverManager {
     private DAO dataAccess;
@@ -22,6 +23,10 @@ public class DriverManager {
         return dataAccess.getAllDrivers();
     }
 
+    public ArrayList<String> getAllCircuitsNames(){
+        return dataAccess.getAllCircuitsNames();
+    }
+    public ArrayList<Date> getRaceDatesOfACircuit(String circuitName) {return dataAccess.getRaceDatesOfACircuit(circuitName);}
 
 
 

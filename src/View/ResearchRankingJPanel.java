@@ -1,5 +1,6 @@
 package View;
 
+import Business.DriverManager;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicBorders;
 import java.awt.*;
@@ -14,6 +15,8 @@ public class ResearchRankingJPanel extends JPanel {
     private int iPosition;
     private ButtonsPanel buttonsPanel;
     private GridBagConstraints gc;
+    private JLabel circuitsLabel;
+    private JComboBox circuitsCombobox;
 
     public ResearchRankingJPanel(Container mainContainer){
         // init container, buttonPanel
@@ -64,11 +67,10 @@ public class ResearchRankingJPanel extends JPanel {
     }
 
     private class CircuitsPanel extends JPanel{
-        private JLabel circuitsLabel;
-        private JComboBox circuitsCombobox;
+
             public CircuitsPanel(){
                 circuitsLabel = new JLabel("Choisissez un circuit");
-                circuitsCombobox = new JComboBox(new String[]{"test circuit ", "test circuit"});
+                circuitsCombobox = new JComboBox(new DriverManager().getAllCircuitsNames().toArray());
                 circuitsCombobox.setPreferredSize(new Dimension(100,30));
 
                 this.add(circuitsLabel);
@@ -80,9 +82,11 @@ public class ResearchRankingJPanel extends JPanel {
     private class DatePanel extends JPanel{
         private JLabel datesLabel;
         private JComboBox datesCombobox;
+
         public DatePanel(){
             datesLabel = new JLabel("Choisissez une date : ");
-            datesCombobox = new JComboBox(new String[]{"test", "test"});
+            System.out.println(circuitsCombobox.getSelectedItem().toString());
+            datesCombobox = new JComboBox(new DriverManager().getRaceDatesOfACircuit(circuitsCombobox.getSelectedItem().toString()).toArray());
             datesCombobox.setPreferredSize(new Dimension(100,30));
 
             this.add(datesLabel);

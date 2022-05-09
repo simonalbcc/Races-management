@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import java.util.Date;
 
 public class DriverDBAccess implements DAO {
 
@@ -128,9 +129,49 @@ public class DriverDBAccess implements DAO {
         return drivers;
     }
 
+    public ArrayList<String> getAllCircuitsNames(){
+        ArrayList<String> circuits = new ArrayList<String>();
+        try{
+            String circuit;
 
+            String sql = "select name from Circuit";
 
+            PreparedStatement statement = SingletonConnexion.getInstance().prepareStatement(sql);
+
+            ResultSet data = statement.executeQuery();
+
+            while(data.next()){
+                circuit = data.getString(1);
+                circuits.add(circuit);
+            }
+
+        } catch (SQLException exception){
+            exception.printStackTrace(); // à changer
+        }
+        return circuits;
+    }
+    public ArrayList<Date> getRaceDatesOfACircuit(String circuitName){
+        ArrayList<Date> dates = new ArrayList<Date>();
+        try{
+
+            String sql = "select date from Race where circuit = ? ";
+
+            PreparedStatement statement = SingletonConnexion.getInstance().prepareStatement(sql);
+            statement.setString(1,circuitName);
+
+            ResultSet data = statement.executeQuery();
+
+            while(data.next()){
+                dates.add(data.getDate(1));
+            }
+
+        } catch (SQLException exception){
+            exception.printStackTrace(); // à changer
+        }
+        return dates;
+    }
 }
+
 
     // close connection = close program
 
