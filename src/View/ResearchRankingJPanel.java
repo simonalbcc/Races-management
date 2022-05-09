@@ -18,10 +18,9 @@ public class ResearchRankingJPanel extends JPanel {
     private ButtonsPanel buttonsPanel;
     private GridBagConstraints gc;
     private JLabel circuitsLabel;
-    private JComboBox circuitsCombobox;
+    private JComboBox circuitsCombobox, datesCombobox;
     private String circuitName;
     private JLabel datesLabel;
-    private JComboBox datesCombobox;
 
 
     public ResearchRankingJPanel(Container mainContainer){
@@ -55,7 +54,6 @@ public class ResearchRankingJPanel extends JPanel {
             gc.gridy = 2;
             this.add(buttonsPanel, gc);
         }
-        setCurrentCircuit(circuitsCombobox.getSelectedItem().toString());
     }
     public void nextPanel(){
         iPosition++;
@@ -79,7 +77,6 @@ public class ResearchRankingJPanel extends JPanel {
                 circuitsLabel = new JLabel("Choisissez un circuit");
                 circuitsCombobox = new JComboBox(new DriverManager().getAllCircuitsNames().toArray());
                 circuitsCombobox.setPreferredSize(new Dimension(100,30));
-                circuitsCombobox.addItemListener(new ComboboxListener());
 
                 this.add(circuitsLabel);
                 this.add(circuitsCombobox);
@@ -89,6 +86,7 @@ public class ResearchRankingJPanel extends JPanel {
     private class DatePanel extends JPanel{
         public DatePanel(){
             datesLabel = new JLabel("Choisissez une date : ");
+            setCurrentCircuit(circuitsCombobox.getSelectedItem().toString());
             datesCombobox = new JComboBox(new DriverManager().getRaceDatesOfACircuit(circuitName).toArray());
             datesCombobox.setPreferredSize(new Dimension(100,30));
             this.add(datesLabel);
@@ -143,8 +141,9 @@ public class ResearchRankingJPanel extends JPanel {
             }
 
             if(e.getSource() == buttonsPanel.getNext()){
+                setCurrentCircuit(circuitsCombobox.getSelectedItem().toString());
+                panels[2] = new DatePanel();
                 nextPanel();
-
             }
 
             updateWindow();
@@ -155,12 +154,4 @@ public class ResearchRankingJPanel extends JPanel {
             mainContainer.validate();
         }
     }
-    private class ComboboxListener implements ItemListener{
-        @Override
-        public void itemStateChanged(ItemEvent e) {
-            setCurrentCircuit(circuitsCombobox.getSelectedItem().toString());
-            datesCombobox = new JComboBox(new DriverManager().getRaceDatesOfACircuit(circuitName).toArray());
-        }
-    }
-
 }
