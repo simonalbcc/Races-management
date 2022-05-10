@@ -1,8 +1,5 @@
 package View;
 
-import Model.*;
-
-import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 

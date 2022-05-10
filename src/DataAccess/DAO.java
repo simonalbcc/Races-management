@@ -7,7 +7,7 @@ import java.util.Date;
 
 public interface DAO {
 
-    public void addDriver(Model.Driver driver);
+    public Integer addDriver(Model.Driver driver);
     public void updateDriver();
     public void deleteDriver();
     public ArrayList<Team> getAllTeams();

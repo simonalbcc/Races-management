@@ -1,6 +1,5 @@
 package View;
 
-import Business.DriverManager;
 import Controller.Controller;
 
 import javax.swing.*;
@@ -8,9 +7,6 @@ import javax.swing.plaf.basic.BasicBorders;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-
 
 public class ResearchRankingJPanel extends JPanel {
     private Container mainContainer;
@@ -77,23 +73,21 @@ public class ResearchRankingJPanel extends JPanel {
     private class CircuitsPanel extends JPanel{
             public CircuitsPanel(){
                 circuitsLabel = new JLabel("Choisissez un circuit");
-                circuitsCombobox = new JComboBox(new DriverManager().getAllCircuitsNames().toArray());
+                circuitsCombobox = new JComboBox(new Controller().getAllCircuitsNames().toArray());
                 circuitsCombobox.setPreferredSize(new Dimension(100,30));
 
                 this.add(circuitsLabel);
                 this.add(circuitsCombobox);
-                this.setBorder(new BasicBorders.FieldBorder(Color.BLACK, Color.black, Color.BLACK, Color.BLACK));
             }
     }
     private class DatePanel extends JPanel{
         public DatePanel(){
             datesLabel = new JLabel("Choisissez une date : ");
             setCurrentCircuit(circuitsCombobox.getSelectedItem().toString());
-            datesCombobox = new JComboBox(new DriverManager().getRaceDatesOfACircuit(circuitName).toArray());
+            datesCombobox = new JComboBox(new Controller().getRaceDatesOfACircuit(circuitName).toArray());
             datesCombobox.setPreferredSize(new Dimension(100,30));
             this.add(datesLabel);
             this.add(datesCombobox);
-            this.setBorder(new BasicBorders.FieldBorder(Color.BLACK, Color.black, Color.BLACK, Color.BLACK));
         }
     }
     private class RankingTable extends JPanel{
@@ -111,7 +105,7 @@ public class ResearchRankingJPanel extends JPanel {
             title.setFont(new Font("Arial",Font.TRUETYPE_FONT,15));
 
             this.controller = new Controller();
-            jTable = new JTable(new RankingModel(controller.getARaceRanking(circuitsCombobox.getSelectedItem().toString(),datesCombobox.getSelectedItem().toString())));
+            jTable = new JTable(new RankingModel(controller.getARaceRanking(circuitName,datesCombobox.getSelectedItem().toString())));
 
             JScrollPane sp = new JScrollPane(jTable);
             sp.setPreferredSize(new Dimension(300, 250));
@@ -135,6 +129,7 @@ public class ResearchRankingJPanel extends JPanel {
             if(e.getSource() == buttonsPanel.getNext()){
                 setCurrentCircuit(circuitsCombobox.getSelectedItem().toString());
                 panels[2] = new DatePanel();
+                panels[3] = new RankingTable();
                 nextPanel();
             }
 

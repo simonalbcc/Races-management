@@ -8,13 +8,13 @@ public class Circuit {
     private Integer nbChicanesPerRound;
     private Date renewalDate;
 
-    public Circuit(String name, double distance, int nbChicanesPerRound, Date renewalDate) {
+    public Circuit(String name, Double distance, Integer nbChicanesPerRound, Date renewalDate) {
         this.name = name;
         this.distance = distance;
         this.nbChicanesPerRound = nbChicanesPerRound;
         this.renewalDate = renewalDate;
     }
-    public Circuit(String name, double distance, int nbChicanesPerRound) {
+    public Circuit(String name, Double distance, Integer nbChicanesPerRound) {
         this.name = name;
         this.distance = distance;
         this.nbChicanesPerRound = nbChicanesPerRound;

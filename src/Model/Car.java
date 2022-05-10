@@ -9,7 +9,7 @@ public class Car {
     private String name;
 
 
-    public Car(int number, double averageConsumption, double power, Team membership, boolean improved, String name) {
+    public Car(Integer number, Double averageConsumption, Double power, Team membership, Boolean improved, String name) {
         this.number = number;
         this.averageConsumption = averageConsumption;
         this.power = power;

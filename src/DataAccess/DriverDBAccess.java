@@ -11,7 +11,7 @@ import java.util.Date;
 
 public class DriverDBAccess implements DAO {
 
-    public int addDriver(Model.Driver driver){
+    public Integer addDriver(Model.Driver driver){
         int insertedLinesNumber = 0;
         Locality locality;
         try{
@@ -177,30 +177,24 @@ public class DriverDBAccess implements DAO {
         ArrayList<Ranking> rankings = new ArrayList<Ranking>();
         try{
             System.out.println(circuitName);
-            String sql = "select car.number, average_consumption, power, improved_car, team.name, web_site_address, car.name, race.serial_number, circuit.name, distance, nb_chicanes, renewal_date, departure_hour, date, nb_laps, position, nb_stops_pit, abandonment_round_number, record,driver.number, last_name_first_name, phone_number, street_and_number, nationality, team, has_renewed_commitment_contract, birthdate, loc.number, city_name, postal_code, country\n" +
+            String sql = "select ranking.position, car.number, car.power, driver.last_name_first_name, ranking.record\n" +
                          "from Ranking ranking\n" +
+                         "inner join Car car on ranking.car = car.number\n" +
                          "inner join Driver driver on ranking.driver = driver.number\n" +
                          "inner join Race race on ranking.race = race.serial_number\n" +
-                         "inner join Car car on ranking.car = car.number\n" +
-                         "inner join Team team on car.membership = team.name\n" +
-                         "inner join Circuit circuit on race.circuit = circuit.name\n" +
-                         "inner join Locality loc on driver.home = loc.number\n" +
-                         "where race.circuit = 'Imola' and race.date = '2018-05-05';";
+                         "where race.circuit = ? and race.date = ?\n" +
+                         "order by position;";
 
             PreparedStatement statement = SingletonConnexion.getInstance().prepareStatement(sql);
-            //statement.setString(1,circuitName);
-            //statement.setString(2,raceDate);
+            statement.setString(1,circuitName);
+            statement.setString(2,raceDate);
 
             ResultSet data = statement.executeQuery();
 
             while(data.next()){
-                GregorianCalendar birthdate = new GregorianCalendar();
-                birthdate.setTime(data.getDate("birthdate"));
-
-                rankings.add(new Ranking(new Car(data.getInt(1),data.getDouble(2),data.getDouble(3),new Team(data.getString(4),data.getString(5)),data.getBoolean(6),data.getString(7)),
-                                         new Race(data.getInt(8),new Circuit(data.getString(9),data.getDouble(10),data.getInt(11),data.getDate(12)),data.getInt(13),data.getDate(14),data.getInt(15)),
-                                         data.getInt(16),data.getInt(17),data.getInt(18),data.getDouble(19),
-                                         new Driver(data.getInt(20),data.getString(21),data.getLong(22),data.getString(23),data.getString(24),new Team(data.getString(25),data.getString(26)),data.getBoolean(27),birthdate,new Locality(data.getInt(28),data.getInt(29),data.getString(30),data.getString(31)))));
+                rankings.add(new Ranking(new Car(data.getInt("car.number"),null,data.getDouble("car.power"),null,null,null),
+                                         null,data.getInt("ranking.position"),null,null,data.getDouble("ranking.record"),
+                                         new Driver(null,data.getString("driver.last_name_first_name"),null,null,null,null,null,null,null)));
             }
 
         } catch (SQLException exception){

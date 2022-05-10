@@ -29,6 +29,10 @@ public class Controller {
         return driverManager.getAllDrivers();
     }
 
+    public ArrayList<String> getAllCircuitsNames(){
+        return driverManager.getAllCircuitsNames();
+    }
+    public ArrayList<Date> getRaceDatesOfACircuit(String circuitName) {return driverManager.getRaceDatesOfACircuit(circuitName);}
     public ArrayList<Ranking> getARaceRanking(String circuitName, String raceDate){return driverManager.getARaceRanking(circuitName,raceDate);}
 }
 
