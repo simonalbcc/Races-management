@@ -57,7 +57,7 @@ public class DriverForm extends  JPanel{
         private JTextField number, lastName, firstName, phoneNumber, streetAddress, city, land, zipCode;
         private ArrayList<JTextField> textFieldsMandatory;
         private JLabel numberLabel, lastNameLabel, firstNameLabel, phoneNumberLabel, streetAddressLabel, cityLabel, landLabel, zipCodeLabel, originsLabel, teamsLabel, hasRenewedContractLabel, birthdateLabel;
-        private JComboBox origin, team, locality;
+        private JComboBox origin, team;
         private JCheckBox hasRenewedContract;
         private JSpinner date;
         private Border border, margin;
@@ -230,6 +230,9 @@ public class DriverForm extends  JPanel{
         }
         public Driver createDriver(){
             GregorianCalendar birtdate = new GregorianCalendar(Integer.parseInt(new SimpleDateFormat("yyyy").format(date.getValue())), Integer.parseInt(new SimpleDateFormat("MM").format(date.getValue()))-1, Integer.parseInt(new SimpleDateFormat("dd").format(date.getValue())));
+            Locality locality = new Locality(null, Integer.parseInt(zipCode.getText()), city.getText(), land.getText());
+
+
             return new Driver(  Integer.parseInt(number.getText()),
                      lastName.getText()+" "+firstName.getText(),
                                 Long.parseLong(phoneNumber.getText()),
@@ -238,7 +241,7 @@ public class DriverForm extends  JPanel{
                                 teamsDB.get(team.getSelectedIndex()),
                                 hasRenewedContract.isSelected(),
                                 birtdate,
-                                new Locality(null, Integer.parseInt(zipCode.getText()), city.getText(), land.getText()));
+                                locality);
         }
         public boolean dateIsCorrect(){
             boolean correct = false;

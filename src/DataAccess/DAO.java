@@ -7,15 +7,13 @@ import java.util.Date;
 
 public interface DAO {
 
-    public int addDriver(Model.Driver driver);
+    public void addDriver(Model.Driver driver);
     public void updateDriver();
     public void deleteDriver();
     public ArrayList<Team> getAllTeams();
     public ArrayList<Driver> getAllDrivers();
-    public Locality checkLocality(Locality locality);
     public ArrayList<String> getAllCircuitsNames();
     public ArrayList<Date> getRaceDatesOfACircuit(String circuitName);
     public ArrayList<Ranking> getARaceRanking(String circuitName, String raceDate);
-
 
 }
