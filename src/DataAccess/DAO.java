@@ -15,5 +15,6 @@ public interface DAO {
     public ArrayList<String> getAllCircuitsNames();
     public ArrayList<Date> getRaceDatesOfACircuit(String circuitName);
     public ArrayList<Ranking> getARaceRanking(String circuitName, String raceDate);
+    public ArrayList<Accident> getAccidentedDrivers(String startDate, String endDate);
 
 }

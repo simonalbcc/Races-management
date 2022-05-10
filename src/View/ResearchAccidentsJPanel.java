@@ -1,6 +1,8 @@
 //region packages & imports
 package View;
 
+import Controller.Controller;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -41,22 +43,21 @@ public class ResearchAccidentsJPanel extends JPanel{
     }
     public boolean dateIsCorrect(){
         boolean correct = false;
-        GregorianCalendar start, end;
-        Date current;
+        GregorianCalendar start, end,current;
 
         start = new GregorianCalendar(Integer.parseInt(new SimpleDateFormat("yyyy").format(startSpinner.getValue())), Integer.parseInt(new SimpleDateFormat("MM").format(startSpinner.getValue()))-1, Integer.parseInt(new SimpleDateFormat("dd").format(startSpinner.getValue())));
-        end = new GregorianCalendar(Integer.parseInt(new SimpleDateFormat("yyyy").format(endSpinner.getValue())), Integer.parseInt(new SimpleDateFormat("MM").format(endSpinner.getValue())), Integer.parseInt(new SimpleDateFormat("dd").format(endSpinner.getValue())));
-        current = new Date();
+        end = new GregorianCalendar(Integer.parseInt(new SimpleDateFormat("yyyy").format(endSpinner.getValue())), Integer.parseInt(new SimpleDateFormat("MM").format(endSpinner.getValue()))-1, Integer.parseInt(new SimpleDateFormat("dd").format(endSpinner.getValue())));
+        current = new GregorianCalendar();
 
         errorDate = new StringBuilder("Erreur : ");
 
-        if(start.getTime().after(current)){
+        if(start.getTime().compareTo(current.getTime()) > 0){
             errorDate.append(" la date de début est après la date de ce jour");
         } else {
-            if(end.getTime().after(current)){
+            if(end.compareTo(current) > 0){
                 errorDate.append(" la date de fin est après la date de ce jour");
             } else{
-                if(start.getTime().after(end.getTime())){
+                if(start.getTime().compareTo(end.getTime()) > 0){
                     errorDate.append(" la date de début se situe après celle de fin");
                 } else {
                     correct = true;
@@ -131,18 +132,8 @@ public class ResearchAccidentsJPanel extends JPanel{
 
             title = new JLabel("Liste de pilotes");
             title.setFont(new Font("Arial",Font.TRUETYPE_FONT,20));
-
-
-                 String[] headColumns = new String[]{"Date", "Nom", "Adresse", "Localité", "Equipe"};
-
-                 Object[][] data = new Object[][] {
-                    {"01/02/2003", "Thomas", "Address 1", "Paris", 1},
-                    {"02/02/2003", "Jean", "Address 2", "Marseille", 2},
-                    {"03/02/2003", "Yvon", "Address 3", "Lyon", 3},
-                    {"04/02/2003", "Yohan", "Address 4","Nice", 4},
-                    {"05/02/2003", "Merlin","Address 5","Dublin", 5}
-            };
-            jTable = new JTable(data, headColumns);
+            System.out.println(startSpinner.getValue().toString());
+            jTable = new JTable(new AccidentModel(new Controller().getAccidentedDrivers(startSpinner.getValue().toString(),endSpinner.getValue().toString())));
 
             JScrollPane sp = new JScrollPane(jTable);
             sp.setPreferredSize(new Dimension(300, 250));

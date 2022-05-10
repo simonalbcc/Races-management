@@ -3,10 +3,7 @@ package Controller;
 import Business.DriverManager;
 import DataAccess.DAO;
 import DataAccess.DriverDBAccess;
-import Model.Driver;
-import Model.Locality;
-import Model.Ranking;
-import Model.Team;
+import Model.*;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -34,6 +31,8 @@ public class Controller {
     }
     public ArrayList<Date> getRaceDatesOfACircuit(String circuitName) {return driverManager.getRaceDatesOfACircuit(circuitName);}
     public ArrayList<Ranking> getARaceRanking(String circuitName, String raceDate){return driverManager.getARaceRanking(circuitName,raceDate);}
+
+    public ArrayList<Accident> getAccidentedDrivers(String startDate, String endDate){return driverManager.getAccidentedDrivers(startDate, endDate);}
 }
 
 

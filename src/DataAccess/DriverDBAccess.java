@@ -176,7 +176,6 @@ public class DriverDBAccess implements DAO {
     public ArrayList<Ranking> getARaceRanking(String circuitName, String raceDate){
         ArrayList<Ranking> rankings = new ArrayList<Ranking>();
         try{
-            System.out.println(circuitName);
             String sql = "select ranking.position, car.number, car.power, driver.last_name_first_name, ranking.record\n" +
                          "from Ranking ranking\n" +
                          "inner join Car car on ranking.car = car.number\n" +
@@ -202,7 +201,38 @@ public class DriverDBAccess implements DAO {
         }
         return rankings;
     }
+
+    public ArrayList<Accident> getAccidentedDrivers(String startDate, String endDate){
+        ArrayList<Accident> accidents = new ArrayList<Accident>();
+        try{
+
+            String sql = "select accident.date, driver.last_name_first_name, driver.street_and_number, locality.city_name, driver.team\n" +
+                         "from Accident accident\n" +
+                         "inner join Driver driver on accident.driver = driver.number\n" +
+                         "inner join Locality locality on driver.home = locality.number\n" +
+                         "where accident.date between ? and ?\n" +
+                         "order by date";
+
+            PreparedStatement statement = SingletonConnexion.getInstance().prepareStatement(sql);
+            statement.setString(1,startDate);
+            statement.setString(2,endDate);
+
+            ResultSet data = statement.executeQuery();
+
+            while(data.next()){
+                accidents.add(new Accident(data.getDate("accident.date"),
+                              new Driver(null,data.getString("driver.last_name_first_name"),null,data.getString("driver.street_and_number"),null,
+                              new Team(data.getString("driver.team"),null),null,null,new Locality(null,null,data.getString("locality.city_name"),null)))
+                );
+            }
+
+        } catch (SQLException exception){
+            exception.printStackTrace(); // à changer
+        }
+        return accidents;
+    }
 }
+
 
 
 

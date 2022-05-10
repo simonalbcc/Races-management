@@ -30,4 +30,6 @@ public class DriverManager {
     public ArrayList<Date> getRaceDatesOfACircuit(String circuitName) {return dataAccess.getRaceDatesOfACircuit(circuitName);}
     public ArrayList<Ranking> getARaceRanking(String circuitName, String raceDate){ return dataAccess.getARaceRanking(circuitName,raceDate);}
 
+    public ArrayList<Accident> getAccidentedDrivers(String startDate, String endDate){return dataAccess.getAccidentedDrivers(startDate,endDate);}
+
 }

@@ -10,4 +10,12 @@ public class Accident {
         this.date = date;
         this.driver = driver;
     }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public Driver getDriver() {
+        return driver;
+    }
 }
