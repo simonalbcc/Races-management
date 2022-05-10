@@ -9,7 +9,7 @@ public class Ranking {
     private Double record;
     private Driver driver;
 
-    public Ranking(Car car, Race race, int position, int nbStopsPits, int abandonmentRoundNumber, double record, Driver driver) {
+    public Ranking(Car car, Race race, Integer position, Integer nbStopsPits, Integer abandonmentRoundNumber, Double record, Driver driver) {
         this.car = car;
         this.race = race;
         this.position = position;
@@ -19,7 +19,7 @@ public class Ranking {
         this.driver = driver;
     }
 
-    public Ranking(Car car, Race race, int position, int nbStopsPits, double record, Driver driver) {
+    public Ranking(Car car, Race race, Integer position, Integer nbStopsPits, Double record, Driver driver) {
         this.car = car;
         this.race = race;
         this.position = position;

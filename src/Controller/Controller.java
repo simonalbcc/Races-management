@@ -5,9 +5,11 @@ import DataAccess.DAO;
 import DataAccess.DriverDBAccess;
 import Model.Driver;
 import Model.Locality;
+import Model.Ranking;
 import Model.Team;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Controller {
     private DAO dataAccess;
@@ -27,6 +29,9 @@ public class Controller {
         return driverManager.getAllDrivers();
     }
 
-
-
+    public ArrayList<Ranking> getARaceRanking(String circuitName, String raceDate){return driverManager.getARaceRanking(circuitName,raceDate);}
 }
+
+
+
+

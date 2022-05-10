@@ -110,19 +110,8 @@ public class ResearchRankingJPanel extends JPanel {
             title = new JLabel("Classement");
             title.setFont(new Font("Arial",Font.TRUETYPE_FONT,15));
 
-
-            // init of headers
-            String[] headColumns = new String[]{"Position", "Numéro de voiture", "Puissance de la voiture", "Nom du pilote", "Meilleur temps"};
-
-            // init fictive data
-            Object[][] data = new Object[][] {
-                    {"1", "42", "puissance", "Paris", 1},
-                    {"2", "35", "puissance", "Marseille", 2},
-                    {"3", "63", "puissance", "Lyon", 3},
-                    {"4", "23", "puissance","Nice", 4},
-                    {"5", "5","puissance","Dublin", 5}
-            };
-            jTable = new JTable(new RankingModel(controller.));
+            this.controller = new Controller();
+            jTable = new JTable(new RankingModel(controller.getARaceRanking(circuitsCombobox.getSelectedItem().toString(),datesCombobox.getSelectedItem().toString())));
 
             JScrollPane sp = new JScrollPane(jTable);
             sp.setPreferredSize(new Dimension(300, 250));

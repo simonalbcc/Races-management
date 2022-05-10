@@ -21,6 +21,9 @@ public class RankingModel extends AbstractTableModel {
         columnNames.add("Record en piste");
     }
 
+    public String getColumnName(int col){
+        return columnNames.get(col);
+    }
     @Override
     public int getRowCount() {
         return rankings.size();

@@ -28,5 +28,6 @@ public class DriverManager {
         return dataAccess.getAllCircuitsNames();
     }
     public ArrayList<Date> getRaceDatesOfACircuit(String circuitName) {return dataAccess.getRaceDatesOfACircuit(circuitName);}
+    public ArrayList<Ranking> getARaceRanking(String circuitName, String raceDate){ return dataAccess.getARaceRanking(circuitName,raceDate);}
 
 }

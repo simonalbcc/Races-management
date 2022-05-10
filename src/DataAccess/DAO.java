@@ -15,6 +15,7 @@ public interface DAO {
     public Locality checkLocality(Locality locality);
     public ArrayList<String> getAllCircuitsNames();
     public ArrayList<Date> getRaceDatesOfACircuit(String circuitName);
+    public ArrayList<Ranking> getARaceRanking(String circuitName, String raceDate);
 
 
 }
