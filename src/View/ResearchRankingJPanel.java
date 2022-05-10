@@ -122,7 +122,7 @@ public class ResearchRankingJPanel extends JPanel {
                     {"4", "23", "puissance","Nice", 4},
                     {"5", "5","puissance","Dublin", 5}
             };
-            jTable = new JTable(new RankingModel(controller.));
+            //jTable = new JTable(new RankingModel(controller.));
 
             JScrollPane sp = new JScrollPane(jTable);
             sp.setPreferredSize(new Dimension(300, 250));

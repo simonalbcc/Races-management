@@ -16,13 +16,13 @@ public class DriverManager {
     public void addDriver(Driver driver){
         dataAccess.addDriver(driver);
     }
+
     public ArrayList<Team> getAllTeams(){
         return dataAccess.getAllTeams();
     }
     public ArrayList<Driver> getAllDrivers(){
         return dataAccess.getAllDrivers();
     }
-
 
     public ArrayList<String> getAllCircuitsNames(){
         return dataAccess.getAllCircuitsNames();

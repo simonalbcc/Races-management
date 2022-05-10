@@ -11,10 +11,9 @@ import java.util.Date;
 
 public class DriverDBAccess implements DAO {
 
-    public int addDriver(Model.Driver driver){
-        int insertedLinesNumber = 0;
-        Locality locality;
+    public void addDriver(Model.Driver driver){
         try{
+
             String sql = "insert into Driver (number, last_name_first_name, phone_number, street_and_number, nationality, team, has_renewed_commitment_contract, birthdate, home)values(?,?,?,?,?,?,?,?,?)";
 
             PreparedStatement statement = SingletonConnexion.getInstance().prepareStatement(sql);
@@ -27,36 +26,14 @@ public class DriverDBAccess implements DAO {
             statement.setString(6, driver.getTeam().getName());
             statement.setBoolean(7, driver.isHasRenewedCommitmentContract());
             statement.setDate(8, new java.sql.Date(driver.getBirthdate().getTimeInMillis()));
-            locality = checkLocality(driver.getHome());
 
-            if(locality != null){
-                statement.setInt(9, locality.getNumber());
-            } else {
-
-            }
-
-            insertedLinesNumber += statement.executeUpdate();
+            statement.executeUpdate();
 
         } catch (SQLException exception){
             JOptionPane.showMessageDialog(null, exception.getMessage()); // changer
         }
-        return insertedLinesNumber;
     }
 
-    public Locality checkLocality(Locality locality){
-        Locality localityDB = null;
-        try{
-            String sql = "select * from Locality where city_name = "+locality.getCity()+" and postal_code = "+locality.getPostalCode()+" and country = "+locality.getCountry();
-            PreparedStatement statement = SingletonConnexion.getInstance().prepareStatement(sql);
-
-            ResultSet data = statement.executeQuery();
-            localityDB = new Locality(data.getInt(1), data.getInt(3), data.getString(2), data.getString(4));
-
-        } catch (SQLException exception){
-            JOptionPane.showMessageDialog(null, exception.getMessage()); // changer
-        }
-        return localityDB;
-    }
     public void updateDriver(){
     }
 
@@ -173,7 +150,7 @@ public class DriverDBAccess implements DAO {
         }
         return dates;
     }
-    public ArrayList<Ranking> getARaceRanking(String circuitName, Date raceDate){
+    /*public ArrayList<Ranking> getARaceRanking(String circuitName, Date raceDate){
         ArrayList<Ranking> rankings = new ArrayList<Ranking>();
         try{
 
@@ -193,6 +170,7 @@ public class DriverDBAccess implements DAO {
         }
         return rankings;
     }
+    */
 }
 
 
