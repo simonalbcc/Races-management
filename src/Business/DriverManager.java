@@ -16,6 +16,12 @@ public class DriverManager {
     public void addDriver(Driver driver){
         dataAccess.addDriver(driver);
     }
+    public Integer getNumberLocality(Locality locality){
+        return dataAccess.getNumberLocality(locality);
+    }
+    public void createLocality(Locality locality){
+        dataAccess.createLocality(locality);
+    }
 
     public ArrayList<Team> getAllTeams(){
         return dataAccess.getAllTeams();

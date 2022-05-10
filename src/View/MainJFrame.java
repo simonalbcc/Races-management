@@ -1,6 +1,8 @@
 //region packages & imports
 package View;
 
+import DataAccess.SingletonConnexion;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -101,6 +103,7 @@ public class MainJFrame extends JFrame {
         public void actionPerformed(ActionEvent actionEvent) {
             frameContainer.removeAll();
             if(actionEvent.getSource() == close){
+                // SingletonConnexion.getInstance().close(); // à changer
                 System.exit(0);
             }
 

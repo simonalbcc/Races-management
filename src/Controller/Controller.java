@@ -9,16 +9,21 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Controller {
-    private DAO dataAccess;
     private DriverManager driverManager;
     public Controller() {
-        dataAccess = new DriverDBAccess();
         driverManager = new DriverManager();
     }
 
     public void addDriver(Driver driver){
        driverManager.addDriver(driver);
     }
+    public Integer getNumberLocality(Locality locality){
+       return driverManager.getNumberLocality(locality);
+    }
+    public void createLocality(Locality locality){
+        driverManager.createLocality(locality);
+    }
+
     public ArrayList<Team> getAllTeams(){
         return driverManager.getAllTeams();
     }

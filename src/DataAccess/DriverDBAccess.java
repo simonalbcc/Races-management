@@ -11,8 +11,7 @@ import java.util.Date;
 
 public class DriverDBAccess implements DAO {
 
-    public Integer addDriver(Model.Driver driver){
-        int insertedLinesNumber = 0;
+    public void addDriver(Model.Driver driver){
         Locality locality;
         try{
             String sql = "insert into Driver (number, last_name_first_name, phone_number, street_and_number, nationality, team, has_renewed_commitment_contract, birthdate, home)values(?,?,?,?,?,?,?,?,?)";
@@ -27,36 +26,48 @@ public class DriverDBAccess implements DAO {
             statement.setString(6, driver.getTeam().getName());
             statement.setBoolean(7, driver.isHasRenewedCommitmentContract());
             statement.setDate(8, new java.sql.Date(driver.getBirthdate().getTimeInMillis()));
-            locality = checkLocality(driver.getHome());
+            statement.setInt(9, driver.getHome().getNumber());
 
-            if(locality != null){
-                statement.setInt(9, locality.getNumber());
-            } else {
-
-            }
-
-            insertedLinesNumber += statement.executeUpdate();
+            statement.executeUpdate();
 
         } catch (SQLException exception){
             JOptionPane.showMessageDialog(null, exception.getMessage()); // changer
         }
-        return insertedLinesNumber;
     }
 
-    public Locality checkLocality(Locality locality){
-        Locality localityDB = null;
+    public Integer getNumberLocality(Locality locality){
+        Integer number = null;
         try{
-            String sql = "select * from Locality where city_name = "+locality.getCity()+" and postal_code = "+locality.getPostalCode()+" and country = "+locality.getCountry();
+            String sql = "select number from Locality where city_name = '"+locality.getCity()+"' and postal_code = "+locality.getPostalCode()+" and country = '"+locality.getCountry()+"'";
             PreparedStatement statement = SingletonConnexion.getInstance().prepareStatement(sql);
 
             ResultSet data = statement.executeQuery();
-            localityDB = new Locality(data.getInt(1), data.getInt(3), data.getString(2), data.getString(4));
+            data.next();
+
+            number = data.getInt(1);
 
         } catch (SQLException exception){
             JOptionPane.showMessageDialog(null, exception.getMessage()); // changer
         }
-        return localityDB;
+        return number;
     }
+    public void createLocality(Locality locality){
+        try{
+            String sql = "insert into Locality (city_name, postal_code, country) values (?,?,?)";
+            PreparedStatement statement = SingletonConnexion.getInstance().prepareStatement(sql);
+
+            statement.setString(1, locality.getCity());
+            statement.setInt(2, locality.getPostalCode());
+            statement.setString(3, locality.getCountry());
+
+            statement.executeUpdate();
+
+        } catch(SQLException e){
+            e.printStackTrace(); // à changer
+        }
+    }
+
+
     public void updateDriver(){
     }
 

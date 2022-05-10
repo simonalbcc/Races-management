@@ -196,10 +196,7 @@ public class DriverForm extends  JPanel{
                 }
             }
             if(filled){
-                if(!number.getText().matches("\\d{1,3}")){
-                    errorInputMessage.append("- Le numéro de téléphone entré n'est pas juste (uniquement des chiffres et une taille max de 3 chiffres)\n");
-                    number.setText("");
-                } else if(!phoneNumber.getText().matches("\\d{10,12}|\\+?\\d{3,5}(\\/?)(\\d{8}.?)+") || (phoneNumber.getText().length() > 12 && phoneNumber.getText().length() < 10)){
+                if(!phoneNumber.getText().matches("\\d{10,12}|\\+?\\d{3,5}(\\/?)(\\d{8}.?)+") || (phoneNumber.getText().length() > 12 && phoneNumber.getText().length() < 10)){
                     errorInputMessage.append("- Le numéro de téléphone entré n'est pas juste (uniquement des chiffres et une taille de 10 à 12 chiffres)\n");
                     phoneNumber.setText("");
                 } else if(!zipCode.getText().matches("\\d{4,5}")){
@@ -290,8 +287,13 @@ public class DriverForm extends  JPanel{
                 if(e.getSource() == save){
                     if(form.isCorrect()){
                         mainContainer.removeAll();
+                        Driver driver = form.createDriver();
+                        if(controller.getNumberLocality(driver.getHome())== null){
+                            controller.createLocality(driver.getHome());
+                        }
+                        driver.getHome().setNumber(controller.getNumberLocality(driver.getHome()));
+                        controller.addDriver(driver);
                         JOptionPane.showMessageDialog(null, "Sauvegarde effectuée", "Information", JOptionPane.INFORMATION_MESSAGE);
-                        controller.addDriver(form.createDriver());
                     } else {
                         JOptionPane.showMessageDialog(null, errorInputMessage.toString(), "Erreur", JOptionPane.ERROR_MESSAGE);
                     }
