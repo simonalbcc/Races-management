@@ -17,7 +17,7 @@ public class ResearchRankingJPanel extends JPanel {
     private GridBagConstraints gc;
     private JLabel circuitsLabel;
     private JComboBox circuitsCombobox, datesCombobox;
-    private String circuitName;
+    private String circuitName, date;
     private JLabel datesLabel;
 
 
@@ -35,7 +35,7 @@ public class ResearchRankingJPanel extends JPanel {
         this.setBorder(new BasicBorders.FieldBorder(Color.BLACK, Color.black, Color.BLACK, Color.BLACK));
 
         //init panels & current panel
-        this.panels = new JPanel[]{new WelcomeJPanel(), new CircuitsPanel(), new DatePanel(), new RankingTable()};
+        this.panels = new JPanel[]{new WelcomeJPanel(), new CircuitsPanel(), new DatePanel()};
         iPosition = 1;
         currentPanel = panels[iPosition];
 
@@ -43,6 +43,9 @@ public class ResearchRankingJPanel extends JPanel {
     }
     public void setCurrentCircuit(String circuitName){
         this.circuitName = circuitName;
+    }
+    public void setCurrentDate(String date){
+        this.date = date;
     }
     public void updateWindow(){
         this.removeAll();
@@ -104,8 +107,9 @@ public class ResearchRankingJPanel extends JPanel {
             title = new JLabel("Classement");
             title.setFont(new Font("Arial",Font.TRUETYPE_FONT,15));
 
+            setCurrentDate(datesCombobox.getSelectedItem().toString());
             this.controller = new Controller();
-            jTable = new JTable(new RankingModel(controller.getARaceRanking(circuitName,datesCombobox.getSelectedItem().toString())));
+            jTable = new JTable(new RankingModel(controller.getARaceRanking(circuitName, date)));
 
             JScrollPane sp = new JScrollPane(jTable);
             sp.setPreferredSize(new Dimension(300, 250));
@@ -128,6 +132,7 @@ public class ResearchRankingJPanel extends JPanel {
 
             if(e.getSource() == buttonsPanel.getNext()){
                 setCurrentCircuit(circuitsCombobox.getSelectedItem().toString());
+                setCurrentDate(datesCombobox.getSelectedItem().toString());
                 panels[2] = new DatePanel();
                 panels[3] = new RankingTable();
                 nextPanel();
