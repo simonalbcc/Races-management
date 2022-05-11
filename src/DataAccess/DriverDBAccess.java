@@ -69,8 +69,18 @@ public class DriverDBAccess implements DAO {
     public void updateDriver(){
     }
 
-    public void deleteDriver(){
+    public void deleteDriver(int driverNumber){
+        try{
+            String sql = "delete from Driver where number = ?";
 
+            PreparedStatement statement = SingletonConnexion.getInstance().prepareStatement(sql);
+            statement.setInt(1,driverNumber);
+
+            statement.executeUpdate();
+
+        } catch (SQLException exception){
+            exception.printStackTrace(); // à changer
+        }
     }
 
     public ArrayList<Team> getAllTeams(){
@@ -238,6 +248,8 @@ public class DriverDBAccess implements DAO {
         }
         return accidents;
     }
+
+
 }
 
 

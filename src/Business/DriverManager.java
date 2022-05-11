@@ -13,6 +13,8 @@ public class DriverManager {
         dataAccess = new DriverDBAccess();
     }
 
+    public void deleteDriver(int driverNumber){ dataAccess.deleteDriver(driverNumber);}
+
     public void addDriver(Driver driver){
         dataAccess.addDriver(driver);
     }

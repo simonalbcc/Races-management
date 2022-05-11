@@ -7,18 +7,20 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 
-public class DriverJTable extends JTable {
+public class DriverJTable extends JPanel {
     private JTable jTable;
     private JLabel title;
     private Controller controller;
     private GridBagConstraints gc;
     private ImageIcon imageIcon;
+    private JScrollPane sp;
 
     public DriverJTable(){
         controller = new Controller();
         this.setLayout(new GridBagLayout());
 
         jTable = new JTable(new AllDriverModel(controller.getAllDrivers()));
+        jTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         gc = new GridBagConstraints();
         gc.weightx = 1;
         gc.fill = GridBagConstraints.HORIZONTAL;
@@ -47,11 +49,15 @@ public class DriverJTable extends JTable {
 
         jTable.getTableHeader().setReorderingAllowed(false);
 
-        JScrollPane sp = new JScrollPane(jTable);
+        this.sp = new JScrollPane(jTable);
         jTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         this.add(title, gc);
         gc.gridy = 1;
         this.add(sp, gc);
+    }
+
+    public JTable getjTable() {
+        return jTable;
     }
 }

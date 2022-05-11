@@ -14,6 +14,8 @@ public class Controller {
         driverManager = new DriverManager();
     }
 
+    public void deleteDriver(int driverNumber){driverManager.deleteDriver(driverNumber); }
+
     public void addDriver(Driver driver){
        driverManager.addDriver(driver);
     }

@@ -11,7 +11,7 @@ public interface DAO {
     public Integer getNumberLocality(Locality locality);
     public void createLocality(Locality locality);
     public void updateDriver();
-    public void deleteDriver();
+    public void deleteDriver(int driverNumber);
     public ArrayList<Team> getAllTeams();
     public ArrayList<Driver> getAllDrivers();
     public ArrayList<String> getAllCircuitsNames();

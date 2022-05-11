@@ -114,7 +114,7 @@ public class MainJFrame extends JFrame {
                 frameContainer.add(new DriverForm(frameContainer));
             }
             if(actionEvent.getSource() == removeDriver){
-
+                frameContainer.add(new RemoveDriver(frameContainer));
             }
             if(actionEvent.getSource() == modifyDriver){
 
