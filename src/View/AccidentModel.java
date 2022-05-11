@@ -52,4 +52,5 @@ public class AccidentModel extends AbstractTableModel {
                 return null;
         }
     }
+
 }

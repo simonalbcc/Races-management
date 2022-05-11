@@ -4,6 +4,7 @@ package View;
 import Controller.Controller;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -130,14 +131,30 @@ public class ResearchAccidentsJPanel extends JPanel{
             this.setLayout(new GridBagLayout());
 
 
-            title = new JLabel("Liste de pilotes");
+            title = new JLabel("Liste des accidents");
             title.setFont(new Font("Arial",Font.TRUETYPE_FONT,20));
             System.out.println(startSpinner.getValue().toString());
             jTable = new JTable(new AccidentModel(new Controller().getAccidentedDrivers((Date)startSpinner.getValue(),(Date)endSpinner.getValue())));
 
+            jTable.getColumnModel( ).getColumn(0).setPreferredWidth(40);
+            for(int iCell = 1; iCell < jTable.getColumnCount()-1; iCell++){
+                jTable.getColumnModel( ).getColumn(iCell).setPreferredWidth(132);
+            }
+            jTable.getColumnModel( ).getColumn(jTable.getColumnCount()-1).setPreferredWidth(101);
+
+            jTable.setRowHeight(40);
+
+            DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+            centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+            for(int cell=0; cell < jTable.getColumnCount();cell++){
+                if(cell != 6){
+                    jTable.getColumnModel().getColumn(cell).setCellRenderer(centerRenderer);
+                }
+            }
+
             JScrollPane sp = new JScrollPane(jTable);
-            sp.setPreferredSize(new Dimension(300, 250));
-            jTable.setFillsViewportHeight(true);
+            jTable.getTableHeader().setReorderingAllowed(false);
+            sp.setPreferredSize(new Dimension(900,250));
 
             gc.gridy = 1;
             this.add(title, gc);
@@ -145,6 +162,8 @@ public class ResearchAccidentsJPanel extends JPanel{
             this.add(sp, gc);
             gc.gridy = 3;
             this.add(buttonsPanel, gc);
+            this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+
         }
     }
 

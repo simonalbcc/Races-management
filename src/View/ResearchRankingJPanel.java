@@ -4,6 +4,7 @@ import Controller.Controller;
 
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicBorders;
+import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -102,7 +103,9 @@ public class ResearchRankingJPanel extends JPanel {
 
             JScrollPane sp = new JScrollPane(jTable);
             sp.setPreferredSize(new Dimension(300, 250));
-            jTable.setFillsViewportHeight(true);
+
+            jTable.getTableHeader().setReorderingAllowed(false);
+            sp.setPreferredSize(new Dimension(900,250));
 
             this.add(title,gcTable);
             gcTable.gridy = 1;
