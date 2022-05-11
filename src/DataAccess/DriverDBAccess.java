@@ -34,7 +34,6 @@ public class DriverDBAccess implements DAO {
             JOptionPane.showMessageDialog(null, exception.getMessage()); // changer
         }
     }
-
     public Integer getNumberLocality(Locality locality){
         Integer number = null;
         try{
@@ -66,7 +65,6 @@ public class DriverDBAccess implements DAO {
             e.printStackTrace(); // à changer
         }
     }
-
 
     public void updateDriver(){
     }
@@ -142,7 +140,6 @@ public class DriverDBAccess implements DAO {
         }
         return drivers;
     }
-
     public ArrayList<String> getAllCircuitsNames(){
         ArrayList<String> circuits = new ArrayList<String>();
         try{
@@ -212,7 +209,6 @@ public class DriverDBAccess implements DAO {
         }
         return rankings;
     }
-
     public ArrayList<Accident> getAccidentedDrivers(Date startDate, Date endDate){
         ArrayList<Accident> accidents = new ArrayList<Accident>();
         try{

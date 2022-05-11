@@ -7,76 +7,69 @@ import javax.swing.plaf.basic.BasicBorders;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 public class ResearchRankingJPanel extends JPanel {
     private Container mainContainer;
-    private JPanel[] panels;
-    private JPanel currentPanel;
-    private int iPosition;
     private ButtonsPanel buttonsPanel;
     private GridBagConstraints gc;
+    private JLabel datesLabel;
+    private JPanel currentPanel;
     private JLabel circuitsLabel;
     private JComboBox circuitsCombobox, datesCombobox;
-    private String circuitName, date;
-    private JLabel datesLabel;
-
+    private Integer iPanel;
+    private Controller controller;
 
     public ResearchRankingJPanel(Container mainContainer){
-        // init container, buttonPanel
+
         this.mainContainer = mainContainer;
         buttonsPanel = new ButtonsPanel("Précédent", "Suivant");
         buttonsPanel.addActionListener(new ButtonListener());
 
-        // set layout & constraints
+        controller = new Controller();
+
         this.setLayout(new GridBagLayout());
         gc = new GridBagConstraints();
 
-        // set black borders & size
         this.setBorder(new BasicBorders.FieldBorder(Color.BLACK, Color.black, Color.BLACK, Color.BLACK));
 
-        //init panels & current panel
-        this.panels = new JPanel[]{new WelcomeJPanel(), new CircuitsPanel(), new DatePanel()};
-        iPosition = 1;
-        currentPanel = panels[iPosition];
+        iPanel = 1;
 
-        updateWindow();
+        setCurrentPanel();
+        updatePanel();
     }
-    public void setCurrentCircuit(String circuitName){
-        this.circuitName = circuitName;
-    }
-    public void setCurrentDate(String date){
-        this.date = date;
-    }
-    public void updateWindow(){
+
+    public void updatePanel(){
         this.removeAll();
         gc.gridy = 1;
         this.add(currentPanel, gc);
-        if(iPosition > 0 && iPosition < 4){
+        if(iPanel > 0 && iPanel < 4){
             gc.gridy = 2;
             this.add(buttonsPanel, gc);
         }
     }
-    public void nextPanel(){
-        iPosition++;
-        if(iPosition < panels.length){
-            currentPanel = panels[iPosition];
-        } else {
+
+    public void setCurrentPanel() {
+        if(iPanel == 0){
+            currentPanel = new WelcomeJPanel();
+        } else if (iPanel == 1){
+            currentPanel = new CircuitsPanel();
+        } else if (iPanel == 2){
+            currentPanel = new DatePanel();
+        } else if (iPanel == 3){
+            currentPanel = new RankingTable();
+        } else if (iPanel == 4){
             currentPanel = new FinaleJPanel(mainContainer, new ResearchRankingJPanel(mainContainer));
         }
-    }
-    public void previousPanel(){
-        iPosition--;
-        if(iPosition == 0){
-            mainContainer.add(new WelcomeJPanel());
-        } else {
-            currentPanel = panels[iPosition];
-        }
+        // moche mais le plus efficace : listes inutiles.
     }
 
     private class CircuitsPanel extends JPanel{
             public CircuitsPanel(){
                 circuitsLabel = new JLabel("Choisissez un circuit");
-                circuitsCombobox = new JComboBox(new Controller().getAllCircuitsNames().toArray());
+                circuitsCombobox = new JComboBox(controller.getAllCircuitsNames().toArray());
                 circuitsCombobox.setPreferredSize(new Dimension(100,30));
 
                 this.add(circuitsLabel);
@@ -86,8 +79,7 @@ public class ResearchRankingJPanel extends JPanel {
     private class DatePanel extends JPanel{
         public DatePanel(){
             datesLabel = new JLabel("Choisissez une date : ");
-            setCurrentCircuit(circuitsCombobox.getSelectedItem().toString());
-            datesCombobox = new JComboBox(new Controller().getRaceDatesOfACircuit(circuitName).toArray());
+            datesCombobox = new JComboBox(controller.getRaceDatesOfACircuit(circuitsCombobox.getSelectedItem().toString()).toArray());
             datesCombobox.setPreferredSize(new Dimension(100,30));
             this.add(datesLabel);
             this.add(datesCombobox);
@@ -97,19 +89,16 @@ public class ResearchRankingJPanel extends JPanel {
         private JTable jTable;
         private JLabel title;
         private GridBagConstraints gcTable;
-        private Controller controller;
         public RankingTable (){
-            // init layout
+
             this.setLayout(new GridBagLayout());
             gcTable = new GridBagConstraints();
 
-            // init title
+
             title = new JLabel("Classement");
             title.setFont(new Font("Arial",Font.TRUETYPE_FONT,15));
 
-            setCurrentDate(datesCombobox.getSelectedItem().toString());
-            this.controller = new Controller();
-            jTable = new JTable(new RankingModel(controller.getARaceRanking(circuitName, date)));
+            jTable = new JTable(new RankingModel(controller.getARaceRanking(circuitsCombobox.getSelectedItem().toString(), datesCombobox.getSelectedItem().toString())));
 
             JScrollPane sp = new JScrollPane(jTable);
             sp.setPreferredSize(new Dimension(300, 250));
@@ -127,23 +116,22 @@ public class ResearchRankingJPanel extends JPanel {
             mainContainer.removeAll();
 
             if(e.getSource() == buttonsPanel.getBack()){
-                previousPanel();
+                iPanel--;
             }
 
             if(e.getSource() == buttonsPanel.getNext()){
-                setCurrentCircuit(circuitsCombobox.getSelectedItem().toString());
-                setCurrentDate(datesCombobox.getSelectedItem().toString());
-                panels[2] = new DatePanel();
-                panels[3] = new RankingTable();
-                nextPanel();
+                iPanel++;
             }
+            setCurrentPanel();
+            updatePanel();
 
-            updateWindow();
-            if(iPosition > 0){
+            if(iPanel > 0){
                 mainContainer.add(ResearchRankingJPanel.this);
             }
             mainContainer.repaint();
             mainContainer.validate();
         }
     }
+
+
 }
