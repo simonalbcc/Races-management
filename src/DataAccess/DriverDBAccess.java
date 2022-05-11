@@ -213,7 +213,7 @@ public class DriverDBAccess implements DAO {
         return rankings;
     }
 
-    public ArrayList<Accident> getAccidentedDrivers(String startDate, String endDate){
+    public ArrayList<Accident> getAccidentedDrivers(Date startDate, Date endDate){
         ArrayList<Accident> accidents = new ArrayList<Accident>();
         try{
 
@@ -225,8 +225,8 @@ public class DriverDBAccess implements DAO {
                          "order by date";
 
             PreparedStatement statement = SingletonConnexion.getInstance().prepareStatement(sql);
-            statement.setString(1,startDate);
-            statement.setString(2,endDate);
+            statement.setDate(1,new java.sql.Date(startDate.getTime()));
+            statement.setDate(2,new java.sql.Date(endDate.getTime()));
 
             ResultSet data = statement.executeQuery();
 

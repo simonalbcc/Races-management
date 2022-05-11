@@ -133,7 +133,7 @@ public class ResearchAccidentsJPanel extends JPanel{
             title = new JLabel("Liste de pilotes");
             title.setFont(new Font("Arial",Font.TRUETYPE_FONT,20));
             System.out.println(startSpinner.getValue().toString());
-            jTable = new JTable(new AccidentModel(new Controller().getAccidentedDrivers(startSpinner.getValue().toString(),endSpinner.getValue().toString())));
+            jTable = new JTable(new AccidentModel(new Controller().getAccidentedDrivers((Date)startSpinner.getValue(),(Date)endSpinner.getValue())));
 
             JScrollPane sp = new JScrollPane(jTable);
             sp.setPreferredSize(new Dimension(300, 250));
