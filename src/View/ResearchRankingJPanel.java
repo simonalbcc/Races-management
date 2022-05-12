@@ -64,7 +64,6 @@ public class ResearchRankingJPanel extends JPanel {
         } else if (iPanel == 4){
             currentPanel = new FinaleJPanel(mainContainer, new ResearchRankingJPanel(mainContainer));
         }
-        // moche mais le plus efficace : listes inutiles.
     }
 
     private class CircuitsPanel extends JPanel{

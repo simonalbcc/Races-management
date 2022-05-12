@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.Date;
 
-public class DriverDBAccess implements DAO {
+public class DriverDBAccess implements DriverDAO {
 
     public void addDriver(Model.Driver driver){
         Locality locality;
@@ -34,38 +34,6 @@ public class DriverDBAccess implements DAO {
             JOptionPane.showMessageDialog(null, exception.getMessage()); // changer
         }
     }
-    public Integer getNumberLocality(Locality locality){
-        Integer number = null;
-        try{
-            String sql = "select number from Locality where city_name = '"+locality.getCity()+"' and postal_code = "+locality.getPostalCode()+" and country = '"+locality.getCountry()+"'";
-            PreparedStatement statement = SingletonConnexion.getInstance().prepareStatement(sql);
-
-            ResultSet data = statement.executeQuery();
-            data.next();
-
-            number = data.getInt(1);
-
-        } catch (SQLException exception){
-            JOptionPane.showMessageDialog(null, exception.getMessage()); // changer
-        }
-        return number;
-    }
-    public void createLocality(Locality locality){
-        try{
-            String sql = "insert into Locality (city_name, postal_code, country) values (?,?,?)";
-            PreparedStatement statement = SingletonConnexion.getInstance().prepareStatement(sql);
-
-            statement.setString(1, locality.getCity());
-            statement.setInt(2, locality.getPostalCode());
-            statement.setString(3, locality.getCountry());
-
-            statement.executeUpdate();
-
-        } catch(SQLException e){
-            e.printStackTrace(); // à changer
-        }
-    }
-
     public void updateDriver(){
     }
 
@@ -83,24 +51,6 @@ public class DriverDBAccess implements DAO {
         }
     }
 
-    public ArrayList<Team> getAllTeams(){
-        ArrayList<Team> teams = new  ArrayList<Team>();
-        try{
-            String sql = "select * from Team";
-
-            PreparedStatement statement = SingletonConnexion.getInstance().prepareStatement(sql);
-            ResultSet data = statement.executeQuery();
-
-            while(data.next()){
-                teams.add(new Team(data.getString(1), data.getString(2)));
-            }
-
-
-        } catch (SQLException exception){
-
-        }
-        return teams;
-    }
     public ArrayList<Driver> getAllDrivers(){
         ArrayList<Driver> drivers = new  ArrayList<Driver>();
         try{
@@ -150,105 +100,6 @@ public class DriverDBAccess implements DAO {
         }
         return drivers;
     }
-    public ArrayList<String> getAllCircuitsNames(){
-        ArrayList<String> circuits = new ArrayList<String>();
-        try{
-            String circuit;
-
-            String sql = "select name from Circuit";
-
-            PreparedStatement statement = SingletonConnexion.getInstance().prepareStatement(sql);
-
-            ResultSet data = statement.executeQuery();
-
-            while(data.next()){
-                circuit = data.getString(1);
-                circuits.add(circuit);
-            }
-
-        } catch (SQLException exception){
-            exception.printStackTrace(); // à changer
-        }
-        return circuits;
-    }
-    public ArrayList<Date> getRaceDatesOfACircuit(String circuitName){
-        ArrayList<Date> dates = new ArrayList<Date>();
-        try{
-
-            String sql = "select date from Race where circuit = ? ";
-
-            PreparedStatement statement = SingletonConnexion.getInstance().prepareStatement(sql);
-            statement.setString(1,circuitName);
-
-            ResultSet data = statement.executeQuery();
-
-            while(data.next()){
-                dates.add(data.getDate(1));
-            }
-
-        } catch (SQLException exception){
-            exception.printStackTrace(); // à changer
-        }
-        return dates;
-    }
-    public ArrayList<Ranking> getARaceRanking(String circuitName, String raceDate){
-        ArrayList<Ranking> rankings = new ArrayList<Ranking>();
-        try{
-            String sql = "select ranking.position, car.number, car.power, driver.last_name_first_name, ranking.record\n" +
-                         "from Ranking ranking\n" +
-                         "inner join Car car on ranking.car = car.number\n" +
-                         "inner join Driver driver on ranking.driver = driver.number\n" +
-                         "inner join Race race on ranking.race = race.serial_number\n" +
-                         "where race.circuit = ? and race.date = ?\n" +
-                         "order by position;";
-
-            PreparedStatement statement = SingletonConnexion.getInstance().prepareStatement(sql);
-            statement.setString(1,circuitName);
-            statement.setString(2,raceDate);
-
-            ResultSet data = statement.executeQuery();
-
-            while(data.next()){
-                rankings.add(new Ranking(new Car(data.getInt("car.number"),null,data.getDouble("car.power"),null,null,null),
-                                         null,data.getInt("ranking.position"),null,null,data.getDouble("ranking.record"),
-                                         new Driver(null,data.getString("driver.last_name_first_name"),null,null,null,null,null,null,null)));
-            }
-
-        } catch (SQLException exception){
-            exception.printStackTrace(); // à changer
-        }
-        return rankings;
-    }
-    public ArrayList<Accident> getAccidentedDrivers(Date startDate, Date endDate){
-        ArrayList<Accident> accidents = new ArrayList<Accident>();
-        try{
-
-            String sql = "select accident.date, driver.last_name_first_name, driver.street_and_number, locality.city_name, driver.team\n" +
-                         "from Accident accident\n" +
-                         "inner join Driver driver on accident.driver = driver.number\n" +
-                         "inner join Locality locality on driver.home = locality.number\n" +
-                         "where accident.date between ? and ?\n" +
-                         "order by date";
-
-            PreparedStatement statement = SingletonConnexion.getInstance().prepareStatement(sql);
-            statement.setDate(1,new java.sql.Date(startDate.getTime()));
-            statement.setDate(2,new java.sql.Date(endDate.getTime()));
-
-            ResultSet data = statement.executeQuery();
-
-            while(data.next()){
-                accidents.add(new Accident(data.getDate("accident.date"),
-                              new Driver(null,data.getString("driver.last_name_first_name"),null,data.getString("driver.street_and_number"),null,
-                              new Team(data.getString("driver.team"),null),null,null,new Locality(null,null,data.getString("locality.city_name"),null)))
-                );
-            }
-
-        } catch (SQLException exception){
-            exception.printStackTrace(); // à changer
-        }
-        return accidents;
-    }
-
 
 }
 

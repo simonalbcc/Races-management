@@ -54,13 +54,7 @@ public class ResearchCarJPanel extends JPanel {
             title = new JLabel("Liste de voitures et de leurs sponsors");
             title.setFont(new Font("Arial",Font.TRUETYPE_FONT,20));
 
-            String[] headColumns = new String[]{"Modele", "Sponsor"};
-            Object[][] data = new Object[][] {
-                    {"Simon","L eau chaude"},
-                    {"test","toste"}
-            };
 
-            jTable = new JTable(data, headColumns);
             JScrollPane sp = new JScrollPane(jTable);
             sp.setPreferredSize(new Dimension(300, 250));
             jTable.setFillsViewportHeight(true);

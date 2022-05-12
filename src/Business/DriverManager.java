@@ -1,48 +1,57 @@
 package Business;
 
-import DataAccess.DriverDBAccess;
-import DataAccess.DAO;
+import DataAccess.*;
 import Model.*;
 import java.util.ArrayList;
 import java.util.Date;
 import Exception.DriverException;
 
 public class DriverManager {
-    private DAO dataAccess;
+    private DriverDAO driverAccess;
+    private LocalityDAO localityAccess;
+    private TeamDAO teamAccess;
+    private CircuitDAO circuitAccess;
+    private AccidentDAO accidentAccess;
+    private RaceDAO raceAccess;
 
     public DriverManager() {
-        dataAccess = new DriverDBAccess();
+        driverAccess = new DriverDBAccess();
+        localityAccess = new LocalityDBAccess();
+        teamAccess = new TeamDBAccess();
+        circuitAccess = new CircuitDBAccess();
+        accidentAccess = new AccidentDBAccess();
+        raceAccess = new RaceDBAccess();
     }
 
-    public void deleteDriver(int driverNumber){ dataAccess.deleteDriver(driverNumber);}
+    public void deleteDriver(int driverNumber){ driverAccess.deleteDriver(driverNumber);}
 
     public void addDriver(Driver driver) throws Exception {
-            if(dataAccess.getAllDrivers().contains(driver.getLastNameFirstName())||dataAccess.getAllDrivers().contains(driver.getPhoneNumber()) ){
+            if(driverAccess.getAllDrivers().contains(driver.getLastNameFirstName())||driverAccess.getAllDrivers().contains(driver.getPhoneNumber()) ){
                 throw new DriverException(driver);
             } else {
-                dataAccess.addDriver(driver);
+                driverAccess.addDriver(driver);
             }
     }
     public Integer getNumberLocality(Locality locality){
-        return dataAccess.getNumberLocality(locality);
+        return localityAccess.getNumberLocality(locality);
     }
     public void createLocality(Locality locality){
-        dataAccess.createLocality(locality);
+        localityAccess.createLocality(locality);
     }
 
     public ArrayList<Team> getAllTeams(){
-        return dataAccess.getAllTeams();
+        return teamAccess.getAllTeams();
     }
     public ArrayList<Driver> getAllDrivers(){
-        return dataAccess.getAllDrivers();
+        return driverAccess.getAllDrivers();
     }
 
     public ArrayList<String> getAllCircuitsNames(){
-        return dataAccess.getAllCircuitsNames();
+        return circuitAccess.getAllCircuitsNames();
     }
-    public ArrayList<Date> getRaceDatesOfACircuit(String circuitName) {return dataAccess.getRaceDatesOfACircuit(circuitName);}
-    public ArrayList<Ranking> getARaceRanking(String circuitName, String raceDate){ return dataAccess.getARaceRanking(circuitName,raceDate);}
+    public ArrayList<Date> getRaceDatesOfACircuit(String circuitName) {return raceAccess.getRaceDatesOfACircuit(circuitName);}
+    public ArrayList<Ranking> getARaceRanking(String circuitName, String raceDate){ return raceAccess.getARaceRanking(circuitName,raceDate);}
 
-    public ArrayList<Accident> getAccidentedDrivers(Date startDate, Date endDate){return dataAccess.getAccidentedDrivers(startDate,endDate);}
+    public ArrayList<Accident> getAccidentedDrivers(Date startDate, Date endDate){return accidentAccess.getAccidentedDrivers(startDate,endDate);}
 
 }
