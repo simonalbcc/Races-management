@@ -1,29 +1,55 @@
+//region packages & imports
 package View;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;
+//endregion
 
 public class ButtonsPanel extends JPanel {
+
+    //region private attributes & constructors
     private JButton back,next;
     public ButtonsPanel(String txtBackButton, String txtNextButton){
-        back = new JButton("<html> <u>"+txtBackButton.substring(0,1)+"</u>"+txtBackButton.substring(1)+"<html>");
-        next = new JButton("<html> <u>"+txtNextButton.substring(0,1)+"</u>"+txtNextButton.substring(1)+"<html>");
-
-        this.add(back);
-        this.add(next);
+        setBack(txtBackButton);
+        setNext(txtNextButton);
     }
+    public ButtonsPanel() {
+        setBack(null);
+        setNext(null);
+    }
+    //endregion
 
+    //region getters & setters
     public JButton getBack() {
         return back;
+    }
+    public void setBack(String txtBackButton){
+        if(txtBackButton == null){
+            txtBackButton = "Retour";
+        }
+        back = new JButton(txtBackButton);
+        this.add(back);
     }
     public JButton getNext() {
         return next;
     }
+    public void setNext(String txtNextButton){
+        if(txtNextButton == null){
+            txtNextButton = "Suivant";
+        }
+        next = new JButton(txtNextButton);
+        this.add(next);
+    }
+    //endregion
 
-    public void addActionListener(ActionListener a){
+    //region methods
+    public void addActionListener(ActionListener a, JButton...buttons){
         back.addActionListener(a);
         next.addActionListener(a);
+        for (JButton button : buttons) {
+            button.addActionListener(a);
+        }
     }
-
+    //endregion
 }
 

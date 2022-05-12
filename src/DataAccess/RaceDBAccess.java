@@ -3,7 +3,7 @@ package DataAccess;
 import Model.Car;
 import Model.Driver;
 import Model.Ranking;
-
+import Exception.RaceException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class RaceDBAccess implements RaceDAO{
-    public ArrayList<Date> getRaceDatesOfACircuit(String circuitName){
+    public ArrayList<Date> getRaceDatesOfACircuit(String circuitName) throws RaceException {
         ArrayList<Date> dates = new ArrayList<Date>();
         try{
 
@@ -27,7 +27,7 @@ public class RaceDBAccess implements RaceDAO{
             }
 
         } catch (SQLException exception){
-            exception.printStackTrace(); // à changer
+            throw new RaceException(exception);
         }
         return dates;
     }

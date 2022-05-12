@@ -28,13 +28,13 @@ public class DriverDBAccess implements DriverDAO {
             statement.executeUpdate();
 
         } catch (SQLException exception){
-            throw new DriverException(driver, exception);
+            throw new AddDriverException(driver, exception);
         }
     }
     public void updateDriver(){
     }
 
-    public void deleteDriver(int driverNumber){
+    public void deleteDriver(int driverNumber) throws DeleteDriverException {
         try{
             String sql = "delete from Driver where number = ?";
 
@@ -44,7 +44,7 @@ public class DriverDBAccess implements DriverDAO {
             statement.executeUpdate();
 
         } catch (SQLException exception){
-            exception.printStackTrace(); // à changer
+           throw new DeleteDriverException(exception);
         }
     }
 

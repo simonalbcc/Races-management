@@ -53,21 +53,25 @@ public class ResearchRankingJPanel extends JPanel {
     }
 
     public void setCurrentPanel() {
-        if(iPanel == 0){
-            currentPanel = new WelcomeJPanel();
-        } else if (iPanel == 1){
-            currentPanel = new CircuitsPanel();
-        } else if (iPanel == 2){
-            currentPanel = new DatePanel();
-        } else if (iPanel == 3){
-            currentPanel = new RankingTable();
-        } else if (iPanel == 4){
-            currentPanel = new FinaleJPanel(mainContainer, new ResearchRankingJPanel(mainContainer));
+        try{
+            if(iPanel == 0){
+                currentPanel = new WelcomeJPanel();
+            } else if (iPanel == 1){
+                currentPanel = new CircuitsPanel();
+            } else if (iPanel == 2){
+                currentPanel = new DatePanel();
+            } else if (iPanel == 3){
+                currentPanel = new RankingTable();
+            } else if (iPanel == 4){
+                currentPanel = new FinaleJPanel(mainContainer, new ResearchRankingJPanel(mainContainer));
+            }
+        }catch (Exception exception){
+            JOptionPane.showMessageDialog(null, exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     private class CircuitsPanel extends JPanel{
-            public CircuitsPanel(){
+            public CircuitsPanel() throws Exception {
                 circuitsLabel = new JLabel("Choisissez un circuit");
                 circuitsCombobox = new JComboBox(controller.getAllCircuitsNames().toArray());
                 circuitsCombobox.setPreferredSize(new Dimension(100,30));
@@ -77,7 +81,7 @@ public class ResearchRankingJPanel extends JPanel {
             }
     }
     private class DatePanel extends JPanel{
-        public DatePanel(){
+        public DatePanel() throws Exception {
             datesLabel = new JLabel("Choisissez une date : ");
             datesCombobox = new JComboBox(controller.getRaceDatesOfACircuit(circuitsCombobox.getSelectedItem().toString()).toArray());
             datesCombobox.setPreferredSize(new Dimension(100,30));
@@ -89,7 +93,7 @@ public class ResearchRankingJPanel extends JPanel {
         private JTable jTable;
         private JLabel title;
         private GridBagConstraints gcTable;
-        public RankingTable (){
+        public RankingTable () throws Exception {
 
             this.setLayout(new GridBagLayout());
             gcTable = new GridBagConstraints();

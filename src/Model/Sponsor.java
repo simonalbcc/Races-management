@@ -1,11 +1,18 @@
 package Model;
 
 public class Sponsor {
-    private Team stable;
+    private Team team;
     private Company company;
 
-    public Sponsor(Team stable, Company company) {
-        this.stable = stable;
+    public Sponsor(Team team, Company company) {
+        this.team = team;
         this.company = company;
+    }
+
+    public Team getTeam() {
+        return team;
+    }
+    public Company getCompany() {
+        return company;
     }
 }

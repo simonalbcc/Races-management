@@ -1,9 +1,12 @@
+//region packages and imports
 package View;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+//endregion
 
 public class ResearchCarJPanel extends JPanel {
     private Container mainContainer;

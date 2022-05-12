@@ -101,38 +101,41 @@ public class MainJFrame extends JFrame {
 
     private class menuItemListner implements ActionListener{
         public void actionPerformed(ActionEvent actionEvent) {
-            frameContainer.removeAll();
-            if(actionEvent.getSource() == close){
-                // SingletonConnexion.getInstance().close(); // à changer
-                System.exit(0);
-            }
+            try{
+                frameContainer.removeAll();
+                if(actionEvent.getSource() == close){
+                    SingletonConnexion.getInstance().close(); // à changer
+                    System.exit(0);
+                }
+                if(actionEvent.getSource() == contactsInfos){
+                    frameContainer.add(new ContactsInfosJPanel(frameContainer));
+                }
+                if(actionEvent.getSource() == addDriver){
+                    frameContainer.add(new DriverForm(frameContainer));
+                }
+                if(actionEvent.getSource() == removeDriver){
+                    frameContainer.add(new RemoveDriver(frameContainer));
+                }
+                if(actionEvent.getSource() == modifyDriver){
 
-            if(actionEvent.getSource() == contactsInfos){
-                frameContainer.add(new ContactsInfosJPanel(frameContainer));
+                }
+                if(actionEvent.getSource() == showDriverList){
+                    frameContainer.add(new DriverJTable());
+                }
+                if(actionEvent.getSource() == researchAccident){
+                    frameContainer.add(new ResearchAccidentsJPanel(frameContainer));
+                }
+                if(actionEvent.getSource() == researchCars){
+                    frameContainer.add(new ResearchCarJPanel(frameContainer));
+                }
+                if(actionEvent.getSource() == researchRanking){
+                    frameContainer.add(new ResearchRankingJPanel(frameContainer));
+                }
+                frameContainer.repaint();
+                frameContainer.validate();
+            }catch (Exception exception){
+                JOptionPane.showMessageDialog(null, exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
             }
-            if(actionEvent.getSource() == addDriver){
-                frameContainer.add(new DriverForm(frameContainer));
-            }
-            if(actionEvent.getSource() == removeDriver){
-                frameContainer.add(new RemoveDriver(frameContainer));
-            }
-            if(actionEvent.getSource() == modifyDriver){
-
-            }
-            if(actionEvent.getSource() == showDriverList){
-                frameContainer.add(new DriverJTable());
-            }
-            if(actionEvent.getSource() == researchAccident){
-                frameContainer.add(new ResearchAccidentsJPanel(frameContainer));
-            }
-            if(actionEvent.getSource() == researchCars){
-                frameContainer.add(new ResearchCarJPanel(frameContainer));
-            }
-            if(actionEvent.getSource() == researchRanking){
-                frameContainer.add(new ResearchRankingJPanel(frameContainer));
-            }
-            frameContainer.repaint();
-            frameContainer.validate();
         }
     }
 }

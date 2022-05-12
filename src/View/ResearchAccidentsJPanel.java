@@ -2,7 +2,6 @@
 package View;
 
 import Controller.Controller;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
@@ -10,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
 //endregion
 
 public class ResearchAccidentsJPanel extends JPanel{
@@ -24,7 +24,7 @@ public class ResearchAccidentsJPanel extends JPanel{
     public ResearchAccidentsJPanel(Container mainContainer) {
         // init container & buttonsPanel
         this.mainContainer = mainContainer;
-        buttonsPanel = new ButtonsPanel("Back", "Next");
+        buttonsPanel = new ButtonsPanel();
         buttonsPanel.addActionListener(new ButtonListener());
 
         // create layout
@@ -54,20 +54,14 @@ public class ResearchAccidentsJPanel extends JPanel{
 
         if(start.getTime().compareTo(current.getTime()) > 0){
             errorDate.append(" la date de début est après la date de ce jour");
+        } else if(end.compareTo(current) > 0){
+            errorDate.append(" la date de fin est après la date de ce jour");
+        } else if(start.getTime().compareTo(end.getTime()) > 0){
+            errorDate.append(" la date de début se situe après celle de fin");
         } else {
-            if(end.compareTo(current) > 0){
-                errorDate.append(" la date de fin est après la date de ce jour");
-            } else{
-                if(start.getTime().compareTo(end.getTime()) > 0){
-                    errorDate.append(" la date de début se situe après celle de fin");
-                } else {
-                    correct = true;
-                }
-            }
+            correct = true;
         }
-
         return correct;
-
     }
     private class MainSpinnerPanel extends JPanel{
         public MainSpinnerPanel(){
@@ -113,7 +107,11 @@ public class ResearchAccidentsJPanel extends JPanel{
                     } else {
                         if(dateIsCorrect()){
                             mainContainer.removeAll();
-                            mainContainer.add(new AccidentsJTable());
+                            try {
+                                mainContainer.add(new AccidentsJTable());
+                            } catch (Exception exception) {
+                                JOptionPane.showMessageDialog(null, exception.getMessage(),"Erreur", JOptionPane.ERROR_MESSAGE);
+                            }
                             iNumPanel++;
                         } else {
                             JOptionPane.showMessageDialog(null, errorDate.toString());
@@ -127,9 +125,8 @@ public class ResearchAccidentsJPanel extends JPanel{
     private class AccidentsJTable extends JPanel{
         private JTable jTable;
         private JLabel title;
-        public AccidentsJTable (){
+        public AccidentsJTable () throws Exception {
             this.setLayout(new GridBagLayout());
-
 
             title = new JLabel("Liste des accidents");
             title.setFont(new Font("Arial",Font.TRUETYPE_FONT,20));

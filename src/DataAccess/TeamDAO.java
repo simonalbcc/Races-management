@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public interface TeamDAO {
 
-    public ArrayList<Team> getAllTeams();
+    public ArrayList<Team> getAllTeams()throws Exception;
 
 
 }

@@ -1,11 +1,11 @@
 package DataAccess;
 
-import Model.Locality;
-
 import javax.swing.*;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import Exception.LocalityException;
+import Model.Locality;
 
 public class LocalityDBAccess implements LocalityDAO{
     public Integer getNumberLocality(Locality locality){
@@ -24,7 +24,7 @@ public class LocalityDBAccess implements LocalityDAO{
         }
         return number;
     }
-    public void createLocality(Locality locality){
+    public void createLocality(Locality locality) throws LocalityException {
         try{
             String sql = "insert into Locality (city_name, postal_code, country) values (?,?,?)";
             PreparedStatement statement = SingletonConnexion.getInstance().prepareStatement(sql);
@@ -35,8 +35,8 @@ public class LocalityDBAccess implements LocalityDAO{
 
             statement.executeUpdate();
 
-        } catch(SQLException e){
-            e.printStackTrace(); // à changer
+        } catch(SQLException exception){
+            throw new LocalityException(exception);
         }
     }
 

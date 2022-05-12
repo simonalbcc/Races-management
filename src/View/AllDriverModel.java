@@ -1,15 +1,17 @@
+//region packages & imports
 package View;
 
 import Model.*;
-
 import javax.swing.table.AbstractTableModel;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+//endregion
 
 public class AllDriverModel extends AbstractTableModel {
+
+    // region private attributes & constructor
     private ArrayList<String> columnNames;
     private ArrayList<Model.Driver> drivers;
-
     public AllDriverModel(ArrayList<Model.Driver> drivers){
         columnNames = new ArrayList<>();
         this.drivers = drivers;
@@ -23,6 +25,9 @@ public class AllDriverModel extends AbstractTableModel {
         columnNames.add("Date de naissance");
         columnNames.add("Domicile");
     }
+    //endregion
+
+    //region abstract methods
     public String getColumnName(int col){
         return columnNames.get(col);
     }
@@ -61,7 +66,9 @@ public class AllDriverModel extends AbstractTableModel {
         }
         return c;
     }
+    //endregion
 
+    //region other methods
     public String teamNameOfDriver(Driver driver){
         return driver.getTeam().getName();
     }
@@ -78,5 +85,5 @@ public class AllDriverModel extends AbstractTableModel {
     public String getCityName(Driver driver){
         return driver.getHome().getCity();
     }
-
+    //endregion
 }

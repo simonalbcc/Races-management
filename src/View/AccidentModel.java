@@ -1,11 +1,15 @@
+//region packages & imports
 package View;
 
 import Model.Accident;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
+//endregion
 
 public class AccidentModel extends AbstractTableModel {
+
+    //region private attributes & constructor
     private ArrayList<Accident> accidents;
     private ArrayList<String> columnsName;
 
@@ -20,7 +24,9 @@ public class AccidentModel extends AbstractTableModel {
         columnsName.add("Equipe");
 
     }
+    //endregion
 
+    //region abstract methods
     public String getColumnName(int col){
         return columnsName.get(col);
     }
@@ -28,12 +34,10 @@ public class AccidentModel extends AbstractTableModel {
     public int getRowCount() {
         return this.accidents.size();
     }
-
     @Override
     public int getColumnCount() {
         return this.columnsName.size();
     }
-
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         Model.Accident accident = accidents.get(rowIndex);
@@ -52,5 +56,5 @@ public class AccidentModel extends AbstractTableModel {
                 return null;
         }
     }
-
+    //endregion
 }

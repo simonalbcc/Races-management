@@ -39,7 +39,11 @@ public class RemoveDriver extends JPanel {
                 ListSelectionModel listSelect = jTable.getSelectionModel();
                 int selectedItem = listSelect.getMinSelectionIndex();
                 int driverNumber = Integer.parseInt(jTable.getValueAt(selectedItem,0).toString());
-                controller.deleteDriver(driverNumber);
+                try {
+                    controller.deleteDriver(driverNumber);
+                } catch (Exception exception) {
+                    JOptionPane.showMessageDialog(null, exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
+                }
 
             }
             mainContainer.add(new WelcomeJPanel());

@@ -1,50 +1,46 @@
+//region packages & imports
 package View;
+
+import Utility.AddUtils;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+//endregion
 
 public class ContactsInfosJPanel extends JPanel {
-    private JLabel contactsInfos;
+
+    //region private attributes & constructor
+    private JLabel contactLabel;
     private JButton returnButton;
     private Container mainContainer;
     private GridBagConstraints gc;
 
     public ContactsInfosJPanel(Container mainContainer){
-        // init main container
+        // main container init
         this.mainContainer = mainContainer;
 
-        // set layout + constraints
+        // layout & constraints init
         this.setLayout(new GridBagLayout());
         gc = new GridBagConstraints();
         gc.insets = new Insets(20,0,0,0);
 
-        // init text
-        contactsInfos = new JLabel("<html> <h2><u> Développeurs : </u></h2> " +
+        // contact label init
+        contactLabel = new JLabel("<html> <h2><u> Développeurs : </u></h2> " +
                                         "<h3> Albicocco Simon  (<u>etu45523@henallux.be</u>) </h3> " +
                                         "<h3> De Winter Alexis (<u>etu45773@henallux.be</u>) </h3> " +
                                         "</html>");
 
-        // init button back
+        // back button init
         returnButton = new JButton("<html> <u>R</u>etour </html>");
-        returnButton.addActionListener(new ReturnListener());
+        returnButton.addActionListener(actionEvent -> AddUtils.addToMainContainer(mainContainer, new WelcomeJPanel()));
 
-        // add to the panel
-        this.add(contactsInfos, gc);
+        // add to the panel with constraints
+        this.add(contactLabel, gc);
         gc.gridy = 1;
         this.add(returnButton, gc);
-
-        // add to the container
-        mainContainer.add(this);
-
     }
+    //endregion
 
-    private class ReturnListener implements ActionListener {
-        public void actionPerformed(ActionEvent actionEvent) {
-            // manage the back button
-            mainContainer.removeAll();
-            mainContainer.add(new WelcomeJPanel());
-            mainContainer.validate();
-        }
-    }
 }

@@ -5,7 +5,7 @@ public class Car {
     private Double averageConsumption;
     private Double power;
     private Team membership;
-    private Boolean improved;// voir dossier !!
+    private Boolean improved;
     private String name;
 
 

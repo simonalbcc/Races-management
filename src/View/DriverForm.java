@@ -3,7 +3,9 @@ package View;
 
 import Controller.Controller;
 import Model.*;
-import Exception.*;
+import Utility.Utils;
+import jdk.jshell.execution.Util;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
@@ -15,7 +17,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.Locale;
 // endregion
 
 public class DriverForm extends  JPanel{
@@ -25,9 +26,9 @@ public class DriverForm extends  JPanel{
     private StringBuilder errorInputMessage;
     private Form form;
     private Controller controller;
-    private static String[] continents;
+    private static String[] continents = new String[]{"Europe", "Afrique", "Amérique", "Océanie", "Asie"};
 
-    public DriverForm(Container mainContainer) {
+    public DriverForm(Container mainContainer) throws Exception {
         //init container & form
         this.mainContainer = mainContainer;
         this.form = new Form();
@@ -37,7 +38,7 @@ public class DriverForm extends  JPanel{
         gc = new GridBagConstraints();
 
         // init & set title
-        title = new JLabel("<html> <h2> <u> Formulaire d'ajout d'un pilote : </u> </h2> </html>");
+        title = new JLabel("<html> <h3> <u> Formulaire d'ajout d'un pilote : </u> </h3> </html>");
 
         //region  add all
         this.add(title, gc);
@@ -52,17 +53,17 @@ public class DriverForm extends  JPanel{
     }
 
     private class Form extends JPanel {
-        private JTextField number, lastName, firstName, phoneNumber, streetName, streetNumber, city, country, zipCode;
+        private JTextField number, lastName, firstName, phoneNumber, streetName, streetNumber, city, zipCode;
         private ArrayList<JTextField> textFields;
         private JLabel numberLabel, lastNameLabel, firstNameLabel, phoneNumberLabel, streetAddressLabel, cityLabel, countryLabel, zipCodeLabel, originsLabel, teamsLabel, hasRenewedContractLabel, birthdateLabel;
-        private JComboBox origin, team;
+        private JComboBox country, origin, team;
         private JCheckBox hasRenewedContract;
         private JSpinner date;
         private JPanel addressPanel;
         private Border border, margin;
         private ArrayList<Team> teamsDB;
 
-        public Form(){
+        public Form() throws Exception {
             this.setBounds(10,80,500,150);
             this.setLayout(new GridLayout(13,2, 5,10));
             textFields = new ArrayList<>();
@@ -115,11 +116,6 @@ public class DriverForm extends  JPanel{
             zipCode.setName("code postal");
             textFields.add(zipCode);
 
-            country = new JTextField();
-            country.setToolTipText("Veuillez entrer le code postal de la ville du pilote (obligatoire)");
-            country.setName("pays");
-            textFields.add(country);
-
             numberLabel = new JLabel("Numéro : ");
             lastNameLabel =new JLabel("Nom : ");
             firstNameLabel = new JLabel("Prénom : ");
@@ -138,6 +134,10 @@ public class DriverForm extends  JPanel{
             // Combobox
             origin = new JComboBox(continents);
             origin.setToolTipText("Choisissez l'origine du pilote : ");
+
+            country = new JComboBox(Utils.getCountriesArray().toArray());
+            country.setToolTipText("Veuillez entrer le code postal de la ville du pilote (obligatoire)");
+            country.setName("pays");
 
             teamsDB = controller.getAllTeams();
             team = new JComboBox(teamsDB.stream().map(t -> t.getName()).toArray());
@@ -195,9 +195,11 @@ public class DriverForm extends  JPanel{
             margin = new EmptyBorder(10,10,10,10);
             this.setBorder(new CompoundBorder(border, margin));
         }
+
         public boolean isCorrect(){
             errorInputMessage = new StringBuilder("Action requise : \n");
             boolean filled = true;
+            boolean correct = false;
             for (JTextField textField : textFields) {
                 if(!textField.getName().equals("numéro de téléphone") && textField.getText().equals("")){
                     filled = false;
@@ -205,60 +207,55 @@ public class DriverForm extends  JPanel{
                 }
             }
             if(filled){
-                textFields.clear();
-                if(!number.getText().matches("\\d{1,3}")){
-                    errorInputMessage.append("- Le numéro du pilote entré est invalide ("+ (number.getText().length() > 3 ? "trop long" : "contient des lettres") +")\n");
-                    textFields.add(number);
-                }
                 if(!phoneNumber.getText().equals("") && !phoneNumber.getText().matches("\\d{4}\\.?\\/?(\\d+\\.?){3}")){
-                    errorInputMessage.append("- Le numéro de téléphone entré est invalide ("+ (phoneNumber.getText().length() > 10 ? "trop long" : "contient des lettres") +")\n");
-                    textFields.add(phoneNumber);
-                }
-                if(!zipCode.getText().matches("\\d{4,5}") && !zipCode.getClass().getSimpleName().equals("Integer")){
-                    errorInputMessage.append("- Le code postal entré est invalide ("+ (zipCode.getText().length() > 5 ? "trop long" : "ne contient pas de chiffres") +")\n");
-                    textFields.add(zipCode);
-                }
-                if(!lastName.getText().matches("[a-zA-Z-]{2,15}")){
-                    errorInputMessage.append("- Le nom de famille entré est invalide ("+(lastName.getText().length() > 15 ? "trop long" : "doit contenir uniquement des lettres")+")\n");
-                    textFields.add(lastName);
-                }
-                if(!firstName.getText().matches("[a-zA-Z-]{2,15}")){
-                    errorInputMessage.append("- Le prénom entré est invalide ("+(firstName.getText().length() > 15 ? "trop long" : "doit contenir uniquement des lettres")+")\n");
-                    textFields.add(firstName);
-                }
-                if(!streetName.getText().matches("(\\s?[a-zA-Z-]+\\s?)+") ||  streetName.getText().length() > 25){
-                    errorInputMessage.append("- Le nom de la rue entré est invalide ("+(streetName.getText().length() > 25 ? "trop long" : "doit contenir uniquement des lettres")+")\n");
-                    textFields.add(streetName);
-                }
-                if(!streetNumber.getText().matches("\\d{1,3}")){
-                    errorInputMessage.append("- Le numéro du domicile entré est invalide ("+(streetNumber.getText().length() > 3 ? "trop long" : "doit contenir uniquement des chiffres")+")\n");
-                    textFields.add(streetNumber);
-                }
-                if(!city.getText().matches("[a-zA-Z-]{4,20}")){
-                    errorInputMessage.append("- La ville entrée n'est pas valide ("+(city.getText().length() > 20 ? "trop long" : "doit contenir uniquement des lettres")+")\n");
-                    textFields.add(city);
-                }
-                if(!country.getText().matches("[a-zA-Z-]{4,15}")){
-                    errorInputMessage.append("- Le pays entrée n'est pas valide ("+(country.getText().length() > 15 ? "trop long" : "doit contenir uniquement des lettres")+")\n");
-                    textFields.add(country);
+                    errorInputMessage.append("- Le numéro de téléphone entré n'est pas juste (uniquement des chiffres et une taille de 10 chiffres)\n");
+                    phoneNumber.setName("wrong");
+                    JOptionPane.showMessageDialog(null, !phoneNumber.getText().equals("") && !phoneNumber.getText().matches("\\d{4}\\.?\\/?(\\d+\\.?){3}"));
+                } else if(!zipCode.getText().matches("\\d{4,5}")){
+                    errorInputMessage.append("- Le code postal entrée n'est pas valide (uniquement des chiffres et une taille max de 5 chiffres)\n");
+                    phoneNumber.setName("wrong");
+                } else if(!lastName.getText().matches("[a-zA-Z-]{2,15}") ||  lastName.getText().length() > 15){
+                    errorInputMessage.append("- Le nom de famille entré est trop long ou contient des chiffres\n");
+                    phoneNumber.setName("wrong");
+                } else if(!firstName.getText().matches("[a-zA-Z-]{2,15}") ||  firstName.getText().length() > 15){
+                    errorInputMessage.append("- Le prénom de famille entré est trop long ou contient des chiffres\n");
+                    phoneNumber.setName("wrong");
+                } else if(!streetName.getText().matches("(\\s?[a-zA-Z-]+\\s?)+") ||  streetName.getText().length() > 25){
+                    errorInputMessage.append("- Le nom de la rue entrée n'est pas valide\n");
+                    errorInputMessage.append(streetName.getText().length() > 25 ? "(trop long)" : "(uniquement des lettres)");
+                    phoneNumber.setName("wrong");
+                    JOptionPane.showMessageDialog(null, streetName.getText().matches("(\\s?[a-zA-Z-]+\\s?)"));
+                }  else if(!streetNumber.getText().matches("\\d{1,3}") ||  streetNumber.getText().length() > 3){
+                    errorInputMessage.append("- L'adresse entrée n'est pas valide\n");
+                    errorInputMessage.append(streetName.getText().length() > 27 ? "(trop long)" : "(uniquement des lettres)");
+                    phoneNumber.setName("wrong");
+                } else if(!city.getText().matches("[a-zA-Z-]{4,20}")|| city.getText().length() > 20){
+                    errorInputMessage.append("- La ville entrée n'est pas valide (uniquement des lettres et une taille max de 20 caractères)\n");
+                    phoneNumber.setName("wrong");
+                } else if(!country.getSelectedItem().toString().matches("[a-zA-Z-]{4,15}") || country.getSelectedItem().toString().length() > 15){
+                    errorInputMessage.append("- Le pays entrée n'est pas valide \n");
+                    errorInputMessage.append(country.getSelectedItem().toString().length() > 15 ? "(trop long)" : "ne contient pas de numéro ou de nom)");
+                    phoneNumber.setName("wrong");
+                } else {
+                    correct = true;
                 }
             }
-            return (textFields.size() < 1 & filled) && dateIsCorrect();
+            return (correct & filled) && dateIsCorrect();
         }
         public Driver createDriver(){
             GregorianCalendar birtdate = new GregorianCalendar(Integer.parseInt(new SimpleDateFormat("yyyy").format(date.getValue())), Integer.parseInt(new SimpleDateFormat("MM").format(date.getValue()))-1, Integer.parseInt(new SimpleDateFormat("dd").format(date.getValue())));
-            Locality locality = new Locality(null, Integer.parseInt(zipCode.getText()), city.getText(), country.getText());
+            Locality locality = new Locality(null, Integer.parseInt(zipCode.getText()), city.getText(), country.getSelectedItem().toString());
 
 
             return new Driver(  Integer.parseInt(number.getText()),
-                     lastName.getText()+" "+firstName.getText(),
-                                phoneNumber.getText(),
-                                streetName.getText().concat(" , "+streetNumber.getText()),
-                                continents[origin.getSelectedIndex()],
-                                teamsDB.get(team.getSelectedIndex()),
-                                hasRenewedContract.isSelected(),
-                                birtdate,
-                                locality);
+                    lastName.getText()+" "+firstName.getText(),
+                    phoneNumber.getText(),
+                    streetName.getText().concat(" , "+streetNumber.getText()),
+                    continents[origin.getSelectedIndex()],
+                    teamsDB.get(team.getSelectedIndex()),
+                    hasRenewedContract.isSelected(),
+                    birtdate,
+                    locality);
         }
         public boolean dateIsCorrect(){
             boolean correct = false;
@@ -277,13 +274,15 @@ public class DriverForm extends  JPanel{
         }
         public void cleanWrongTextField(){
             for (JTextField textField: textFields) {
-                textField.setText("");
+                if(textField.getName().equals("wrong")){
+                    textField.setText("");
+                }
             }
         }
-
     }
     private class ButtonsForm extends JPanel{
         private JButton back, reset, save;
+
         public ButtonsForm(){
             back = new JButton("<html> <u>R</u>etour <html>");
             back.addActionListener(new ButtonsFormListener());
@@ -297,41 +296,44 @@ public class DriverForm extends  JPanel{
             this.add(back);
             this.add(reset);
             this.add(save);
+            // encore à opti en utilisant buttons
 
         }
 
         private class ButtonsFormListener implements ActionListener {
+
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(e.getSource() == back){
-                    mainContainer.removeAll();
-                    mainContainer.add(new WelcomeJPanel());
-                }
-                if(e.getSource() == save){
-                    if(form.isCorrect()){
+                try{
+                    if(e.getSource() == back){
                         mainContainer.removeAll();
-                        Driver driver = form.createDriver();
-                        if(controller.getNumberLocality(driver.getHome())== null){
-                            controller.createLocality(driver.getHome());
-                        }
-                        driver.getHome().setNumber(controller.getNumberLocality(driver.getHome()));
-                        try {
-                            controller.addDriver(driver);
-                            JOptionPane.showMessageDialog(null, "Sauvegarde effectuée", "Information", JOptionPane.INFORMATION_MESSAGE);
-                        } catch (Exception exception) {
-                            JOptionPane.showMessageDialog(null, exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
-                        }
-                    } else {
-                        JOptionPane.showMessageDialog(null, errorInputMessage.toString(), "Erreur", JOptionPane.ERROR_MESSAGE);
-                        form.cleanWrongTextField();
+                        mainContainer.add(new WelcomeJPanel());
                     }
+                    if(e.getSource() == save){
+                        if(form.isCorrect()){
+                            mainContainer.removeAll();
+                            Driver driver = form.createDriver();
+                            if(controller.getNumberLocality(driver.getHome())== null){
+                                controller.createLocality(driver.getHome());
+                            }
+                            driver.getHome().setNumber(controller.getNumberLocality(driver.getHome()));
+                            controller.addDriver(driver);
+
+                            JOptionPane.showMessageDialog(null, "Sauvegarde effectuée", "Information", JOptionPane.INFORMATION_MESSAGE);
+                        } else {
+                            JOptionPane.showMessageDialog(null, errorInputMessage.toString(), "Erreur", JOptionPane.ERROR_MESSAGE);
+                            form.cleanWrongTextField();
+                        }
+                    }
+                    if(e.getSource() == reset){
+                        mainContainer.removeAll();
+                        mainContainer.add(new DriverForm(mainContainer));
+                    }
+                    mainContainer.repaint();
+                    mainContainer.validate();
+                } catch (Exception exception){
+                    JOptionPane.showMessageDialog(null, exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
                 }
-                if(e.getSource() == reset){
-                    mainContainer.removeAll();
-                    mainContainer.add(new DriverForm(mainContainer));
-                }
-                mainContainer.repaint();
-                mainContainer.validate();
             }
         }
     }
