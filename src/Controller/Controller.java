@@ -12,11 +12,15 @@ public class Controller {
         driverManager = new DriverManager();
     }
 
-    public void deleteDriver(int driverNumber){driverManager.deleteDriver(driverNumber); }
-
+    public void deleteDriver(Integer driverNumber){driverManager.deleteDriver(driverNumber); }
     public void addDriver(Driver driver) throws Exception {
        driverManager.addDriver(driver);
     }
+    public void updateDriver(Driver driver){
+
+    }
+
+
     public Integer getNumberLocality(Locality locality){
        return driverManager.getNumberLocality(locality);
     }

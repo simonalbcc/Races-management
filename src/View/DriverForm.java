@@ -51,60 +51,73 @@ public class DriverForm extends  JPanel{
     }
 
     private class Form extends JPanel {
-        private JTextField number, lastName, firstName, phoneNumber, streetAddress, city, land, zipCode;
-        private ArrayList<JTextField> textFieldsMandatory;
-        private JLabel numberLabel, lastNameLabel, firstNameLabel, phoneNumberLabel, streetAddressLabel, cityLabel, landLabel, zipCodeLabel, originsLabel, teamsLabel, hasRenewedContractLabel, birthdateLabel;
+        private JTextField number, lastName, firstName, phoneNumber, streetName, streetNumber, city, country, zipCode;
+        private ArrayList<JTextField> textFields;
+        private JLabel numberLabel, lastNameLabel, firstNameLabel, phoneNumberLabel, streetAddressLabel, cityLabel, countryLabel, zipCodeLabel, originsLabel, teamsLabel, hasRenewedContractLabel, birthdateLabel;
         private JComboBox origin, team;
         private JCheckBox hasRenewedContract;
         private JSpinner date;
+        private JPanel addressPanel;
         private Border border, margin;
         private ArrayList<Team> teamsDB;
 
         public Form(){
             this.setBounds(10,80,500,150);
             this.setLayout(new GridLayout(13,2, 5,10));
-            textFieldsMandatory = new ArrayList<>();
+            textFields = new ArrayList<>();
             controller = new Controller();
+            addressPanel = new JPanel();
 
             //region JTextfields
 
             number = new JTextField();
             number.setToolTipText("Veuillez entrer le numéro du pilote");
             number.setName("numéro");
-            textFieldsMandatory.add(number);
+            textFields.add(number);
 
             lastName = new JTextField();
             lastName.setToolTipText("Veuillez entrer le nom de famille du pilote (obligatoire)");
             lastName.setName("nom");
-            textFieldsMandatory.add(lastName);
+            textFields.add(lastName);
 
             firstName = new JTextField();
             firstName.setToolTipText("Veuillez entrer le prénom du pilote (obligatoire)");
             firstName.setName("prénom");
-            textFieldsMandatory.add(firstName);
+            textFields.add(firstName);
 
             phoneNumber = new JTextField();
             phoneNumber.setToolTipText("Veuillez entrer le numéro de téléphone du pilote (facultatif)");
+            phoneNumber.setName("numéro de téléphone");
+            textFields.add(phoneNumber);
 
-            streetAddress = new JTextField();
-            streetAddress.setToolTipText("Veuillez entrer l'adresse du pilote (obligatoire)");
-            streetAddress.setName("adresse");
-            textFieldsMandatory.add(streetAddress);
+            streetName = new JTextField();
+            streetName.setToolTipText("Veuillez entrer le nom de la rue du pilote (obligatoire)");
+            streetName.setName("adresse");
+            streetName.setPreferredSize(new Dimension(200,40));
+            addressPanel.add(streetName);
+            textFields.add(streetName);
+
+            streetNumber = new JTextField();
+            streetNumber.setToolTipText("Veuillez entrer le numéro de la maison du pilote (obligatoire)");
+            streetNumber.setName("adresse");
+            streetNumber.setPreferredSize(new Dimension(50,40));
+            addressPanel.add(streetNumber);
+            textFields.add(streetNumber);
 
             city = new JTextField();
             city.setToolTipText("Veuillez entrer la ville où réside le pilote (obligatoire)");
             city.setName("ville");
-            textFieldsMandatory.add(city);
+            textFields.add(city);
 
             zipCode = new JTextField();
             zipCode.setToolTipText("Veuillez entrer le code postal de la ville du pilote (obligatoire)");
             zipCode.setName("code postal");
-            textFieldsMandatory.add(zipCode);
+            textFields.add(zipCode);
 
-            land = new JTextField();
-            land.setToolTipText("Veuillez entrer le code postal de la ville du pilote (obligatoire)");
-            land.setName("pays");
-            textFieldsMandatory.add(land);
+            country = new JTextField();
+            country.setToolTipText("Veuillez entrer le code postal de la ville du pilote (obligatoire)");
+            country.setName("pays");
+            textFields.add(country);
 
             numberLabel = new JLabel("Numéro : ");
             lastNameLabel =new JLabel("Nom : ");
@@ -113,7 +126,7 @@ public class DriverForm extends  JPanel{
             streetAddressLabel = new JLabel("Adresse : ");
             cityLabel = new JLabel("Ville : ");
             zipCodeLabel = new JLabel("Code postal : ");
-            landLabel = new JLabel("Pays : ");
+            countryLabel = new JLabel("Pays : ");
             //endregion
 
             // JSpinners
@@ -151,7 +164,7 @@ public class DriverForm extends  JPanel{
             this.add(phoneNumber);
 
             this.add(streetAddressLabel);
-            this.add(streetAddress);
+            this.add(addressPanel);
 
             this.add(zipCodeLabel);
             this.add(zipCode);
@@ -159,8 +172,8 @@ public class DriverForm extends  JPanel{
             this.add(cityLabel);
             this.add(city);
 
-            this.add(landLabel);
-            this.add(land);
+            this.add(countryLabel);
+            this.add(country);
 
             this.add(birthdateLabel);
             this.add(date);
@@ -186,36 +199,42 @@ public class DriverForm extends  JPanel{
             errorInputMessage = new StringBuilder("Action requise : \n");
             boolean filled = true;
             boolean correct = false;
-            for (JTextField textField : textFieldsMandatory) {
-                if(textField.getText().equals("")){
+            for (JTextField textField : textFields) {
+                if(!textField.getName().equals("numéro de téléphone") && textField.getText().equals("")){
                     filled = false;
                     errorInputMessage.append("- Le champs '"+ textField.getName() +"' doit être remplis \n");
                 }
             }
             if(filled){
-                if(!phoneNumber.getText().matches("\\d{10,12}|\\+?\\d{3,5}(\\/?)(\\d{8}.?)+") || (phoneNumber.getText().length() > 12 && phoneNumber.getText().length() < 10)){
-                    errorInputMessage.append("- Le numéro de téléphone entré n'est pas juste (uniquement des chiffres et une taille de 10 à 12 chiffres)\n");
-                    phoneNumber.setText("");
+                if(!phoneNumber.getText().equals("") && !phoneNumber.getText().matches("\\d{4}\\.?\\/?(\\d+\\.?){3}")){
+                    errorInputMessage.append("- Le numéro de téléphone entré n'est pas juste (uniquement des chiffres et une taille de 10 chiffres)\n");
+                    phoneNumber.setName("wrong");
+                    JOptionPane.showMessageDialog(null, !phoneNumber.getText().equals("") && !phoneNumber.getText().matches("\\d{4}\\.?\\/?(\\d+\\.?){3}"));
                 } else if(!zipCode.getText().matches("\\d{4,5}")){
                     errorInputMessage.append("- Le code postal entrée n'est pas valide (uniquement des chiffres et une taille max de 5 chiffres)\n");
-                    zipCode.setText("");
+                    phoneNumber.setName("wrong");
                 } else if(!lastName.getText().matches("[a-zA-Z-]{2,15}") ||  lastName.getText().length() > 15){
                     errorInputMessage.append("- Le nom de famille entré est trop long ou contient des chiffres\n");
-                    lastName.setText("");
+                    phoneNumber.setName("wrong");
                 } else if(!firstName.getText().matches("[a-zA-Z-]{2,15}") ||  firstName.getText().length() > 15){
                     errorInputMessage.append("- Le prénom de famille entré est trop long ou contient des chiffres\n");
-                    firstName.setText("");
-                } else if(!streetAddress.getText().matches("(\\d{1,3},?\\s?)([a-zA-Z-]+\\s?)+|([a-zA-Z-]+\\s?)+(,?\\s?\\d{1,3})") ||  streetAddress.getText().length() > 30){
+                    phoneNumber.setName("wrong");
+                } else if(!streetName.getText().matches("(\\s?[a-zA-Z-]+\\s?)+") ||  streetName.getText().length() > 25){
+                    errorInputMessage.append("- Le nom de la rue entrée n'est pas valide\n");
+                    errorInputMessage.append(streetName.getText().length() > 25 ? "(trop long)" : "(uniquement des lettres)");
+                    phoneNumber.setName("wrong");
+                    JOptionPane.showMessageDialog(null, streetName.getText().matches("(\\s?[a-zA-Z-]+\\s?)"));
+                }  else if(!streetNumber.getText().matches("\\d{1,3}") ||  streetNumber.getText().length() > 3){
                     errorInputMessage.append("- L'adresse entrée n'est pas valide\n");
-                    errorInputMessage.append(streetAddress.getText().length() > 30 ? "(trop long)" : "ne contient pas de numéro ou de nom)");
-                    streetAddress.setText("");
+                    errorInputMessage.append(streetName.getText().length() > 27 ? "(trop long)" : "(uniquement des lettres)");
+                    phoneNumber.setName("wrong");
                 } else if(!city.getText().matches("[a-zA-Z-]{4,20}")|| city.getText().length() > 20){
                     errorInputMessage.append("- La ville entrée n'est pas valide (uniquement des lettres et une taille max de 20 caractères)\n");
-                    city.setText("");
-                } else if(!land.getText().matches("[a-zA-Z-]{4,15}") || land.getText().length() > 15){
+                    phoneNumber.setName("wrong");
+                } else if(!country.getText().matches("[a-zA-Z-]{4,15}") || country.getText().length() > 15){
                     errorInputMessage.append("- Le pays entrée n'est pas valide \n");
-                    errorInputMessage.append(land.getText().length() > 15 ? "(trop long)" : "ne contient pas de numéro ou de nom)");
-                    land.setText("");
+                    errorInputMessage.append(country.getText().length() > 15 ? "(trop long)" : "ne contient pas de numéro ou de nom)");
+                    phoneNumber.setName("wrong");
                 } else {
                     correct = true;
                 }
@@ -224,13 +243,13 @@ public class DriverForm extends  JPanel{
         }
         public Driver createDriver(){
             GregorianCalendar birtdate = new GregorianCalendar(Integer.parseInt(new SimpleDateFormat("yyyy").format(date.getValue())), Integer.parseInt(new SimpleDateFormat("MM").format(date.getValue()))-1, Integer.parseInt(new SimpleDateFormat("dd").format(date.getValue())));
-            Locality locality = new Locality(null, Integer.parseInt(zipCode.getText()), city.getText(), land.getText());
+            Locality locality = new Locality(null, Integer.parseInt(zipCode.getText()), city.getText(), country.getText());
 
 
             return new Driver(  Integer.parseInt(number.getText()),
                      lastName.getText()+" "+firstName.getText(),
-                                Long.parseLong(phoneNumber.getText()),
-                                streetAddress.getText(),
+                                phoneNumber.getText(),
+                                streetName.getText().concat(" , "+streetNumber.getText()),
                                 continents[origin.getSelectedIndex()],
                                 teamsDB.get(team.getSelectedIndex()),
                                 hasRenewedContract.isSelected(),
@@ -251,6 +270,13 @@ public class DriverForm extends  JPanel{
                 correct = true;
             }
             return correct;
+        }
+        public void cleanWrongTextField(){
+            for (JTextField textField: textFields) {
+                if(textField.getName().equals("wrong")){
+                    textField.setText("");
+                }
+            }
         }
     }
     private class ButtonsForm extends JPanel{
@@ -298,6 +324,7 @@ public class DriverForm extends  JPanel{
                         JOptionPane.showMessageDialog(null, "Sauvegarde effectuée", "Information", JOptionPane.INFORMATION_MESSAGE);
                     } else {
                         JOptionPane.showMessageDialog(null, errorInputMessage.toString(), "Erreur", JOptionPane.ERROR_MESSAGE);
+                        form.cleanWrongTextField();
                     }
                 }
                 if(e.getSource() == reset){

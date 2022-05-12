@@ -20,7 +20,7 @@ public class DriverDBAccess implements DriverDAO {
 
             statement.setInt(1, driver.getSerialNumber());
             statement.setString(2, driver.getLastNameFirstName());
-            statement.setLong(3, driver.getPhoneNumber());
+            statement.setString(3, driver.getPhoneNumber());
             statement.setString(4, driver.getStreetAndNumber());
             statement.setString(5, driver.getNationality());
             statement.setString(6, driver.getTeam().getName());
@@ -85,7 +85,7 @@ public class DriverDBAccess implements DriverDAO {
 
                 driver = new Driver(data.getInt(1),
                                     data.getString(2),
-                                    data.getLong(3),
+                                    data.getString(3),
                                     data.getString(4),
                                     data.getString(5),
                                     new Team(data.getString(6), data.getString(7)),

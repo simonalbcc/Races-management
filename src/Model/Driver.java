@@ -7,13 +7,13 @@ public class Driver {
     private String lastNameFirstName;
     private String streetAndNumber;
     private String nationality;
-    private Long phoneNumber;
+    private String phoneNumber;
     private Team team;
     private Boolean hasRenewedCommitmentContract;
     private GregorianCalendar birthdate;
     private Locality home;
 
-    public Driver(Integer serialNumber, String lastNameFirstName, Long phoneNumber, String streetAndNumber, String nationality, Team team, Boolean hasRenewedCommitmentContract, GregorianCalendar birthdate, Locality home) {
+    public Driver(Integer serialNumber, String lastNameFirstName, String phoneNumber, String streetAndNumber, String nationality, Team team, Boolean hasRenewedCommitmentContract, GregorianCalendar birthdate, Locality home) {
         setSerialNumber(serialNumber);
         this.lastNameFirstName = lastNameFirstName;
         this.phoneNumber = phoneNumber;
@@ -55,10 +55,10 @@ public class Driver {
         this.nationality = nationality;
     }
 
-    public Long getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
-    public void setPhoneNumber(Long phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
