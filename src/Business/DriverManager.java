@@ -46,4 +46,6 @@ public class DriverManager {
         return localityAccess.getNumberLocality(locality);
     }
 
+    public ArrayList<Race> getWinningSponsorsOfACircuit(String circuitName){return raceAccess.getWinningSponsorsOfACircuit(circuitName);}
+
 }
