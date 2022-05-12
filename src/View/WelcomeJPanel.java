@@ -118,7 +118,7 @@ public class WelcomeJPanel extends JPanel {
 
             public GraphicCar(){
                 try{
-                    carImage = ImageIO.read(new FileInputStream("car.png"));
+                    carImage = ImageIO.read(new FileInputStream("images\\car.png"));
                 }catch (IOException e){
                     e.printStackTrace(); // à changer
                 }
@@ -132,13 +132,13 @@ public class WelcomeJPanel extends JPanel {
                     deltaX *= -1;
                     if(deltaX == -1){
                         try{
-                            carImage = ImageIO.read(new FileInputStream("carReversed.png"));
+                            carImage = ImageIO.read(new FileInputStream("images\\carReversed.png"));
                         }catch (IOException e){
                             e.printStackTrace();
                         }
                     }else{
                         try{
-                            carImage = ImageIO.read(new FileInputStream("car.png"));
+                            carImage = ImageIO.read(new FileInputStream("images\\car.png"));
                         }catch (IOException e){
                             e.printStackTrace();
                         }
@@ -174,7 +174,7 @@ public class WelcomeJPanel extends JPanel {
 
             public void draw(Graphics g){
                 try{
-                    line = ImageIO.read(new FileInputStream("line.png"));
+                    line = ImageIO.read(new FileInputStream("images\\line.png"));
                 }catch (IOException e){
                     e.printStackTrace();
                 }

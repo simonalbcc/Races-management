@@ -27,7 +27,7 @@ public class DriverJTable extends JPanel {
 
         title = new JLabel(" Liste des pilotes");
         title.setFont(new Font("Serif",Font.TRUETYPE_FONT,30));
-        imageIcon = new ImageIcon("volant.png");
+        imageIcon = new ImageIcon("driver.png");
         imageIcon.setImage(imageIcon.getImage().getScaledInstance(75,50, Image.SCALE_SMOOTH));
         title.setIcon(imageIcon);
 
