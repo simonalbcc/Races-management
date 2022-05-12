@@ -198,7 +198,6 @@ public class DriverForm extends  JPanel{
         public boolean isCorrect(){
             errorInputMessage = new StringBuilder("Action requise : \n");
             boolean filled = true;
-            boolean correct = false;
             for (JTextField textField : textFields) {
                 if(!textField.getName().equals("numéro de téléphone") && textField.getText().equals("")){
                     filled = false;
@@ -206,40 +205,45 @@ public class DriverForm extends  JPanel{
                 }
             }
             if(filled){
+                textFields.clear();
+                if(!number.getText().matches("\\d{3}")){
+                    errorInputMessage.append("- Le numéro du pilote entré est invalide ("+ (number.getText().length() > 3 ? "trop long" : "contient des lettres") +")\n");
+                    textFields.add(number);
+                }
                 if(!phoneNumber.getText().equals("") && !phoneNumber.getText().matches("\\d{4}\\.?\\/?(\\d+\\.?){3}")){
-                    errorInputMessage.append("- Le numéro de téléphone entré n'est pas juste (uniquement des chiffres et une taille de 10 chiffres)\n");
-                    phoneNumber.setName("wrong");
-                    JOptionPane.showMessageDialog(null, !phoneNumber.getText().equals("") && !phoneNumber.getText().matches("\\d{4}\\.?\\/?(\\d+\\.?){3}"));
-                } else if(!zipCode.getText().matches("\\d{4,5}")){
-                    errorInputMessage.append("- Le code postal entrée n'est pas valide (uniquement des chiffres et une taille max de 5 chiffres)\n");
-                    phoneNumber.setName("wrong");
-                } else if(!lastName.getText().matches("[a-zA-Z-]{2,15}") ||  lastName.getText().length() > 15){
-                    errorInputMessage.append("- Le nom de famille entré est trop long ou contient des chiffres\n");
-                    phoneNumber.setName("wrong");
-                } else if(!firstName.getText().matches("[a-zA-Z-]{2,15}") ||  firstName.getText().length() > 15){
-                    errorInputMessage.append("- Le prénom de famille entré est trop long ou contient des chiffres\n");
-                    phoneNumber.setName("wrong");
-                } else if(!streetName.getText().matches("(\\s?[a-zA-Z-]+\\s?)+") ||  streetName.getText().length() > 25){
-                    errorInputMessage.append("- Le nom de la rue entrée n'est pas valide\n");
-                    errorInputMessage.append(streetName.getText().length() > 25 ? "(trop long)" : "(uniquement des lettres)");
-                    phoneNumber.setName("wrong");
-                    JOptionPane.showMessageDialog(null, streetName.getText().matches("(\\s?[a-zA-Z-]+\\s?)"));
-                }  else if(!streetNumber.getText().matches("\\d{1,3}") ||  streetNumber.getText().length() > 3){
-                    errorInputMessage.append("- L'adresse entrée n'est pas valide\n");
-                    errorInputMessage.append(streetName.getText().length() > 27 ? "(trop long)" : "(uniquement des lettres)");
-                    phoneNumber.setName("wrong");
-                } else if(!city.getText().matches("[a-zA-Z-]{4,20}")|| city.getText().length() > 20){
-                    errorInputMessage.append("- La ville entrée n'est pas valide (uniquement des lettres et une taille max de 20 caractères)\n");
-                    phoneNumber.setName("wrong");
-                } else if(!country.getText().matches("[a-zA-Z-]{4,15}") || country.getText().length() > 15){
-                    errorInputMessage.append("- Le pays entrée n'est pas valide \n");
-                    errorInputMessage.append(country.getText().length() > 15 ? "(trop long)" : "ne contient pas de numéro ou de nom)");
-                    phoneNumber.setName("wrong");
-                } else {
-                    correct = true;
+                    errorInputMessage.append("- Le numéro de téléphone entré est invalide ("+ (phoneNumber.getText().length() > 10 ? "trop long" : "contient des lettres") +")\n");
+                    textFields.add(phoneNumber);
+                }
+                if(!zipCode.getText().matches("\\d{4,5}") && !zipCode.getClass().getSimpleName().equals("Integer")){
+                    errorInputMessage.append("- Le code postal entré est invalide ("+ (zipCode.getText().length() > 5 ? "trop long" : "ne contient pas de chiffres") +")\n");
+                    textFields.add(zipCode);
+                }
+                if(!lastName.getText().matches("[a-zA-Z-]{2,15}")){
+                    errorInputMessage.append("- Le nom de famille entré est invalide ("+(lastName.getText().length() > 15 ? "trop long" : "doit contenir uniquement des lettres")+")\n");
+                    textFields.add(lastName);
+                }
+                if(!firstName.getText().matches("[a-zA-Z-]{2,15}")){
+                    errorInputMessage.append("- Le prénom entré est invalide ("+(firstName.getText().length() > 15 ? "trop long" : "doit contenir uniquement des lettres")+")\n");
+                    textFields.add(firstName);
+                }
+                if(!streetName.getText().matches("(\\s?[a-zA-Z-]+\\s?)+") ||  streetName.getText().length() > 25){
+                    errorInputMessage.append("- Le nom de la rue entré est invalide ("+(streetName.getText().length() > 25 ? "trop long" : "doit contenir uniquement des lettres")+")\n");
+                    textFields.add(streetName);
+                }
+                if(!streetNumber.getText().matches("\\d{1,3}")){
+                    errorInputMessage.append("- Le numéro du domicile entré est invalide ("+(streetNumber.getText().length() > 3 ? "trop long" : "doit contenir uniquement des chiffres")+")\n");
+                    textFields.add(streetNumber);
+                }
+                if(!city.getText().matches("[a-zA-Z-]{4,20}")){
+                    errorInputMessage.append("- La ville entrée n'est pas valide ("+(city.getText().length() > 20 ? "trop long" : "doit contenir uniquement des lettres")+")\n");
+                    textFields.add(city);
+                }
+                if(!country.getText().matches("[a-zA-Z-]{4,15}")){
+                    errorInputMessage.append("- Le pays entrée n'est pas valide ("+(country.getText().length() > 15 ? "trop long" : "doit contenir uniquement des lettres")+")\n");
+                    textFields.add(country);
                 }
             }
-            return (correct & filled) && dateIsCorrect();
+            return (textFields.size() < 1 & filled) && dateIsCorrect();
         }
         public Driver createDriver(){
             GregorianCalendar birtdate = new GregorianCalendar(Integer.parseInt(new SimpleDateFormat("yyyy").format(date.getValue())), Integer.parseInt(new SimpleDateFormat("MM").format(date.getValue()))-1, Integer.parseInt(new SimpleDateFormat("dd").format(date.getValue())));
@@ -273,15 +277,12 @@ public class DriverForm extends  JPanel{
         }
         public void cleanWrongTextField(){
             for (JTextField textField: textFields) {
-                if(textField.getName().equals("wrong")){
-                    textField.setText("");
-                }
+                textField.setText("");
             }
         }
     }
     private class ButtonsForm extends JPanel{
         private JButton back, reset, save;
-
         public ButtonsForm(){
             back = new JButton("<html> <u>R</u>etour <html>");
             back.addActionListener(new ButtonsFormListener());
@@ -296,11 +297,9 @@ public class DriverForm extends  JPanel{
             this.add(reset);
             this.add(save);
 
-
         }
 
         private class ButtonsFormListener implements ActionListener {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(e.getSource() == back){
@@ -320,7 +319,6 @@ public class DriverForm extends  JPanel{
                         } catch (Exception exception) {
                             JOptionPane.showMessageDialog(null, exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
                         }
-
                         JOptionPane.showMessageDialog(null, "Sauvegarde effectuée", "Information", JOptionPane.INFORMATION_MESSAGE);
                     } else {
                         JOptionPane.showMessageDialog(null, errorInputMessage.toString(), "Erreur", JOptionPane.ERROR_MESSAGE);

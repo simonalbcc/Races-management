@@ -47,10 +47,10 @@ public class WelcomeJPanel extends JPanel {
     private class ButtonJPanel extends JPanel{
         private JButton speedUpButton, slowDownButton;
             public ButtonJPanel(){
-            speedUpButton = new JButton("Speed up !");
+            speedUpButton = new JButton("Accélérer !");
             speedUpButton.addActionListener(new ButtonListener());
 
-            slowDownButton = new JButton("Slow down...");
+            slowDownButton = new JButton("Ralentir...");
             slowDownButton.addActionListener(new ButtonListener());
 
             this.add(slowDownButton);
