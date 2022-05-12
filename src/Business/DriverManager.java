@@ -26,11 +26,7 @@ public class DriverManager {
     public void deleteDriver(int driverNumber){ driverAccess.deleteDriver(driverNumber);}
 
     public void addDriver(Driver driver) throws Exception {
-            if(driverAccess.getAllDrivers().contains(driver.getLastNameFirstName())||driverAccess.getAllDrivers().contains(driver.getPhoneNumber()) ){
-                throw new DriverException(driver);
-            } else {
-                driverAccess.addDriver(driver);
-            }
+        driverAccess.addDriver(driver);
     }
     public Integer getNumberLocality(Locality locality){
         return localityAccess.getNumberLocality(locality);

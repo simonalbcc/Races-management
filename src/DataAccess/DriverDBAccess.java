@@ -2,17 +2,14 @@ package DataAccess;
 
 import Model.*;
 import Model.Driver;
-
-import javax.swing.*;
+import Exception.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
-import java.util.Date;
 
 public class DriverDBAccess implements DriverDAO {
 
-    public void addDriver(Model.Driver driver){
-        Locality locality;
+    public void addDriver(Model.Driver driver) throws Exception {
         try{
             String sql = "insert into Driver (number, last_name_first_name, phone_number, street_and_number, nationality, team, has_renewed_commitment_contract, birthdate, home)values(?,?,?,?,?,?,?,?,?)";
 
@@ -31,7 +28,7 @@ public class DriverDBAccess implements DriverDAO {
             statement.executeUpdate();
 
         } catch (SQLException exception){
-            JOptionPane.showMessageDialog(null, exception.getMessage()); // changer
+            throw new DriverException(driver, exception);
         }
     }
     public void updateDriver(){

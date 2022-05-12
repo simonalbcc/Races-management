@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 // endregion
 
 public class DriverForm extends  JPanel{
@@ -24,7 +25,7 @@ public class DriverForm extends  JPanel{
     private StringBuilder errorInputMessage;
     private Form form;
     private Controller controller;
-    private static String[] continents = new String[]{"Europe", "Afrique", "Amérique", "Océanie", "Asie"};
+    private static String[] continents;
 
     public DriverForm(Container mainContainer) {
         //init container & form
@@ -194,7 +195,6 @@ public class DriverForm extends  JPanel{
             margin = new EmptyBorder(10,10,10,10);
             this.setBorder(new CompoundBorder(border, margin));
         }
-
         public boolean isCorrect(){
             errorInputMessage = new StringBuilder("Action requise : \n");
             boolean filled = true;
@@ -206,7 +206,7 @@ public class DriverForm extends  JPanel{
             }
             if(filled){
                 textFields.clear();
-                if(!number.getText().matches("\\d{3}")){
+                if(!number.getText().matches("\\d{1,3}")){
                     errorInputMessage.append("- Le numéro du pilote entré est invalide ("+ (number.getText().length() > 3 ? "trop long" : "contient des lettres") +")\n");
                     textFields.add(number);
                 }
@@ -280,6 +280,7 @@ public class DriverForm extends  JPanel{
                 textField.setText("");
             }
         }
+
     }
     private class ButtonsForm extends JPanel{
         private JButton back, reset, save;
@@ -316,10 +317,10 @@ public class DriverForm extends  JPanel{
                         driver.getHome().setNumber(controller.getNumberLocality(driver.getHome()));
                         try {
                             controller.addDriver(driver);
+                            JOptionPane.showMessageDialog(null, "Sauvegarde effectuée", "Information", JOptionPane.INFORMATION_MESSAGE);
                         } catch (Exception exception) {
                             JOptionPane.showMessageDialog(null, exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
                         }
-                        JOptionPane.showMessageDialog(null, "Sauvegarde effectuée", "Information", JOptionPane.INFORMATION_MESSAGE);
                     } else {
                         JOptionPane.showMessageDialog(null, errorInputMessage.toString(), "Erreur", JOptionPane.ERROR_MESSAGE);
                         form.cleanWrongTextField();
