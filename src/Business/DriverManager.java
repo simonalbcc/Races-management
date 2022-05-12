@@ -5,6 +5,7 @@ import DataAccess.DAO;
 import Model.*;
 import java.util.ArrayList;
 import java.util.Date;
+import Exception.DriverException;
 
 public class DriverManager {
     private DAO dataAccess;
@@ -15,8 +16,12 @@ public class DriverManager {
 
     public void deleteDriver(int driverNumber){ dataAccess.deleteDriver(driverNumber);}
 
-    public void addDriver(Driver driver){
-        dataAccess.addDriver(driver);
+    public void addDriver(Driver driver) throws DriverException {
+            if(dataAccess.getAllDrivers().contains(driver.getLastNameFirstName())||dataAccess.getAllDrivers().contains(driver.getPhoneNumber()) ){
+                throw new DriverException(driver);
+            } else {
+                dataAccess.addDriver(driver);
+            }
     }
     public Integer getNumberLocality(Locality locality){
         return dataAccess.getNumberLocality(locality);

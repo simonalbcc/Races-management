@@ -1,10 +1,8 @@
 package Controller;
 
 import Business.DriverManager;
-import DataAccess.DAO;
-import DataAccess.DriverDBAccess;
 import Model.*;
-
+import Exception.DriverException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -16,7 +14,7 @@ public class Controller {
 
     public void deleteDriver(int driverNumber){driverManager.deleteDriver(driverNumber); }
 
-    public void addDriver(Driver driver){
+    public void addDriver(Driver driver) throws DriverException {
        driverManager.addDriver(driver);
     }
     public Integer getNumberLocality(Locality locality){

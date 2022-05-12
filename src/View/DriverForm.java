@@ -1,12 +1,9 @@
 //region packages & imports
 package View;
 
-import Business.DriverManager;
 import Controller.Controller;
-import Model.Driver;
-import Model.Locality;
-import Model.Team;
-
+import Model.*;
+import Exception.*;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
@@ -292,7 +289,12 @@ public class DriverForm extends  JPanel{
                             controller.createLocality(driver.getHome());
                         }
                         driver.getHome().setNumber(controller.getNumberLocality(driver.getHome()));
-                        controller.addDriver(driver);
+                        try {
+                            controller.addDriver(driver);
+                        } catch (Exception.Exception exception) {
+                            JOptionPane.showMessageDialog(null, exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
+                        }
+
                         JOptionPane.showMessageDialog(null, "Sauvegarde effectuée", "Information", JOptionPane.INFORMATION_MESSAGE);
                     } else {
                         JOptionPane.showMessageDialog(null, errorInputMessage.toString(), "Erreur", JOptionPane.ERROR_MESSAGE);
