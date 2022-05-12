@@ -16,7 +16,7 @@ public class DriverManager {
 
     public void deleteDriver(int driverNumber){ dataAccess.deleteDriver(driverNumber);}
 
-    public void addDriver(Driver driver) throws DriverException {
+    public void addDriver(Driver driver) throws Exception {
             if(dataAccess.getAllDrivers().contains(driver.getLastNameFirstName())||dataAccess.getAllDrivers().contains(driver.getPhoneNumber()) ){
                 throw new DriverException(driver);
             } else {

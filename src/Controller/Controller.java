@@ -14,7 +14,7 @@ public class Controller {
 
     public void deleteDriver(int driverNumber){driverManager.deleteDriver(driverNumber); }
 
-    public void addDriver(Driver driver) throws DriverException {
+    public void addDriver(Driver driver) throws Exception {
        driverManager.addDriver(driver);
     }
     public Integer getNumberLocality(Locality locality){

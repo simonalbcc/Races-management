@@ -291,7 +291,7 @@ public class DriverForm extends  JPanel{
                         driver.getHome().setNumber(controller.getNumberLocality(driver.getHome()));
                         try {
                             controller.addDriver(driver);
-                        } catch (Exception.Exception exception) {
+                        } catch (Exception exception) {
                             JOptionPane.showMessageDialog(null, exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
                         }
 

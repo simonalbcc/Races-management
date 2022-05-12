@@ -2,7 +2,7 @@ package Exception;
 
 import Model.Driver;
 
-public class DriverException extends Exception{
+public class DriverException extends java.lang.Exception {
     private Driver driver;
 
     public DriverException(Driver driver) {
