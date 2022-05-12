@@ -42,6 +42,8 @@ public class Controller {
     public ArrayList<Ranking> getARaceRanking(String circuitName, String raceDate)throws Exception{return driverManager.getARaceRanking(circuitName,raceDate);}
 
     public ArrayList<Accident> getAccidentedDrivers(Date startDate, Date endDate)throws Exception{return driverManager.getAccidentedDrivers(startDate, endDate);}
+
+    public ArrayList<Race> getWinningSponsorsOfACircuit(String circuitName){return driverManager.getWinningSponsorsOfACircuit(circuitName);}
 }
 
 

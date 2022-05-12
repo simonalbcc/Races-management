@@ -39,4 +39,7 @@ public class Ranking {
     public Car getCar() {
         return car;
     }
+    public Race getRace() {
+        return race;
+    }
 }

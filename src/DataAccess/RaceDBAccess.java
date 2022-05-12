@@ -1,8 +1,6 @@
 package DataAccess;
 
-import Model.Car;
-import Model.Driver;
-import Model.Ranking;
+import Model.*;
 import Exception.RaceException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -58,6 +56,31 @@ public class RaceDBAccess implements RaceDAO{
             exception.printStackTrace(); // à changer
         }
         return rankings;
+    }
+    public ArrayList<Race> getWinningSponsorsOfACircuit(String circuitName){
+        ArrayList<Race> races = new ArrayList<Race>();
+        try{
+            String sql = "select race.date, team.name, sponsor.company\n" +
+                         "from Race race inner join Ranking ranking on race.serial_number = ranking.race\n" +
+                         "inner join Car car on ranking.car = car.number\n" +
+                         "inner join Team team on car.membership = team.name\n" +
+                         "inner join Sponsor sponsor on team.name = sponsor.team\n" +
+                         "where ranking.position = 1 and race.circuit = ?;";
+
+            PreparedStatement statement = SingletonConnexion.getInstance().prepareStatement(sql);
+            statement.setString(1,circuitName);
+
+            ResultSet data = statement.executeQuery();
+
+            while(data.next()){
+                races.add(new Race(null,null,null,data.getDate(1),null,
+                          new Ranking[]{new Ranking(new Car(null,null,null,new Team(data.getString(2),null, new Company[] { new Company((data.getString(3)),null,null,null,null)}),null,null),null,null,null,null,null,null)}));
+            }
+
+        } catch (SQLException exception){
+            exception.printStackTrace(); // à changer
+        }
+        return races;
     }
 
 }
