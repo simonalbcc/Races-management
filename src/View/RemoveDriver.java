@@ -1,6 +1,7 @@
 //region packages & imports
 package View;
 
+import javax.swing.*;
 import java.awt.*;
 //endregion
 
@@ -12,10 +13,6 @@ public class RemoveDriver extends OperationTemplate {
     }
 
     //region abstract methods
-    public void changeNextText() {
-        this.getButtonsPanel().getNext().setText("Supprimer l'élément séléctionné");
-    }
-
     @Override
     public void operation(int driverNumber) throws Exception {
         getController().deleteDriver(driverNumber);

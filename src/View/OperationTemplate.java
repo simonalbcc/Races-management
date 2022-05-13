@@ -68,16 +68,21 @@ public abstract class OperationTemplate extends JPanel {
                 // get selected line
                 ListSelectionModel listSelect = driverJTable.getjTable().getSelectionModel();
                 int selectedItem = listSelect.getMinSelectionIndex();
-                int driverNumber = Integer.parseInt(driverJTable.getjTable().getValueAt(selectedItem,0).toString());
-                try {
-                    operation(driverNumber);
-                    int result = JOptionPane.showConfirmDialog(null, "Êtes-vous sûrs de vouloir continuer? Les données seront perdues.", "Avertissement", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
-                    if(result == 0) {
-                        JOptionPane.showMessageDialog(null, txtConfirmDialog, "Information", JOptionPane.INFORMATION_MESSAGE);
-                        currentPanel = new FinaleJPanel(mainContainer, new RemoveDriver(mainContainer));
+
+                if(selectedItem == -1){
+                    JOptionPane.showMessageDialog(null, "Veuillez séléctionner une ligne", "Erreur", JOptionPane.ERROR_MESSAGE);
+                }else {
+                    try {
+                        int driverNumber = Integer.parseInt(driverJTable.getjTable().getValueAt(selectedItem,0).toString());
+                        operation(driverNumber);
+                        int result = JOptionPane.showConfirmDialog(null, "Êtes-vous sûrs de vouloir continuer? Les données seront perdues.", "Avertissement", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+                        if (result == 0) {
+                            JOptionPane.showMessageDialog(null, txtConfirmDialog, "Information", JOptionPane.INFORMATION_MESSAGE);
+                            currentPanel = new FinaleJPanel(mainContainer, new RemoveDriver(mainContainer));
+                        }
+                    } catch (Exception exception) {
+                        JOptionPane.showMessageDialog(null, exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
                     }
-                } catch (Exception exception) {
-                    JOptionPane.showMessageDialog(null, exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
                 }
             } else {
                 // back to the menu
