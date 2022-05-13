@@ -1,4 +1,4 @@
-package View;
+package Utility;
 
 import Model.Race;
 

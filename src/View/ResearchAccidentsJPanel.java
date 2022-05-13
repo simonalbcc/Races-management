@@ -2,27 +2,28 @@
 package View;
 
 import Controller.Controller;
+import Utility.AccidentModel;
 import Utility.AddUtils;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
+import Utility.DateUtils;
+import Utility.FinaleJPanel;
 //endregion
 
 public class ResearchAccidentsJPanel extends JPanel{
     private GridBagConstraints gc;
     private Container mainContainer;
     private ButtonsPanel buttonsPanel;
-    private int iNumPanel;
+    private Integer iNumPanel;
     private JLabel subtitleStart, subtitleEnd;
     private JSpinner startSpinner, endSpinner;
     private JPanel currentPanel;
-    private StringBuilder errorDate;
+
 
     public ResearchAccidentsJPanel(Container mainContainer) {
         // init container & buttonsPanel
@@ -44,27 +45,6 @@ public class ResearchAccidentsJPanel extends JPanel{
         gc.gridy = 2;
         this.add(buttonsPanel,gc);
 
-    }
-    public boolean dateIsCorrect() {
-        boolean correct = false;
-        GregorianCalendar start, end,current;
-        errorDate = new StringBuilder("Erreur : ");
-
-        start = new GregorianCalendar(Integer.parseInt(new SimpleDateFormat("yyyy").format(startSpinner.getValue())), Integer.parseInt(new SimpleDateFormat("MM").format(startSpinner.getValue()))-1, Integer.parseInt(new SimpleDateFormat("dd").format(startSpinner.getValue())));
-        end = new GregorianCalendar(Integer.parseInt(new SimpleDateFormat("yyyy").format(endSpinner.getValue())), Integer.parseInt(new SimpleDateFormat("MM").format(endSpinner.getValue()))-1, Integer.parseInt(new SimpleDateFormat("dd").format(endSpinner.getValue())));
-        current = new GregorianCalendar();
-
-
-        if(start.getTime().compareTo(current.getTime()) > 0){
-            errorDate.append(" la date de début est après la date de ce jour");
-        } else if(end.compareTo(current) > 0){
-            errorDate.append(" la date de fin est après la date de ce jour");
-        } else if(start.getTime().compareTo(end.getTime()) > 0){
-            errorDate.append(" la date de début se situe après celle de fin");
-        } else {
-            correct = true;
-        }
-        return correct;
     }
     private class MainSpinnerPanel extends JPanel{
         public MainSpinnerPanel(){
@@ -102,14 +82,11 @@ public class ResearchAccidentsJPanel extends JPanel{
                 }
                 if(e.getSource() == buttonsPanel.getNext()){
                         if(iNumPanel == 0){
-                            if(dateIsCorrect()){ // à gérer dans la business => remonter exception
-                                try {
-                                    currentPanel = new AccidentsJTable();
-                                } catch (Exception exception) {
-                                    JOptionPane.showMessageDialog(null, exception.getMessage(),"Erreur", JOptionPane.ERROR_MESSAGE); // peut être fait là car dans view
-                                }
-                            } else {
-                                JOptionPane.showMessageDialog(null, errorDate.toString(),"Erreur", JOptionPane.ERROR_MESSAGE); // possible de faire dans le catch??
+                            try {
+                                DateUtils.dateIsCorrect(startSpinner, endSpinner);
+                                currentPanel = new AccidentsJTable();
+                            } catch (Exception exception) {
+                                JOptionPane.showMessageDialog(null, exception.getMessage(),"Erreur", JOptionPane.ERROR_MESSAGE); // peut être fait là car dans view
                             }
                         } else if (iNumPanel == 1){
                             int result = JOptionPane.showConfirmDialog(null, "Êtes-vous sûrs de vouloir continuer? Les données seront perdues.", "Avertissement", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);

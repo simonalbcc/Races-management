@@ -2,7 +2,7 @@ package Controller;
 
 import Business.DriverManager;
 import Model.*;
-
+import Exception.*;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -12,11 +12,11 @@ public class Controller {
         driverManager = new DriverManager();
     }
 
-    public void deleteDriver(Integer driverNumber)throws Exception{driverManager.deleteDriver(driverNumber); }
+    public void deleteDriver(Integer driverNumber) throws Exception {driverManager.deleteDriver(driverNumber); }
     public void addDriver(Driver driver) throws Exception {
        driverManager.addDriver(driver);
     }
-    public void updateDriver(Driver driver)throws Exception{
+    public void updateDriver(Driver driver)throws DeleteDriverException {
 
     }
 

@@ -11,7 +11,7 @@ import java.awt.event.ActionListener;
 
 public class ContactsInfosJPanel extends JPanel {
 
-    //region private attributes & constructor
+    //region privates attributes & constructor
     private JLabel contactLabel;
     private JButton returnButton;
     private Container mainContainer;
@@ -42,5 +42,4 @@ public class ContactsInfosJPanel extends JPanel {
         this.add(returnButton, gc);
     }
     //endregion
-
 }

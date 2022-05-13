@@ -1,16 +1,14 @@
 package View;
 
 import Controller.Controller;
+import Utility.FinaleJPanel;
+import Utility.RankingModel;
 
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicBorders;
-import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
 
 public class ResearchRankingJPanel extends JPanel {
     private Container mainContainer;

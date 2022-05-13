@@ -1,5 +1,5 @@
 //region packages & imports
-package View;
+package Utility;
 
 import Model.*;
 import javax.swing.table.AbstractTableModel;
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class AllDriverModel extends AbstractTableModel {
 
-    // region private attributes & constructor
+    // region privates attributes & constructor
     private ArrayList<String> columnNames;
     private ArrayList<Model.Driver> drivers;
     public AllDriverModel(ArrayList<Model.Driver> drivers){

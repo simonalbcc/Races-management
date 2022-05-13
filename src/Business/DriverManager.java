@@ -2,6 +2,7 @@ package Business;
 
 import DataAccess.*;
 import Model.*;
+import Exception.*;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -22,7 +23,7 @@ public class DriverManager {
         raceAccess = new RaceDBAccess();
     }
 
-    public void deleteDriver(int driverNumber)throws Exception{ driverAccess.deleteDriver(driverNumber);}
+    public void deleteDriver(int driverNumber) throws Exception { driverAccess.deleteDriver(driverNumber);}
     public void addDriver(Driver driver) throws Exception {
         driverAccess.addDriver(driver);
     }

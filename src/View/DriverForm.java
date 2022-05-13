@@ -4,6 +4,7 @@ package View;
 import Controller.Controller;
 import Model.*;
 import Utility.AddUtils;
+import Utility.FinaleJPanel;
 import Utility.Utils;
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -20,7 +21,7 @@ import java.util.GregorianCalendar;
 // endregion
 
 public class DriverForm extends  JPanel{
-    //region private attributes & constructor
+    //region privates attributes & constructor
     private JLabel title;
     private GridBagConstraints gc;
     private Container mainContainer;
@@ -57,6 +58,7 @@ public class DriverForm extends  JPanel{
         this.add(buttonsPanel, gc);
     }
     //endregion
+
     private class Form extends JPanel {
         //region private attributes & constructor
         private JTextField number, lastName, firstName, phoneNumber, streetName, streetNumber, city, zipCode;
@@ -324,7 +326,6 @@ public class DriverForm extends  JPanel{
             }
             return (textFields.size() < 1 & filled) && dateIsCorrect() && (origin.getSelectedIndex() != 0 && country.getSelectedIndex() != 0);
         }
-
         public Driver createDriver(){
             GregorianCalendar birtdate = new GregorianCalendar(Integer.parseInt(new SimpleDateFormat("yyyy").format(date.getValue())), Integer.parseInt(new SimpleDateFormat("MM").format(date.getValue()))-1, Integer.parseInt(new SimpleDateFormat("dd").format(date.getValue())));
             Locality locality = new Locality(null, Integer.parseInt(zipCode.getText()), city.getText(), country.getSelectedItem().toString());
@@ -361,7 +362,6 @@ public class DriverForm extends  JPanel{
             }
         }
     }
-
     private class ButtonsFormListener implements ActionListener {
 
         @Override
@@ -371,7 +371,9 @@ public class DriverForm extends  JPanel{
                     AddUtils.addToMainContainer(mainContainer, new WelcomeJPanel());
                 }
                 if(e.getSource() == save){
+                    // test if form is ok
                     if(form.isCorrect()){
+                        // create the driver to add and check if locality exists in DB (else -> create a new one)
                         Driver driver = form.createDriver();
                         if(controller.getNumberLocality(driver.getHome())== null){
                             controller.createLocality(driver.getHome());
@@ -379,9 +381,11 @@ public class DriverForm extends  JPanel{
                         driver.getHome().setNumber(controller.getNumberLocality(driver.getHome()));
                         controller.addDriver(driver);
 
+                        // save message + add to db
                         JOptionPane.showMessageDialog(null, "Sauvegarde effectuée", "Information", JOptionPane.INFORMATION_MESSAGE);
                         AddUtils.addToMainContainer(mainContainer, new FinaleJPanel(mainContainer, new DriverForm(mainContainer)));
                     } else {
+                        // if form has error -> clear wrong fields
                         JOptionPane.showMessageDialog(null, errorInputMessage.toString(), "Erreur", JOptionPane.ERROR_MESSAGE);
                         form.cleanWrongTextField();
                     }

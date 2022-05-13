@@ -2,6 +2,7 @@
 package View;
 
 import DataAccess.SingletonConnexion;
+import Utility.AddUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,12 +13,14 @@ import java.awt.event.WindowEvent;
 //endregion
 
 public class MainJFrame extends JFrame {
+    //region privates attributes & constructor
     private JMenuBar menuBar;
     private JMenu applicationMenu, helpMenu, driversMenu, researchMenu;
     private JMenuItem close, shortcuts, contactsInfos, addDriver, removeDriver, modifyDriver, showDriverList, researchAccident, researchCars, researchRanking;
     private Container frameContainer;
 
     public MainJFrame(){
+        // basic init
         super("Application de gestion de courses automobiles");
         addWindowListener(new WindowAdapter() {
                               public void windowClosing(WindowEvent e) {
@@ -30,7 +33,7 @@ public class MainJFrame extends JFrame {
         frameContainer = this.getContentPane();
         this.setResizable(false);
 
-//region menuBar
+        //region menuBar
         menuBar = new JMenuBar();
         setJMenuBar(menuBar);
 
@@ -39,39 +42,42 @@ public class MainJFrame extends JFrame {
         researchMenu = new JMenu("Recherches");
         helpMenu = new JMenu("Aide");
 
+        // add to bar menu
         menuBar.add(applicationMenu);
         menuBar.add(driversMenu);
         menuBar.add(researchMenu);
         menuBar.add(helpMenu);
 
+        // add to menu
         close = new JMenuItem("Fermeture");
-        close.addActionListener(new menuItemListner());
+        close.addActionListener(new MenuItemListner());
 
         shortcuts = new JMenuItem("Raccourcis");
 
         contactsInfos = new JMenuItem("Contact ");
-        contactsInfos.addActionListener(new menuItemListner());
+        contactsInfos.addActionListener(new MenuItemListner());
 
         addDriver = new JMenuItem("Ajouter");
-        addDriver.addActionListener(new menuItemListner());
+        addDriver.addActionListener(new MenuItemListner());
 
         removeDriver = new JMenuItem("Supprimer");
-        removeDriver.addActionListener(new menuItemListner());
+        removeDriver.addActionListener(new MenuItemListner());
 
         modifyDriver = new JMenuItem("Modifier un pilote");
-        modifyDriver.addActionListener(new menuItemListner());
+        modifyDriver.addActionListener(new MenuItemListner());
 
         showDriverList = new JMenuItem("Afficher la liste des pilotes");
-        showDriverList.addActionListener(new menuItemListner());
+        showDriverList.addActionListener(new MenuItemListner());
 
         researchAccident = new JMenuItem("Recherche d'accident");
-        researchAccident.addActionListener(new menuItemListner());
+        researchAccident.addActionListener(new MenuItemListner());
 
         researchCars = new JMenuItem("Recherche d'une voiture");
-        researchCars.addActionListener(new menuItemListner());
+        researchCars.addActionListener(new MenuItemListner());
 
         researchRanking = new JMenuItem("Recherche d'un classement");
-        researchRanking.addActionListener(new menuItemListner());
+        researchRanking.addActionListener(new MenuItemListner());
+
 
         driversMenu.add(addDriver);
         driversMenu.addSeparator();
@@ -92,47 +98,47 @@ public class MainJFrame extends JFrame {
         helpMenu.add(shortcuts);
         helpMenu.addSeparator();
         helpMenu.add(contactsInfos);
-//endregion
+        //endregion
 
+        // add to window
         frameContainer.add(new WelcomeJPanel());
         setVisible(true);
-        //setResizable(false);
     }
 
-    private class menuItemListner implements ActionListener{
+    //region inner classe 
+    private class MenuItemListner implements ActionListener{
         public void actionPerformed(ActionEvent actionEvent) {
             try{
-                frameContainer.removeAll();
+                JPanel currentPanel = new JPanel();
                 if(actionEvent.getSource() == close){
-                    SingletonConnexion.getInstance().close(); // à changer
+                    SingletonConnexion.getInstance().close();
                     System.exit(0);
                 }
                 if(actionEvent.getSource() == contactsInfos){
-                    frameContainer.add(new ContactsInfosJPanel(frameContainer));
+                    currentPanel = new ContactsInfosJPanel(frameContainer);
                 }
                 if(actionEvent.getSource() == addDriver){
-                    frameContainer.add(new DriverForm(frameContainer));
+                    currentPanel = new  DriverForm(frameContainer);
                 }
                 if(actionEvent.getSource() == removeDriver){
-                    frameContainer.add(new RemoveDriver(frameContainer));
+                    currentPanel = new  RemoveDriver(frameContainer);
                 }
                 if(actionEvent.getSource() == modifyDriver){
-
+                    currentPanel = new ModifyJPanel(frameContainer);
                 }
                 if(actionEvent.getSource() == showDriverList){
-                    frameContainer.add(new DriverJTable());
+                    currentPanel = new  DriverJTable(frameContainer);
                 }
                 if(actionEvent.getSource() == researchAccident){
-                    frameContainer.add(new ResearchAccidentsJPanel(frameContainer));
+                    currentPanel = new  ResearchAccidentsJPanel(frameContainer);
                 }
                 if(actionEvent.getSource() == researchCars){
-                    frameContainer.add(new ResearchCarJPanel(frameContainer));
+                    currentPanel = new  ResearchCarJPanel(frameContainer);
                 }
                 if(actionEvent.getSource() == researchRanking){
-                    frameContainer.add(new ResearchRankingJPanel(frameContainer));
+                    currentPanel = new  ResearchRankingJPanel(frameContainer);
                 }
-                frameContainer.repaint();
-                frameContainer.validate();
+                AddUtils.addToMainContainer(frameContainer, currentPanel);
             }catch (Exception exception){
                 JOptionPane.showMessageDialog(null, exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
             }

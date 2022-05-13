@@ -9,7 +9,7 @@ import java.util.GregorianCalendar;
 
 public class DriverDBAccess implements DriverDAO {
 
-    public void addDriver(Model.Driver driver) throws Exception {
+    public void addDriver(Model.Driver driver) throws AddDriverException {
         try{
             String sql = "insert into Driver (number, last_name_first_name, phone_number, street_and_number, nationality, team, has_renewed_commitment_contract, birthdate, home)values(?,?,?,?,?,?,?,?,?)";
 

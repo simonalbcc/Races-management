@@ -1,4 +1,7 @@
-package View;
+package Utility;
+
+import View.ButtonsPanel;
+import View.WelcomeJPanel;
 
 import javax.swing.*;
 import java.awt.*;

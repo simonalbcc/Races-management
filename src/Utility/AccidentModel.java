@@ -1,5 +1,5 @@
 //region packages & imports
-package View;
+package Utility;
 
 import Model.Accident;
 
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class AccidentModel extends AbstractTableModel {
 
-    //region private attributes & constructor
+    //region privates attributes & constructor
     private ArrayList<Accident> accidents;
     private ArrayList<String> columnsName;
 
