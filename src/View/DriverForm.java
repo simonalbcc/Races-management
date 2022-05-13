@@ -398,6 +398,9 @@ public class DriverForm extends  JPanel{
             }
         }
     }
+
+    //      add 'é etc  + clear field if pk exist
+    // confirm dialog => nom pilote
 }
 
 
