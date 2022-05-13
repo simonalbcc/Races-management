@@ -62,7 +62,8 @@ public class DriverForm extends  JPanel{
         private JTextField number, lastName, firstName, phoneNumber, streetName, streetNumber, city, zipCode;
         private ArrayList<JTextField> textFields;
         private ArrayList<Team> teamsDB;
-        private JLabel numberLabel, lastNameLabel, firstNameLabel, phoneNumberLabel, streetAddressLabel, cityLabel, countryLabel, zipCodeLabel, originsLabel, teamsLabel, hasRenewedContractLabel, birthdateLabel;
+        private JLabel numberLabel, lastNameLabel, firstNameLabel, phoneNumberLabel, streetAddressLabel, cityLabel,
+                       countryLabel, zipCodeLabel, originsLabel, teamsLabel, hasRenewedContractLabel, birthdateLabel, asterisk;
         private JComboBox country, origin, team;
         private JCheckBox hasRenewedContract;
         private JSpinner date;
@@ -85,7 +86,7 @@ public class DriverForm extends  JPanel{
             margin = new EmptyBorder(10,10,10,10);
             this.setBorder(new CompoundBorder(border, margin));
 
-            //region JTextfields -> init, set tooltip text, name and add to arraylist
+            //region textfields
 
             number = new JTextField();
             number.setToolTipText("Veuillez entrer le numéro du pilote (obligatoire)");
@@ -132,7 +133,7 @@ public class DriverForm extends  JPanel{
             textFields.add(zipCode);
             //endregion
 
-            //region jLabels
+            //region images & labels
             numberLabel = new JLabel("Numéro * : ");
             driverIcon = new ImageIcon("images\\driver.png");
             driverIcon.setImage(driverIcon.getImage().getScaledInstance(50,40, Image.SCALE_SMOOTH));
@@ -173,10 +174,11 @@ public class DriverForm extends  JPanel{
             countryIcone.setImage(countryIcone.getImage().getScaledInstance(30,40, Image.SCALE_SMOOTH));
             countryLabel.setIcon(countryIcone);
 
+            asterisk = new JLabel("<html> <font size = '2' color = 'red'> *champs obligatoires </font>");
 
             //endregion
 
-            // JSpinners -> init, set tooltip text & name
+            //region spinners
             spinnerDateModel = new SpinnerDateModel();
             spinnerDateModel.setStart(new GregorianCalendar(LocalDate.now().getYear()-70, LocalDate.now().getMonthValue(), LocalDate.now().getDayOfMonth()).getTime());
             spinnerDateModel.setValue(new GregorianCalendar(LocalDate.now().getYear()-18, LocalDate.now().getMonthValue(), LocalDate.now().getDayOfMonth()).getTime());
@@ -185,12 +187,13 @@ public class DriverForm extends  JPanel{
             date = new JSpinner(spinnerDateModel);
             date.setEditor(new JSpinner.DateEditor(date, "dd-MM-yyyy"));
 
-            birthdateLabel = new JLabel("Date de naissance (18 ans minimum)* : ");
+            birthdateLabel = new JLabel("<html> Date de naissance    <font size = '2'> (18 ans minimum)</font>* : </html>");
             birthdateIcone = new ImageIcon("images\\birthdate.png");
             birthdateIcone.setImage(birthdateIcone.getImage().getScaledInstance(30,30, Image.SCALE_SMOOTH));
             birthdateLabel.setIcon(birthdateIcone);
+            //endregion
 
-            // Combobox -> init, set tooltip text & name
+            //region combobox
             origin = new JComboBox(continents);
             origin.setToolTipText("Choisissez l'origine du pilote (obligatoire)");
 
@@ -199,10 +202,12 @@ public class DriverForm extends  JPanel{
             country.setName("pays");
 
             teamsDB = controller.getAllTeams();
+            teamsDB.add(0, new Team("Séléctionner..."));
             team = new JComboBox(teamsDB.stream().map(t -> t.getName()).toArray());
             team.setToolTipText("Choisissez l'équipe du pilote");
 
 
+            // images & labels
             originsLabel = new JLabel("Origine * : ");
             originIcone = new ImageIcon("images\\origin.png");
             originIcone.setImage(originIcone.getImage().getScaledInstance(30,40, Image.SCALE_SMOOTH));
@@ -212,8 +217,9 @@ public class DriverForm extends  JPanel{
             teamIcone = new ImageIcon("images\\team.png");
             teamIcone.setImage(teamIcone.getImage().getScaledInstance(40,40, Image.SCALE_SMOOTH));
             teamsLabel.setIcon(teamIcone);
+            //endregion
 
-            // Checkbox -> init, set tooltip text & name
+            //region checkbox
             hasRenewedContract = new JCheckBox();
             hasRenewedContract.setToolTipText("Cochez la case si le pilote a renouvelé son contrat d'engagement");
 
@@ -221,8 +227,9 @@ public class DriverForm extends  JPanel{
             contractIcone = new ImageIcon("images\\contract.png");
             contractIcone.setImage(contractIcone.getImage().getScaledInstance(40,40, Image.SCALE_SMOOTH));
             hasRenewedContractLabel.setIcon(contractIcone);
+            //endregion
 
-            //region Add all
+            //region add all
             this.add(numberLabel);
             this.add(number);
 
@@ -258,6 +265,9 @@ public class DriverForm extends  JPanel{
 
             this.add(hasRenewedContractLabel);
             this.add(hasRenewedContract);
+
+            this.add(asterisk);
+
             //endregion
         }
 
@@ -302,8 +312,17 @@ public class DriverForm extends  JPanel{
                     errorInputMessage.append("- La ville entrée n'est pas valide ("+(city.getText().length() > 20 ? "trop long" : "doit contenir uniquement des lettres")+")\n");
                     textFields.add(city);
                 }
+                if(country.getSelectedIndex() == 0){
+                    errorInputMessage.append("- Vous devez séléctionner un pays\n");
+                }
+                if(origin.getSelectedIndex() == 0){
+                    errorInputMessage.append("- Vous devez séléctionner un pays\n");
+                }
+                if(team.getSelectedIndex() == 0){
+                    errorInputMessage.append("- Vous devez séléctionner une équipe\n");
+                }
             }
-            return (textFields.size() < 1 & filled) && dateIsCorrect() && originAndCountrySelected();
+            return (textFields.size() < 1 & filled) && dateIsCorrect() && (origin.getSelectedIndex() != 0 && country.getSelectedIndex() != 0);
         }
 
         public Driver createDriver(){
@@ -335,15 +354,6 @@ public class DriverForm extends  JPanel{
                 correct = true;
             }
             return correct;
-        }
-        public boolean originAndCountrySelected(){
-            if(country.getSelectedIndex() == 1){
-                errorInputMessage.append("- Vous devez séléctionner un pays\n");
-            }
-            if(origin.getSelectedIndex() == 1){
-                errorInputMessage.append("- Vous devez séléctionner une origine\n");
-            }
-            return origin.getSelectedIndex() == 0 && country.getSelectedIndex() == 0;
         }
         public void cleanWrongTextField(){
             for (JTextField textField: textFields) {

@@ -2,17 +2,20 @@
 package View;
 
 import Controller.Controller;
+import Exception.AccidentException;
+import Utility.AddUtils;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+
 
 //endregion
 
 public class ResearchCarJPanel extends JPanel {
+    //region private attributes & constructor
     private Container mainContainer;
     private ButtonsPanel buttonsPanel;
     private CircuitsPanel circuitsPanel;
@@ -21,8 +24,9 @@ public class ResearchCarJPanel extends JPanel {
     private JLabel circuitsLabel;
     private JComboBox circuitsCombobox;
     private int iNumPanel;
+    private JPanel currentPanel;
 
-    public ResearchCarJPanel(Container mainContainer) throws Exception {
+    public ResearchCarJPanel(Container mainContainer) {
             this.setLayout(new GridBagLayout());
             this.gc = new GridBagConstraints();
             this.mainContainer = mainContainer;
@@ -39,18 +43,23 @@ public class ResearchCarJPanel extends JPanel {
             this.add(buttonsPanel, gc);
 
     }
+    //endregion
 
+    //region inner classes
     private class CircuitsPanel extends JPanel {
-        public CircuitsPanel() throws Exception {
+        public CircuitsPanel()  {
             circuitsLabel = new JLabel("Choisissez un circuit");
-            circuitsCombobox = new JComboBox(controller.getAllCircuitsNames().toArray());
+            try {
+                circuitsCombobox = new JComboBox(controller.getAllCircuitsNames().toArray());
+            } catch (Exception exception) {
+                JOptionPane.showMessageDialog(null, exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE); // peut être fait là car dans la view.
+            }
             circuitsCombobox.setPreferredSize(new Dimension(100, 30));
             this.add(circuitsLabel);
             this.add(circuitsCombobox);
 
         }
     }
-
     private class CarsJTable extends JPanel {
         private JTable jTable;
         private JLabel title;
@@ -93,37 +102,31 @@ public class ResearchCarJPanel extends JPanel {
 
         }
     }
-
     private class ButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-
-            mainContainer.removeAll();
-
             if(e.getSource() == buttonsPanel.getBack()){
                 if(iNumPanel == 1){
-                    try {
-                        mainContainer.add(new CircuitsPanel()); ////// A CHANGERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
-                    } catch (Exception exception) {
-                        exception.printStackTrace();
-                    }
-                    iNumPanel--;
+                    currentPanel = new ResearchCarJPanel(mainContainer);
                 }else{
-                    mainContainer.add(new WelcomeJPanel());
+                    currentPanel = new WelcomeJPanel();
                 }
+                iNumPanel--;
             }
 
             if(e.getSource() == buttonsPanel.getNext()){
                 if(iNumPanel == 0){
-                    mainContainer.add(new CarsJTable());
-                    iNumPanel++;
+                    currentPanel = new CarsJTable();
                 }else{
-                    mainContainer.add(new WelcomeJPanel());
-                }
+                    int result = JOptionPane.showConfirmDialog(null, "Êtes-vous sûrs de vouloir continuer? Les données seront perdues.", "Avertissement", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+                    if(result == 0){
+                        currentPanel = new FinaleJPanel(mainContainer, new ResearchCarJPanel(mainContainer));
+                    }
+                 }
+                iNumPanel++;
             }
-
-            mainContainer.repaint();
-            mainContainer.validate();
+            AddUtils.addToMainContainer(mainContainer, currentPanel);
         }
     }
+    //endregion
 }

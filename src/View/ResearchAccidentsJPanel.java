@@ -2,6 +2,8 @@
 package View;
 
 import Controller.Controller;
+import Utility.AddUtils;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
@@ -19,6 +21,7 @@ public class ResearchAccidentsJPanel extends JPanel{
     private int iNumPanel;
     private JLabel subtitleStart, subtitleEnd;
     private JSpinner startSpinner, endSpinner;
+    private JPanel currentPanel;
     private StringBuilder errorDate;
 
     public ResearchAccidentsJPanel(Container mainContainer) {
@@ -42,15 +45,15 @@ public class ResearchAccidentsJPanel extends JPanel{
         this.add(buttonsPanel,gc);
 
     }
-    public boolean dateIsCorrect(){
+    public boolean dateIsCorrect() {
         boolean correct = false;
         GregorianCalendar start, end,current;
+        errorDate = new StringBuilder("Erreur : ");
 
         start = new GregorianCalendar(Integer.parseInt(new SimpleDateFormat("yyyy").format(startSpinner.getValue())), Integer.parseInt(new SimpleDateFormat("MM").format(startSpinner.getValue()))-1, Integer.parseInt(new SimpleDateFormat("dd").format(startSpinner.getValue())));
         end = new GregorianCalendar(Integer.parseInt(new SimpleDateFormat("yyyy").format(endSpinner.getValue())), Integer.parseInt(new SimpleDateFormat("MM").format(endSpinner.getValue()))-1, Integer.parseInt(new SimpleDateFormat("dd").format(endSpinner.getValue())));
         current = new GregorianCalendar();
 
-        errorDate = new StringBuilder("Erreur : ");
 
         if(start.getTime().compareTo(current.getTime()) > 0){
             errorDate.append(" la date de début est après la date de ce jour");
@@ -75,12 +78,10 @@ public class ResearchAccidentsJPanel extends JPanel{
             endSpinner.setEditor(new JSpinner.DateEditor(endSpinner, "dd-MM-yyyy"));
             endSpinner.setPreferredSize(new Dimension(150,50));
             subtitleStart = new JLabel("Choisissez une date de début : ");
-            subtitleStart.setFont(new Font("SansSerif",Font.TRUETYPE_FONT,15));
             subtitleStart.setHorizontalAlignment(SwingConstants.CENTER);
 
             subtitleEnd = new JLabel("Choisissez une date de fin : ");
             subtitleEnd.setHorizontalAlignment(SwingConstants.CENTER);
-            subtitleEnd.setFont(new Font("SansSerif",Font.TRUETYPE_FONT,15));
 
             this.add(subtitleStart);
             this.add(startSpinner);
@@ -92,34 +93,35 @@ public class ResearchAccidentsJPanel extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(e.getSource() == buttonsPanel.getBack()){
-                    mainContainer.removeAll();
                     if(iNumPanel == 0){
-                        mainContainer.add(new WelcomeJPanel());
+                        currentPanel = new WelcomeJPanel();
                     } else {
-                        mainContainer.add(new ResearchAccidentsJPanel(mainContainer));
+                        currentPanel = new ResearchAccidentsJPanel(mainContainer);
                     }
                     iNumPanel--;
                 }
                 if(e.getSource() == buttonsPanel.getNext()){
-                    if(iNumPanel == 1){
-                        mainContainer.removeAll();
-                        mainContainer.add(new FinaleJPanel(mainContainer, new ResearchAccidentsJPanel(mainContainer)));
-                    } else {
-                        if(dateIsCorrect()){
-                            mainContainer.removeAll();
-                            try {
-                                mainContainer.add(new AccidentsJTable());
-                            } catch (Exception exception) {
-                                JOptionPane.showMessageDialog(null, exception.getMessage(),"Erreur", JOptionPane.ERROR_MESSAGE);
+                        if(iNumPanel == 0){
+                            if(dateIsCorrect()){ // à gérer dans la business => remonter exception
+                                try {
+                                    currentPanel = new AccidentsJTable();
+                                } catch (Exception exception) {
+                                    JOptionPane.showMessageDialog(null, exception.getMessage(),"Erreur", JOptionPane.ERROR_MESSAGE); // peut être fait là car dans view
+                                }
+                            } else {
+                                JOptionPane.showMessageDialog(null, errorDate.toString(),"Erreur", JOptionPane.ERROR_MESSAGE); // possible de faire dans le catch??
                             }
-                            iNumPanel++;
-                        } else {
-                            JOptionPane.showMessageDialog(null, errorDate.toString());
+                        } else if (iNumPanel == 1){
+                            int result = JOptionPane.showConfirmDialog(null, "Êtes-vous sûrs de vouloir continuer? Les données seront perdues.", "Avertissement", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+                            if(result == 0){
+                                currentPanel = new FinaleJPanel(mainContainer, new ResearchAccidentsJPanel(mainContainer));
+                            } else {
+                                iNumPanel = 0;
+                            }
                         }
-                    }
+                    iNumPanel++;
                 }
-                mainContainer.repaint();
-                mainContainer.validate();
+                AddUtils.addToMainContainer(mainContainer, currentPanel);
             }
         }
     private class AccidentsJTable extends JPanel{
@@ -130,7 +132,6 @@ public class ResearchAccidentsJPanel extends JPanel{
 
             title = new JLabel("Liste des accidents");
             title.setFont(new Font("Arial",Font.TRUETYPE_FONT,20));
-            System.out.println(startSpinner.getValue().toString());
             jTable = new JTable(new AccidentModel(new Controller().getAccidentedDrivers((Date)startSpinner.getValue(),(Date)endSpinner.getValue())));
 
             jTable.getColumnModel( ).getColumn(0).setPreferredWidth(40);
