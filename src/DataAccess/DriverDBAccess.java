@@ -36,12 +36,21 @@ public class DriverDBAccess implements DriverDAO {
 
     public void deleteDriver(int driverNumber) throws DeleteDriverException {
         try{
-            String sql = "delete from Driver where number = ?";
+            String sql = "delete from Accident where driver = ?;";
+            String sql2 = "delete from Ranking where driver = ?;";
+            String sql3 = "delete from Driver where number = ?;";
 
             PreparedStatement statement = SingletonConnexion.getInstance().prepareStatement(sql);
+            PreparedStatement statement2 = SingletonConnexion.getInstance().prepareStatement(sql2);
+            PreparedStatement statement3 = SingletonConnexion.getInstance().prepareStatement(sql3);
+
             statement.setInt(1,driverNumber);
+            statement2.setInt(1,driverNumber);
+            statement3.setInt(1,driverNumber);
 
             statement.executeUpdate();
+            statement2.executeUpdate();
+            statement3.executeUpdate();
 
         } catch (SQLException exception){
            throw new DeleteDriverException(exception);
