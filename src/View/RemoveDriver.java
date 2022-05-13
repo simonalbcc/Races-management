@@ -17,8 +17,8 @@ public class RemoveDriver extends OperationTemplate {
     }
 
     @Override
-    public void operation(int driverNumber) {
-
+    public void operation(int driverNumber) throws Exception {
+        getController().deleteDriver(driverNumber);
     }
     //endregion
 }
