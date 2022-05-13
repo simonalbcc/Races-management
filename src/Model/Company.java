@@ -14,4 +14,8 @@ public class Company {
         this.location = location;
         this.teams = teams;
     }
+
+    public String getName() {
+        return name;
+    }
 }

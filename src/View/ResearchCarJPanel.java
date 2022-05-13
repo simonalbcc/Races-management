@@ -52,6 +52,7 @@ public class ResearchCarJPanel extends JPanel {
             circuitsLabel = new JLabel("Choisissez un circuit");
             try {
                 circuitsCombobox = new JComboBox(controller.getAllCircuitsNames().toArray());
+
             } catch (Exception exception) {
                 JOptionPane.showMessageDialog(null, exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE); // peut être fait là car dans la view.
             }

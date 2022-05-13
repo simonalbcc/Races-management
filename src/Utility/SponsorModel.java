@@ -39,9 +39,9 @@ public class SponsorModel extends AbstractTableModel {
             case 0:
                 return race.getDate();
             case 1:
-                return race.getRankings()[0].getCar().getMembership();
+                return race.getRankings()[0].getCar().getMembership().getName();
             case 2:
-                return race.getRankings()[0].getCar().getMembership().getCompanies()[0];
+                return race.getRankings()[0].getCar().getMembership().getCompanies()[0].getName();
             default:
                 return null;
         }
