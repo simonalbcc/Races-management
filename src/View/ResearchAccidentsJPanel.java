@@ -2,17 +2,14 @@
 package View;
 
 import Controller.Controller;
-import Utility.AccidentModel;
-import Utility.AddUtils;
+import Utility.*;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.*;
-
-import Utility.DateUtils;
-import Utility.FinaleJPanel;
 //endregion
 
 public class ResearchAccidentsJPanel extends JPanel{
@@ -110,25 +107,7 @@ public class ResearchAccidentsJPanel extends JPanel{
             title.setFont(new Font("Arial",Font.TRUETYPE_FONT,20));
             jTable = new JTable(new AccidentModel(new Controller().getAccidentedDrivers((Date)startSpinner.getValue(),(Date)endSpinner.getValue())));
 
-            jTable.getColumnModel( ).getColumn(0).setPreferredWidth(40);
-            for(int iCell = 1; iCell < jTable.getColumnCount()-1; iCell++){
-                jTable.getColumnModel( ).getColumn(iCell).setPreferredWidth(132);
-            }
-            jTable.getColumnModel( ).getColumn(jTable.getColumnCount()-1).setPreferredWidth(101);
-
-            jTable.setRowHeight(40);
-
-            DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-            centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-            for(int cell=0; cell < jTable.getColumnCount();cell++){
-                if(cell != 6){
-                    jTable.getColumnModel().getColumn(cell).setCellRenderer(centerRenderer);
-                }
-            }
-
-            JScrollPane sp = new JScrollPane(jTable);
-            jTable.getTableHeader().setReorderingAllowed(false);
-            sp.setPreferredSize(new Dimension(900,250));
+            JScrollPane sp = new JTableUtils().centerTableData(jTable);
 
             gc.gridy = 1;
             this.add(title, gc);

@@ -2,6 +2,7 @@ package View;
 
 import Controller.Controller;
 import Utility.FinaleJPanel;
+import Utility.JTableUtils;
 import Utility.RankingModel;
 
 import javax.swing.*;
@@ -102,11 +103,7 @@ public class ResearchRankingJPanel extends JPanel {
 
             jTable = new JTable(new RankingModel(controller.getARaceRanking(circuitsCombobox.getSelectedItem().toString(), datesCombobox.getSelectedItem().toString())));
 
-            JScrollPane sp = new JScrollPane(jTable);
-            sp.setPreferredSize(new Dimension(300, 250));
-
-            jTable.getTableHeader().setReorderingAllowed(false);
-            sp.setPreferredSize(new Dimension(900,250));
+            JScrollPane sp = new JTableUtils().centerTableData(jTable);
 
             this.add(title,gcTable);
             gcTable.gridy = 1;

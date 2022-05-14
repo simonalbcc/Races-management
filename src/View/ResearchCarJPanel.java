@@ -4,6 +4,7 @@ package View;
 import Controller.Controller;
 import Utility.AddUtils;
 import Utility.FinaleJPanel;
+import Utility.JTableUtils;
 import Utility.SponsorModel;
 
 import javax.swing.*;
@@ -76,26 +77,8 @@ public class ResearchCarJPanel extends JPanel {
 
             jTable = new JTable(new SponsorModel(controller.getWinningSponsorsOfACircuit(circuitsCombobox.getSelectedItem().toString())));
 
-            jTable.getColumnModel( ).getColumn(0).setPreferredWidth(40);
-            for(int iCell = 1; iCell < jTable.getColumnCount()-1; iCell++){
-                jTable.getColumnModel( ).getColumn(iCell).setPreferredWidth(132);
-            }
-            jTable.getColumnModel( ).getColumn(jTable.getColumnCount()-1).setPreferredWidth(101);
-
-            jTable.setRowHeight(40);
-
-            DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-            centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-            for(int cell=0; cell < jTable.getColumnCount();cell++){
-                if(cell != 6){
-                    jTable.getColumnModel().getColumn(cell).setCellRenderer(centerRenderer);
-                }
-            }
-
-            JScrollPane sp = new JScrollPane(jTable);
-            sp.setPreferredSize(new Dimension(900, 250));
-            jTable.setFillsViewportHeight(true);
-
+            JScrollPane sp = new JTableUtils().centerTableData(jTable);
+            
             this.add(title, gc);
             gc.gridy = 1;
             this.add(sp, gc);

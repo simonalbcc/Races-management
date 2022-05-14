@@ -4,6 +4,7 @@ package View;
 import Controller.Controller;
 import Utility.AddUtils;
 import Utility.AllDriverModel;
+import Utility.JTableUtils;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -19,7 +20,6 @@ public class DriverJTable extends JPanel {
     private Controller controller;
     private GridBagConstraints gc;
     private ImageIcon imageIcon;
-    private JScrollPane sp;
     private ButtonsPanel buttonsPanel;
     private Container mainContainer;
 
@@ -50,27 +50,9 @@ public class DriverJTable extends JPanel {
         jTable = new JTable(new AllDriverModel(controller.getAllDrivers()));
         jTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        jTable.getColumnModel( ).getColumn(0).setPreferredWidth(40);
-        for(int iCell = 1; iCell < jTable.getColumnCount()-1; iCell++){
-            jTable.getColumnModel( ).getColumn(iCell).setPreferredWidth(132);
-        }
-        jTable.getColumnModel( ).getColumn(jTable.getColumnCount()-1).setPreferredWidth(101);
-
-        jTable.setRowHeight(40);
-
-        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer(); // used to center cells
-        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-        for(int cell=0; cell < jTable.getColumnCount();cell++){
-            if(cell != 6){
-                jTable.getColumnModel().getColumn(cell).setCellRenderer(centerRenderer);
-            }
-        }
-
-        jTable.getTableHeader().setReorderingAllowed(false);
-        jTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        JScrollPane sp = new JTableUtils().centerTableData(jTable);
 
         // add to the panel
-        this.sp = new JScrollPane(jTable);
         this.add(title, gc);
         gc.gridy = 1;
         this.add(sp, gc);
