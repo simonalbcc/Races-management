@@ -49,9 +49,6 @@ public abstract class OperationTemplate extends JPanel {
     public Controller getController() {
         return controller;
     }
-    public void setCurrentPanel(JPanel currentPanel) {
-        this.currentPanel = currentPanel;
-    }
     public void setTxtConfirmDialog(String txt){
         this.txtConfirmDialog = txt;
     }
@@ -68,13 +65,13 @@ public abstract class OperationTemplate extends JPanel {
                 // get selected line
                 ListSelectionModel listSelect = driverJTable.getjTable().getSelectionModel();
                 int selectedItem = listSelect.getMinSelectionIndex();
-
+                // check if 1 line is selected
                 if(selectedItem == -1){
                     JOptionPane.showMessageDialog(null, "Veuillez séléctionner une ligne", "Erreur", JOptionPane.ERROR_MESSAGE);
-                }else {
+                    currentPanel = new RemoveDriver(mainContainer);
+                } else {
                     try {
-                        int driverNumber = Integer.parseInt(driverJTable.getjTable().getValueAt(selectedItem,0).toString());
-                        operation(driverNumber);
+                        operation(Integer.parseInt(driverJTable.getjTable().getValueAt(selectedItem,0).toString()));
                         int result = JOptionPane.showConfirmDialog(null, "Êtes-vous sûrs de vouloir continuer? Les données seront perdues.", "Avertissement", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
                         if (result == 0) {
                             JOptionPane.showMessageDialog(null, txtConfirmDialog, "Information", JOptionPane.INFORMATION_MESSAGE);
@@ -85,7 +82,6 @@ public abstract class OperationTemplate extends JPanel {
                     }
                 }
             } else {
-                // back to the menu
                 currentPanel = new WelcomeJPanel();
             }
             // add the panel to main container

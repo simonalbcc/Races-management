@@ -31,7 +31,7 @@ public class DriverJTable extends JPanel {
 
         buttonsPanel = new ButtonsPanel();
         buttonsPanel.getNext().setVisible(false);
-        buttonsPanel.addActionListener(e -> AddUtils.addToMainContainer(mainContainer, new WelcomeJPanel()));
+        buttonsPanel.getBack().addActionListener(e -> AddUtils.addToMainContainer(mainContainer, new WelcomeJPanel()));
 
         // set layout with constraints
         this.setLayout(new GridBagLayout());

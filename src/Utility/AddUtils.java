@@ -9,12 +9,6 @@ public class AddUtils {
             mainContainer.removeAll();
             mainContainer.add(panel);
             mainContainer.repaint();
-            mainContainer.validate();
-        } else {
-            JOptionPane.showMessageDialog(null, "Problème avec un panel !", "Erreur", JOptionPane.ERROR_MESSAGE); // à enlever?
-        }
+            mainContainer.validate();        }
     }
-
-
-
 }
