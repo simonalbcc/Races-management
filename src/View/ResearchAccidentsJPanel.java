@@ -81,22 +81,21 @@ public class ResearchAccidentsJPanel extends JPanel{
                     iNumPanel--;
                 }
                 if(e.getSource() == buttonsPanel.getNext()){
-                        if(iNumPanel == 0){
-                            try {
-                                DateUtils.dateIsCorrect(startSpinner, endSpinner);
-                                currentPanel = new AccidentsJTable();
-                            } catch (Exception exception) {
-                                JOptionPane.showMessageDialog(null, exception.getMessage(),"Erreur", JOptionPane.ERROR_MESSAGE); // peut être fait là car dans view
-                            }
-                        } else if (iNumPanel == 1){
-                            int result = JOptionPane.showConfirmDialog(null, "Êtes-vous sûrs de vouloir continuer? Les données seront perdues.", "Avertissement", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
-                            if(result == 0){
-                                currentPanel = new FinaleJPanel(mainContainer, new ResearchAccidentsJPanel(mainContainer));
-                            } else {
-                                iNumPanel = 0;
-                            }
+                    if(iNumPanel == 0 && DateUtils.dateIsCorrect(startSpinner, endSpinner)){
+                        try {
+                            currentPanel = new AccidentsJTable();
+                            iNumPanel++;
+                        } catch (Exception exception) {
+                            JOptionPane.showMessageDialog(null, exception.getMessage(),"Erreur", JOptionPane.ERROR_MESSAGE); // peut être fait là car dans view
                         }
-                    iNumPanel++;
+                    } else if (iNumPanel == 1){
+                        int result = JOptionPane.showConfirmDialog(null, "Êtes-vous sûrs de vouloir continuer? Les données seront perdues.", "Avertissement", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+                        if(result == 0){
+                            currentPanel = new FinaleJPanel(mainContainer, new ResearchAccidentsJPanel(mainContainer));
+                        } else {
+                            iNumPanel = 0;
+                        }
+                    }
                 }
                 AddUtils.addToMainContainer(mainContainer, currentPanel);
             }

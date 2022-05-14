@@ -388,6 +388,7 @@ public class DriverForm extends  JPanel{
                         // if form has error -> clear wrong fields
                         JOptionPane.showMessageDialog(null, errorInputMessage.toString(), "Erreur", JOptionPane.ERROR_MESSAGE);
                         form.cleanWrongTextField();
+                        errorInputMessage.setLength(0);
                     }
                 }
                 if(e.getSource() == buttonsPanel.getNext()){

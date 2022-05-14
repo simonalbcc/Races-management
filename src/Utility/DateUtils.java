@@ -7,7 +7,7 @@ import Exception.DateException;
 
 public class DateUtils {
 
-    public static void dateIsCorrect(JSpinner startSpinner, JSpinner endSpinner) throws DateException {
+    public static boolean dateIsCorrect(JSpinner startSpinner, JSpinner endSpinner) {
         boolean correct = false;
         StringBuilder errorDate = new StringBuilder("Erreur : ");
         GregorianCalendar start, end, current;
@@ -24,7 +24,10 @@ public class DateUtils {
         } else {
             correct = true;
         }
-        throw new DateException(errorDate.toString());
+        if(!correct){
+            JOptionPane.showMessageDialog(null, errorDate.toString(), "Erreur", JOptionPane.ERROR_MESSAGE);
+        }
+        return correct;
     }
 
 
