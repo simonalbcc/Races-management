@@ -4,6 +4,8 @@ public class Team {
     private String name;
     private String webSiteAdress;
     private Company[] companies;
+    private Driver[] drivers;
+    private Car[] cars;
 
     public Team(String name) {
         this.name = name;
@@ -19,7 +21,6 @@ public class Team {
         this.webSiteAdress = webSiteAdress;
         this.companies = companies;
     }
-
 
     public String getName() {
         return name;

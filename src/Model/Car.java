@@ -5,18 +5,19 @@ public class Car {
     private Double averageConsumption;
     private Double power;
     private Team membership;
-    private Boolean improved;
+    private Car improvedFrom;
     private String name;
+    private Ranking[] rankings;
 
 
-
-    public Car(Integer number, Double averageConsumption, Double power, Team membership, Boolean improved, String name) {
+    public Car(Integer number, Double averageConsumption, Double power, Team membership, Car improvedFrom, String name, Ranking[] rankings) {
         this.number = number;
         this.averageConsumption = averageConsumption;
         this.power = power;
         this.membership = membership;
-        this.improved = improved;
+        this.improvedFrom = improvedFrom;
         this.name = name;
+        this.rankings = rankings;
     }
 
     public Integer getNumber() {

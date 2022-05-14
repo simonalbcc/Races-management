@@ -12,6 +12,8 @@ public class Driver {
     private Boolean hasRenewedCommitmentContract;
     private GregorianCalendar birthdate;
     private Locality home;
+    private Ranking[] rankings;
+    private Accident[] accidents;
 
     public Driver(Integer serialNumber, String lastNameFirstName, String phoneNumber, String streetAndNumber, String nationality, Team team, Boolean hasRenewedCommitmentContract, GregorianCalendar birthdate, Locality home) {
         setSerialNumber(serialNumber);
@@ -24,7 +26,7 @@ public class Driver {
         this.birthdate = birthdate;
         this.home = home;
     }
-
+    
     public Integer getSerialNumber() {
         return serialNumber;
     }

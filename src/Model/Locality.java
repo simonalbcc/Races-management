@@ -5,6 +5,7 @@ public class Locality {
     private Integer postalCode;
     private String city;
     private String country;
+    private Driver drivers[];
 
 
     public Locality(Integer number, Integer postalCode, String city, String country) {
@@ -13,6 +14,7 @@ public class Locality {
         this.city = city;
         this.country = country;
     }
+
 
     public String getCountry() {
         return country;
