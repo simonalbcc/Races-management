@@ -47,9 +47,9 @@ public class RaceDBAccess implements RaceDAO{
             ResultSet data = statement.executeQuery();
 
             while(data.next()){
-                rankings.add(new Ranking(new Car(data.getInt("car.number"),null,data.getDouble("car.power"),null,null,null),
+                rankings.add(new Ranking(new Car(data.getInt("car.number"),data.getDouble("car.power")),
                         null,data.getInt("ranking.position"),null,null,data.getDouble("ranking.record"),
-                        new Driver(null,data.getString("driver.last_name_first_name"),null,null,null,null,null,null,null)));
+                        new Driver(data.getString("driver.last_name_first_name"))));
             }
 
         } catch (SQLException exception){
@@ -73,8 +73,8 @@ public class RaceDBAccess implements RaceDAO{
             ResultSet data = statement.executeQuery();
 
             while(data.next()){
-                races.add(new Race(null,null,null,data.getDate(1),null,
-                          new Ranking[]{new Ranking(new Car(null,null,null,new Team(data.getString(2),null, new Company[] { new Company((data.getString(3)),null,null,null,null)}),null,null),null,null,null,null,null,null)}));
+                races.add(new Race(data.getDate(1),
+                          new Ranking(new Car(new Team(data.getString(2), new Company((data.getString(3))))))));
             }
 
         } catch (SQLException exception){

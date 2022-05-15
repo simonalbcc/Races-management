@@ -19,6 +19,12 @@ public class Race {
         this.rankings = rankings;
     }
 
+    public Race(Date date, Ranking ranking){
+        this.date = date;
+        this.rankings = new Ranking[1];
+        this.rankings[0] = ranking;
+    }
+
     public Date getDate() {
         return date;
     }

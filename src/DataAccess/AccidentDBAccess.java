@@ -34,7 +34,7 @@ public class AccidentDBAccess implements AccidentDAO{
             while(data.next()){
                 accidents.add(new Accident(data.getDate("accident.date"),
                         new Driver(null,data.getString("driver.last_name_first_name"),null,data.getString("driver.street_and_number"),null,
-                                new Team(data.getString("driver.team"),null),null,null,new Locality(null,null,data.getString("locality.city_name"),null)))
+                                new Team(data.getString("driver.team")),null,null,new Locality(null,null,data.getString("locality.city_name"),null)))
                 );
             }
 

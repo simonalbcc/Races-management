@@ -18,6 +18,9 @@ public class Ranking {
         this.record = record;
         this.driver = driver;
     }
+    public Ranking(Car car){
+        this.car = car;
+    }
 
 
     public Integer getPosition() {

@@ -15,6 +15,10 @@ public class Company {
         this.teams = teams;
     }
 
+    public Company(String name){
+        this.name = name;
+    }
+
     public String getName() {
         return name;
     }

@@ -20,6 +20,15 @@ public class Car {
         this.rankings = rankings;
     }
 
+    public Car(Integer number, Double power){
+        this.number = number;
+        this.power = power;
+    }
+
+    public Car(Team membership){
+        this.membership = membership;
+    }
+
     public Integer getNumber() {
         return number;
     }

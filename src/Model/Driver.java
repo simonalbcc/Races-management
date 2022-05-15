@@ -26,7 +26,11 @@ public class Driver {
         this.birthdate = birthdate;
         this.home = home;
     }
-    
+
+    public Driver(String lastNameFirstName){
+        this.lastNameFirstName = lastNameFirstName;
+    }
+
     public Integer getSerialNumber() {
         return serialNumber;
     }

@@ -21,6 +21,11 @@ public class Team {
         this.webSiteAdress = webSiteAdress;
         this.companies = companies;
     }
+    public Team(String name , Company company){
+        this.name = name;
+        this.companies = new Company[1];
+        this.companies[0] = company;
+    }
 
     public String getName() {
         return name;
