@@ -2,8 +2,7 @@ package Business;
 
 import DataAccess.*;
 import Model.*;
-
-import java.sql.SQLException;
+import Exception.DataBaseException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -50,7 +49,7 @@ public class DriverManager {
 
     public ArrayList<Race> getWinningSponsorsOfACircuit(String circuitName){return raceAccess.getWinningSponsorsOfACircuit(circuitName);}
 
-    public void closeConnection() throws SQLException {
+    public void closeConnection() throws DataBaseException {
         new DBAccess().closeConnection();
     }
 

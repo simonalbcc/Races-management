@@ -2,8 +2,7 @@ package Controller;
 
 import Business.DriverManager;
 import Model.*;
-
-import java.sql.SQLException;
+import Exception.DataBaseException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -42,7 +41,7 @@ public class Controller {
 
     public ArrayList<Race> getWinningSponsorsOfACircuit(String circuitName){return driverManager.getWinningSponsorsOfACircuit(circuitName);}
 
-    public void closeConnection() throws SQLException {
+    public void closeConnection() throws DataBaseException {
         driverManager.closeConnection();
     }
 }
