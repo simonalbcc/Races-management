@@ -1,9 +1,8 @@
 //region packages & imports
 package View;
 
-import Utility.FinaleJPanel;
+import Utility.OperationTemplate;
 
-import javax.swing.*;
 import java.awt.*;
 //endregion
 

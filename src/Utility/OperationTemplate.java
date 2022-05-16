@@ -1,9 +1,13 @@
 //region packages & imports
-package View;
+package Utility;
 
 import Controller.Controller;
 import Utility.AddUtils;
 import Utility.FinaleJPanel;
+import View.ButtonsPanel;
+import View.DriverJTable;
+import View.RemoveDriver;
+import View.WelcomeJPanel;
 
 import javax.swing.*;
 import java.awt.*;
