@@ -3,13 +3,14 @@ package View;
 
 import DataAccess.SingletonConnexion;
 import Utility.Utils;
-
+import Exception.DataBaseException;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.SQLException;
 //endregion
 
 public class MainJFrame extends JFrame {
@@ -44,14 +45,7 @@ public class MainJFrame extends JFrame {
         rankingManagementMenu = new JMenu("Gestion d'un classement");
 
 
-        // add to bar menu
-        menuBar.add(applicationMenu);
-        menuBar.add(driversMenu);
-        menuBar.add(researchMenu);
-        menuBar.add(helpMenu);
-        menuBar.add(rankingManagementMenu);
-
-        // add to menu
+        //region add to menu
         close = new JMenuItem("Fermeture");
         close.addActionListener(new MenuItemListner());
 
@@ -104,51 +98,70 @@ public class MainJFrame extends JFrame {
         rankingManagementMenu.add(rankingManagement);
         //endregion
 
+        // add to bar menu
+        menuBar.add(applicationMenu);
+        menuBar.add(driversMenu);
+        menuBar.add(researchMenu);
+        menuBar.add(rankingManagementMenu);
+        menuBar.add(helpMenu);
+
         // add to window
         frameContainer.add(new WelcomeJPanel());
         setVisible(true);
     }
 
     //region inner classe 
-    private class MenuItemListner implements ActionListener{
+    private class MenuItemListner implements ActionListener {
         public void actionPerformed(ActionEvent actionEvent) {
-            try{
-                JPanel currentPanel = new JPanel();
+            JPanel currentPanel = new WelcomeJPanel();
                 if(actionEvent.getSource() == close){
-                    SingletonConnexion.getInstance().close();
+                    try {
+                        new Controller.Controller().closeConnection();
+                    } catch (Exception exception) {
+                        JOptionPane.showMessageDialog(null, exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
+                    }
                     System.exit(0);
+                } else {
+                    try {
+                        currentPanel = new JPanelFactory().createJPanel(currentPanel, actionEvent);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
                 }
-                if(actionEvent.getSource() == contactsInfos){
-                    currentPanel = new ContactsInfosJPanel(frameContainer);
-                }
-                if(actionEvent.getSource() == addDriver){
-                    currentPanel = new AddDriver(frameContainer);
-                }
-                if(actionEvent.getSource() == removeDriver){
-                    currentPanel = new RemoveDriver(frameContainer);
-                }
-                if(actionEvent.getSource() == modifyDriver){
-                    currentPanel = new ModifyJPanel(frameContainer);
-                }
-                if(actionEvent.getSource() == showDriverList){
-                    currentPanel = new DriverJTable(frameContainer);
-                }
-                if(actionEvent.getSource() == researchAccident){
-                    currentPanel = new ResearchAccidentsJPanel(frameContainer);
-                }
-                if(actionEvent.getSource() == researchCars){
-                    currentPanel = new ResearchCarJPanel(frameContainer);
-                }
-                if(actionEvent.getSource() == researchRanking){
-                    currentPanel = new ResearchRankingJPanel(frameContainer);
-                }
-                if(actionEvent.getSource() == rankingManagement){
-                    currentPanel = new AddDriverRanking(frameContainer);
-                }
-                Utils.addToMainContainer(frameContainer, currentPanel);
-            }catch (Exception exception){
-                JOptionPane.showMessageDialog(null, exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
-            }
+            Utils.addToMainContainer(frameContainer, currentPanel);
         }
     }
+    private class JPanelFactory {
+        public JPanel createJPanel(JPanel currentPanel, ActionEvent actionEvent) throws Exception {
+            if(actionEvent.getSource() == contactsInfos){
+                currentPanel = new ContactsInfosJPanel(frameContainer);
+            }
+            if(actionEvent.getSource() == addDriver){
+                currentPanel = new AddDriver(frameContainer);
+            }
+            if(actionEvent.getSource() == removeDriver){
+                currentPanel = new RemoveDriver(frameContainer);
+            }
+            if(actionEvent.getSource() == modifyDriver){
+                currentPanel = new ModifyJPanel(frameContainer);
+            }
+            if(actionEvent.getSource() == showDriverList){
+                currentPanel = new DriverJTable(frameContainer);
+            }
+            if(actionEvent.getSource() == researchAccident){
+                currentPanel = new ResearchAccidentsJPanel(frameContainer);
+            }
+            if(actionEvent.getSource() == researchCars){
+                currentPanel = new ResearchCarJPanel(frameContainer);
+            }
+            if(actionEvent.getSource() == researchRanking){
+                currentPanel = new ResearchRankingJPanel(frameContainer);
+            }
+            if(actionEvent.getSource() == rankingManagement){
+                currentPanel = new AddDriverRanking(frameContainer);
+            }
+            return currentPanel;
+        }
+    }
+
 }

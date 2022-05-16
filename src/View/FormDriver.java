@@ -37,7 +37,7 @@ public class FormDriver extends JPanel {
     private StringBuilder errorInputMessage;
     private static String[] continents = new String[]{"Séléctionner...", "Europe", "Afrique", "Amérique", "Océanie", "Asie"};
 
-    public FormDriver() {
+    public FormDriver() throws Exception {
         // set bounds, init & pretty borders
         this.setBounds(10,80,500,150);
         this.setLayout(new GridLayout(13,2, 5,10));
@@ -165,11 +165,8 @@ public class FormDriver extends JPanel {
         country.setToolTipText("Veuillez entrer le code postal de la ville du pilote (obligatoire)");
         country.setName("pays");
 
-        try {
-            teamsDB = controller.getAllTeams();
-        } catch (Exception exception) {
-            JOptionPane.showMessageDialog(null, exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
-        }
+        teamsDB = controller.getAllTeams();
+
         teamsDB.add(0, new Team("Séléctionner..."));
         team = new JComboBox(teamsDB.stream().map(t -> t.getName()).toArray());
         team.setToolTipText("Choisissez l'équipe du pilote");
@@ -317,7 +314,7 @@ public class FormDriver extends JPanel {
         }
         return (textFields.size() < 1 & filled) && dateIsCorrect() && (origin.getSelectedIndex() != 0 && country.getSelectedIndex() != 0);
     }
-    public Driver createDriver(){
+    public Driver createDriver() throws Exception {
         GregorianCalendar birtdate = new GregorianCalendar(Integer.parseInt(new SimpleDateFormat("yyyy").format(date.getValue())), Integer.parseInt(new SimpleDateFormat("MM").format(date.getValue()))-1, Integer.parseInt(new SimpleDateFormat("dd").format(date.getValue())));
         Locality locality = new Locality(null, Integer.parseInt(zipCode.getText()), city.getText(), country.getSelectedItem().toString());
 
@@ -330,14 +327,11 @@ public class FormDriver extends JPanel {
                 hasRenewedContract.isSelected(),
                 birtdate,
                 locality);
-        try {
+
             if(controller.getNumberLocality(driver.getHome())== null){
-                controller.createLocality(driver.getHome());
+            controller.createLocality(driver.getHome());
             }
             driver.getHome().setNumber(controller.getNumberLocality(driver.getHome()));
-        } catch (Exception exception) {
-            JOptionPane.showMessageDialog(null, exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
-        }
         return driver;
     }
     public boolean dateIsCorrect(){

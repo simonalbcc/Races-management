@@ -10,14 +10,14 @@ import java.awt.*;
 //endregion
 
 public class RemoveDriver extends OperationTemplate {
-    public RemoveDriver(Container mainContainer){
+    public RemoveDriver(Container mainContainer) throws Exception {
         super(mainContainer);
         setNextText("Supprimer");
     }
 
     //region abstract methods
     @Override
-    public JPanel operation(int driverNumber, JPanel currentPanel, Container mainContainer) {
+    public JPanel operation(int driverNumber, JPanel currentPanel, Container mainContainer) throws Exception {
         try {
             getController().deleteDriver(driverNumber);
         } catch (Exception exception) {

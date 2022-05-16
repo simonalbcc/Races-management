@@ -2,7 +2,8 @@ package Business;
 
 import DataAccess.*;
 import Model.*;
-import Exception.*;
+
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -33,7 +34,7 @@ public class DriverManager {
     public ArrayList<Team> getAllTeams()throws Exception{
         return teamAccess.getAllTeams();
     }
-    public ArrayList<Driver> getAllDrivers(){
+    public ArrayList<Driver> getAllDrivers()throws Exception {
         return driverAccess.getAllDrivers();
     }
 
@@ -49,6 +50,8 @@ public class DriverManager {
 
     public ArrayList<Race> getWinningSponsorsOfACircuit(String circuitName){return raceAccess.getWinningSponsorsOfACircuit(circuitName);}
 
-    public ArrayList<String> getAllTeamsNames()throws Exception{return teamAccess.getAllTeamsNames();};
+    public void closeConnection() throws SQLException {
+        new DBAccess().closeConnection();
+    }
 
 }

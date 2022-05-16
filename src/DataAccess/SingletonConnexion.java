@@ -1,5 +1,8 @@
+//region packages & imports
 package DataAccess;
+
 import java.sql.*;
+
 
 public class SingletonConnexion {
     private static Connection singletonConnexion;
@@ -7,7 +10,7 @@ public class SingletonConnexion {
         singletonConnexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/Races", "root", "SimonAlexis2022");
     }
 
-    public static Connection getInstance() throws SQLException{
+    public static Connection getInstance() throws SQLException {
         if(singletonConnexion == null){
             new SingletonConnexion();
         }

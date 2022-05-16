@@ -5,14 +5,13 @@ import Controller.Controller;
 import Utility.*;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.*;
 //endregion
 
-public class ResearchAccidentsJPanel extends JPanel{
+public class ResearchAccidentsJPanel extends JPanel {
     private GridBagConstraints gc;
     private Container mainContainer;
     private ButtonsPanel buttonsPanel;

@@ -2,10 +2,7 @@
 package View;
 
 import Controller.Controller;
-import Utility.FinaleJPanel;
-import Utility.JTableUtils;
-import Utility.SponsorModel;
-import Utility.Utils;
+import Utility.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,7 +24,7 @@ public class ResearchCarJPanel extends JPanel {
     private int iNumPanel;
     private JPanel currentPanel;
 
-    public ResearchCarJPanel(Container mainContainer) {
+    public ResearchCarJPanel(Container mainContainer) throws Exception {
             this.setLayout(new GridBagLayout());
             this.gc = new GridBagConstraints();
             this.mainContainer = mainContainer;
@@ -48,14 +45,9 @@ public class ResearchCarJPanel extends JPanel {
 
     //region inner classes
     private class CircuitsPanel extends JPanel {
-        public CircuitsPanel()  {
+        public CircuitsPanel() throws Exception {
             circuitsLabel = new JLabel("Choisissez un circuit");
-            try {
-                circuitsCombobox = new JComboBox(controller.getAllCircuitsNames().toArray());
-
-            } catch (Exception exception) {
-                JOptionPane.showMessageDialog(null, exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE); // peut être fait là car dans la view.
-            }
+            circuitsCombobox = new JComboBox(controller.getAllCircuitsNames().toArray());
             circuitsCombobox.setPreferredSize(new Dimension(100, 30));
             this.add(circuitsLabel);
             this.add(circuitsCombobox);
@@ -91,7 +83,11 @@ public class ResearchCarJPanel extends JPanel {
         public void actionPerformed(ActionEvent e) {
             if(e.getSource() == buttonsPanel.getBack()){
                 if(iNumPanel == 1){
-                    currentPanel = new ResearchCarJPanel(mainContainer);
+                    try {
+                        currentPanel = new ResearchCarJPanel(mainContainer);
+                    } catch (Exception exception) {
+                        JOptionPane.showMessageDialog(null, exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
+                    }
                 }else{
                     currentPanel = new WelcomeJPanel();
                 }
@@ -104,7 +100,11 @@ public class ResearchCarJPanel extends JPanel {
                 }else{
                     int result = JOptionPane.showConfirmDialog(null, "Êtes-vous sûrs de vouloir continuer? Les données seront perdues.", "Avertissement", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
                     if(result == 0){
-                        currentPanel = new FinaleJPanel(mainContainer, new ResearchCarJPanel(mainContainer));
+                        try {
+                            currentPanel = new FinaleJPanel(mainContainer, new ResearchCarJPanel(mainContainer));
+                        } catch (Exception exception) {
+                            JOptionPane.showMessageDialog(null, exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
+                        }
                     }
                  }
                 iNumPanel++;

@@ -27,7 +27,7 @@ public class DriverDBAccess implements DriverDAO {
 
             statement.executeUpdate();
 
-        } catch (SQLException exception){
+        } catch (Exception exception){
             throw new AddDriverException(driver, exception);
         }
     }
@@ -49,12 +49,12 @@ public class DriverDBAccess implements DriverDAO {
             statement2.executeUpdate();
             statement3.executeUpdate();
 
-        } catch (SQLException exception){
+        } catch (Exception exception){
            throw new DeleteDriverException(exception);
         }
     }
 
-    public ArrayList<Driver> getAllDrivers(){
+    public ArrayList<Driver> getAllDrivers()throws DataBaseException{
         ArrayList<Driver> drivers = new  ArrayList<Driver>();
         try{
             Driver driver;
@@ -99,7 +99,7 @@ public class DriverDBAccess implements DriverDAO {
             }
 
         } catch (SQLException exception){
-            exception.printStackTrace(); // à changer
+            throw new DataBaseException();
         }
         return drivers;
     }

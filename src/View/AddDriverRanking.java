@@ -12,17 +12,14 @@ public class AddDriverRanking extends JPanel {
     private ButtonsPanel buttonsPanel;
     private GridBagConstraints gc;
 
-    public AddDriverRanking(Container mainContainer){
+    public AddDriverRanking(Container mainContainer) throws Exception {
         this.setLayout(new GridBagLayout());
         this.controller = new Controller();
         this.gc = new GridBagConstraints();
 
         this.driversComboBox = new JComboBox(controller.getAllDrivers().stream().map(d -> d.getLastNameFirstName()).toArray());
-        try{
-            this.teamsComboBox = new JComboBox(controller.getAllTeamsNames().toArray());
-        } catch (Exception exception){
-            exception.getMessage();
-        }
+        this.teamsComboBox = new JComboBox(controller.getAllTeamsNames().toArray());
+
 
         this.buttonsPanel = new ButtonsPanel();
 
@@ -33,5 +30,11 @@ public class AddDriverRanking extends JPanel {
         gc.gridy = 1;
         this.add(buttonsPanel,gc);
     }
+
+
+
+
+
+
 
 }

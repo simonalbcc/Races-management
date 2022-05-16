@@ -4,7 +4,7 @@ import Model.Accident;
 import Model.Driver;
 import Model.Locality;
 import Model.Team;
-import Exception.AccidentException;
+import Exception.DataBaseException;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,7 +14,7 @@ import java.util.Date;
 
 public class AccidentDBAccess implements AccidentDAO{
     @Override
-    public ArrayList<Accident> getAccidentedDrivers(Date startDate, Date endDate) throws AccidentException {
+    public ArrayList<Accident> getAccidentedDrivers(Date startDate, Date endDate) throws DataBaseException {
         ArrayList<Accident> accidents = new ArrayList<Accident>();
         try{
 
@@ -39,7 +39,7 @@ public class AccidentDBAccess implements AccidentDAO{
             }
 
         } catch (SQLException exception){
-            throw new AccidentException(exception);
+            throw new DataBaseException();
         }
         return accidents;
     }

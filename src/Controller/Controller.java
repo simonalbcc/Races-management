@@ -2,7 +2,8 @@ package Controller;
 
 import Business.DriverManager;
 import Model.*;
-import Exception.*;
+
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -27,7 +28,7 @@ public class Controller {
     public ArrayList<Team> getAllTeams()throws Exception{
         return driverManager.getAllTeams();
     }
-    public ArrayList<Driver> getAllDrivers(){
+    public ArrayList<Driver> getAllDrivers() throws Exception{
         return driverManager.getAllDrivers();
     }
 
@@ -41,7 +42,9 @@ public class Controller {
 
     public ArrayList<Race> getWinningSponsorsOfACircuit(String circuitName){return driverManager.getWinningSponsorsOfACircuit(circuitName);}
 
-    public ArrayList<String> getAllTeamsNames()throws Exception{return driverManager.getAllTeamsNames();}
+    public void closeConnection() throws SQLException {
+        driverManager.closeConnection();
+    }
 }
 
 

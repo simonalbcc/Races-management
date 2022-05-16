@@ -1,14 +1,15 @@
 package DataAccess;
 
-import javax.swing.*;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import Exception.LocalityException;
+import Exception.DataBaseException;
 import Model.Locality;
 
 public class LocalityDBAccess implements LocalityDAO{
-    public Integer getNumberLocality(Locality locality){
+    public Integer getNumberLocality(Locality locality)throws DataBaseException{
         Integer number = null;
         try{
             String sql = "select number from Locality where city_name = '"+locality.getCity()+"' and postal_code = "+locality.getPostalCode()+" and country = '"+locality.getCountry()+"'";
@@ -20,7 +21,7 @@ public class LocalityDBAccess implements LocalityDAO{
             number = data.getInt(1);
 
         } catch (SQLException exception){
-            JOptionPane.showMessageDialog(null, exception.getMessage()); // changer
+            throw new DataBaseException();
         }
         return number;
     }
@@ -35,7 +36,7 @@ public class LocalityDBAccess implements LocalityDAO{
 
             statement.executeUpdate();
 
-        } catch(SQLException exception){
+        } catch(Exception exception){
             throw new LocalityException(exception);
         }
     }

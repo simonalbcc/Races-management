@@ -4,7 +4,6 @@ package Utility;
 import Controller.Controller;
 import View.ButtonsPanel;
 import View.DriverJTable;
-import View.RemoveDriver;
 import View.WelcomeJPanel;
 
 import javax.swing.*;
@@ -22,7 +21,7 @@ public abstract class OperationTemplate<mainContainer> extends JPanel {
     private GridBagConstraints gc;
     private JPanel currentPanel;
 
-    public OperationTemplate(Container mainContainer){
+    public OperationTemplate(Container mainContainer) throws Exception {
         // init layout, constraints, controller & container
         this.setLayout(new GridBagLayout());
         gc = new GridBagConstraints();
@@ -67,7 +66,11 @@ public abstract class OperationTemplate<mainContainer> extends JPanel {
                 if(selectedItem == -1){
                     JOptionPane.showMessageDialog(null, "Veuillez séléctionner une ligne", "Erreur", JOptionPane.ERROR_MESSAGE);
                 } else {
-                    currentPanel = operation(Integer.parseInt(driverJTable.getjTable().getValueAt(selectedItem,0).toString()), currentPanel, mainContainer);
+                    try {
+                        currentPanel = operation(Integer.parseInt(driverJTable.getjTable().getValueAt(selectedItem,0).toString()), currentPanel, mainContainer);
+                    } catch (Exception exception) {
+                        JOptionPane.showMessageDialog(null, exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
             } else {
                 currentPanel = new WelcomeJPanel();
@@ -78,7 +81,7 @@ public abstract class OperationTemplate<mainContainer> extends JPanel {
     }
     //endregion
     //region abstract methods
-    public abstract JPanel operation(int driverNumber, JPanel currentPanel,  Container mainContainer);
+    public abstract JPanel operation(int driverNumber, JPanel currentPanel,  Container mainContainer) throws Exception;
     //endregion
 }
 

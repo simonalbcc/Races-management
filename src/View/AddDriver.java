@@ -11,7 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 // endregion
 
-public class AddDriver extends  JPanel{
+public class AddDriver extends JPanel {
     //region privates attributes & constructor
     private JLabel title;
     private GridBagConstraints gc;
@@ -22,7 +22,7 @@ public class AddDriver extends  JPanel{
     private ButtonsPanel buttonsPanel;
     private JButton save;
 
-    public AddDriver(Container mainContainer) {
+    public AddDriver(Container mainContainer) throws Exception {
         // container, buttons & form init
         this.mainContainer = mainContainer;
         this.form = new FormDriver();
@@ -71,16 +71,12 @@ public class AddDriver extends  JPanel{
             if(e.getSource() == buttonsPanel.getNext()){
                 Utils.addToMainContainer(mainContainer, new WelcomeJPanel());
             }
+            try {
             if(e.getSource() == save){
                 if(form.isCorrect(errorInputMessage)){
                     // create the driver to add and check if locality exists in DB (else -> create a new one)
                     Driver driver = form.createDriver();
-                    try {
-                        controller.addDriver(driver);
-                    } catch (Exception exception) {
-                        JOptionPane.showMessageDialog(null, exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
-                    }
-
+                    controller.addDriver(driver);
                     // save message + update db
                     JOptionPane.showMessageDialog(null, "Ajout effectué", "Information", JOptionPane.INFORMATION_MESSAGE);
                     Utils.addToMainContainer(mainContainer, new FinaleJPanel(mainContainer, new AddDriver(mainContainer)));
@@ -93,9 +89,10 @@ public class AddDriver extends  JPanel{
             if(e.getSource() == buttonsPanel.getNext()){
                 Utils.addToMainContainer(mainContainer, new AddDriver(mainContainer));
             }
+        }catch (Exception exception) {
+                JOptionPane.showMessageDialog(null, exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 }
 
-//      add 'é etc  + clear field if pk exist
-// confirm dialog => nom pilote

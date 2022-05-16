@@ -4,10 +4,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import Exception.CircuitException;
+import Exception.DataBaseException;
 
 public class CircuitDBAccess implements CircuitDAO {
-    public ArrayList<String> getAllCircuitsNames() throws CircuitException {
+    public ArrayList<String> getAllCircuitsNames() throws DataBaseException {
         ArrayList<String> circuits = new ArrayList<String>();
         try{
             String circuit;
@@ -24,7 +24,7 @@ public class CircuitDBAccess implements CircuitDAO {
             }
 
         } catch (SQLException exception){
-            throw new CircuitException(exception);
+            throw new DataBaseException();
         }
         return circuits;
     }

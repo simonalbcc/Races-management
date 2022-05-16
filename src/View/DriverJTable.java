@@ -20,8 +20,8 @@ public class DriverJTable extends JPanel {
     private ButtonsPanel buttonsPanel;
     private Container mainContainer;
 
-    public DriverJTable(Container mainContainer){
-
+    public DriverJTable(Container mainContainer) throws Exception {
+        // table init with settings
         // controller, button panel & main container init
         controller = new Controller();
         this.mainContainer = mainContainer;
@@ -43,8 +43,8 @@ public class DriverJTable extends JPanel {
         imageIcon.setImage(imageIcon.getImage().getScaledInstance(50,50, Image.SCALE_SMOOTH));
         title.setIcon(imageIcon);
 
-        // table init with settings
         jTable = new JTable(new AllDriverModel(controller.getAllDrivers()));
+
         jTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         JScrollPane sp = new JTableUtils().centerTableData(jTable);

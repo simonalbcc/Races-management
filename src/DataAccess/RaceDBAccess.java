@@ -24,7 +24,7 @@ public class RaceDBAccess implements RaceDAO{
                 dates.add(data.getDate(1));
             }
 
-        } catch (SQLException exception){
+        } catch (Exception exception){
             throw new RaceException(exception);
         }
         return dates;
@@ -52,7 +52,7 @@ public class RaceDBAccess implements RaceDAO{
                         new Driver(data.getString("driver.last_name_first_name"))));
             }
 
-        } catch (SQLException exception){
+        } catch (Exception exception){
             exception.printStackTrace(); // à changer
         }
         return rankings;
@@ -77,7 +77,7 @@ public class RaceDBAccess implements RaceDAO{
                           new Ranking(new Car(new Team(data.getString(2), new Company((data.getString(3))))))));
             }
 
-        } catch (SQLException exception){
+        } catch (Exception exception){
             exception.printStackTrace(); // à changer
         }
         return races;

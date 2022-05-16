@@ -23,7 +23,8 @@ public class Utils {
             mainContainer.removeAll();
             mainContainer.add(panel);
             mainContainer.repaint();
-            mainContainer.validate();        }
+            mainContainer.validate();
+        }
     }
 
     public static <T> Collector<T, ?, T> toSingleton() {
