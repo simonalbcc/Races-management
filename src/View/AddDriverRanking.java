@@ -17,7 +17,7 @@ public class AddDriverRanking extends JPanel {
         this.controller = new Controller();
         this.gc = new GridBagConstraints();
 
-        this.driversComboBox = new JComboBox(controller.getAllDriversNames().toArray());
+        this.driversComboBox = new JComboBox(controller.getAllDrivers().stream().map(d -> d.getLastNameFirstName()).toArray());
         try{
             this.teamsComboBox = new JComboBox(controller.getAllTeamsNames().toArray());
         } catch (Exception exception){

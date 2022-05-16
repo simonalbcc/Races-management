@@ -1,12 +1,10 @@
 //region packages & imports
 package View;
 
-import Utility.AddUtils;
+import Utility.Utils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 //endregion
 
 public class ContactsInfosJPanel extends JPanel {
@@ -34,7 +32,7 @@ public class ContactsInfosJPanel extends JPanel {
 
         // back button init
         returnButton = new JButton("<html> <u>R</u>etour </html>");
-        returnButton.addActionListener(actionEvent -> AddUtils.addToMainContainer(mainContainer, new WelcomeJPanel()));
+        returnButton.addActionListener(actionEvent -> Utils.addToMainContainer(mainContainer, new WelcomeJPanel()));
 
         // add to the panel with constraints
         this.add(contactLabel, gc);

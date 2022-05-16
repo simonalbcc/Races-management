@@ -16,10 +16,6 @@ public class Controller {
     public void addDriver(Driver driver) throws Exception {
        driverManager.addDriver(driver);
     }
-    public void updateDriver(Driver driver)throws DeleteDriverException {
-
-    }
-
 
     public Integer getNumberLocality(Locality locality)throws Exception{
        return driverManager.getNumberLocality(locality);
@@ -44,8 +40,6 @@ public class Controller {
     public ArrayList<Accident> getAccidentedDrivers(Date startDate, Date endDate)throws Exception{return driverManager.getAccidentedDrivers(startDate, endDate);}
 
     public ArrayList<Race> getWinningSponsorsOfACircuit(String circuitName){return driverManager.getWinningSponsorsOfACircuit(circuitName);}
-
-    public ArrayList<String> getAllDriversNames(){return driverManager.getAllDriversNames();}
 
     public ArrayList<String> getAllTeamsNames()throws Exception{return driverManager.getAllTeamsNames();}
 }

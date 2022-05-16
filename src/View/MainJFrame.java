@@ -2,7 +2,7 @@
 package View;
 
 import DataAccess.SingletonConnexion;
-import Utility.AddUtils;
+import Utility.Utils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -122,7 +122,7 @@ public class MainJFrame extends JFrame {
                     currentPanel = new ContactsInfosJPanel(frameContainer);
                 }
                 if(actionEvent.getSource() == addDriver){
-                    currentPanel = new DriverForm(frameContainer);
+                    currentPanel = new AddDriver(frameContainer);
                 }
                 if(actionEvent.getSource() == removeDriver){
                     currentPanel = new RemoveDriver(frameContainer);
@@ -145,7 +145,7 @@ public class MainJFrame extends JFrame {
                 if(actionEvent.getSource() == rankingManagement){
                     currentPanel = new AddDriverRanking(frameContainer);
                 }
-                AddUtils.addToMainContainer(frameContainer, currentPanel);
+                Utils.addToMainContainer(frameContainer, currentPanel);
             }catch (Exception exception){
                 JOptionPane.showMessageDialog(null, exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
             }

@@ -94,7 +94,7 @@ public class ResearchAccidentsJPanel extends JPanel{
                         }
                     }
                 }
-                AddUtils.addToMainContainer(mainContainer, currentPanel);
+                Utils.addToMainContainer(mainContainer, currentPanel);
             }
         }
     private class AccidentsJTable extends JPanel{

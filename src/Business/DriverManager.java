@@ -30,13 +30,13 @@ public class DriverManager {
     public void createLocality(Locality locality)throws Exception{
         localityAccess.createLocality(locality);
     }
-
     public ArrayList<Team> getAllTeams()throws Exception{
         return teamAccess.getAllTeams();
     }
     public ArrayList<Driver> getAllDrivers(){
         return driverAccess.getAllDrivers();
     }
+
     public ArrayList<String> getAllCircuitsNames()throws Exception{
         return circuitAccess.getAllCircuitsNames();
     }
@@ -48,8 +48,6 @@ public class DriverManager {
     }
 
     public ArrayList<Race> getWinningSponsorsOfACircuit(String circuitName){return raceAccess.getWinningSponsorsOfACircuit(circuitName);}
-
-    public ArrayList<String> getAllDriversNames(){return driverAccess.getAllDriversNames();}
 
     public ArrayList<String> getAllTeamsNames()throws Exception{return teamAccess.getAllTeamsNames();};
 

@@ -2,15 +2,12 @@
 package View;
 
 import Controller.Controller;
-import Utility.AddUtils;
 import Utility.AllDriverModel;
 import Utility.JTableUtils;
+import Utility.Utils;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 //endregion
 
 public class DriverJTable extends JPanel {
@@ -31,7 +28,7 @@ public class DriverJTable extends JPanel {
 
         buttonsPanel = new ButtonsPanel();
         buttonsPanel.getNext().setVisible(false);
-        buttonsPanel.getBack().addActionListener(e -> AddUtils.addToMainContainer(mainContainer, new WelcomeJPanel()));
+        buttonsPanel.getBack().addActionListener(e -> Utils.addToMainContainer(mainContainer, new WelcomeJPanel()));
 
         // set layout with constraints
         this.setLayout(new GridBagLayout());

@@ -2,13 +2,12 @@
 package View;
 
 import Controller.Controller;
-import Utility.AddUtils;
 import Utility.FinaleJPanel;
 import Utility.JTableUtils;
 import Utility.SponsorModel;
+import Utility.Utils;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -110,7 +109,7 @@ public class ResearchCarJPanel extends JPanel {
                  }
                 iNumPanel++;
             }
-            AddUtils.addToMainContainer(mainContainer, currentPanel);
+            Utils.addToMainContainer(mainContainer, currentPanel);
         }
     }
     //endregion

@@ -2,8 +2,6 @@
 package Utility;
 
 import Controller.Controller;
-import Utility.AddUtils;
-import Utility.FinaleJPanel;
 import View.ButtonsPanel;
 import View.DriverJTable;
 import View.RemoveDriver;
@@ -15,7 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 //endregion
 
-public abstract class OperationTemplate extends JPanel {
+public abstract class OperationTemplate<mainContainer> extends JPanel {
     //region privates attributes & constructor
     private DriverJTable driverJTable;
     private Container mainContainer;
@@ -23,7 +21,6 @@ public abstract class OperationTemplate extends JPanel {
     private ButtonsPanel buttonsPanel;
     private GridBagConstraints gc;
     private JPanel currentPanel;
-    private String txtConfirmDialog;
 
     public OperationTemplate(Container mainContainer){
         // init layout, constraints, controller & container
@@ -53,9 +50,6 @@ public abstract class OperationTemplate extends JPanel {
     public Controller getController() {
         return controller;
     }
-    public void setTxtConfirmDialog(String txt){
-        this.txtConfirmDialog = txt;
-    }
     public void setNextText(String action){
         this.getButtonsPanel().getNext().setText(action+" l'élément séléctionné");
     }
@@ -72,29 +66,19 @@ public abstract class OperationTemplate extends JPanel {
                 // check if 1 line is selected
                 if(selectedItem == -1){
                     JOptionPane.showMessageDialog(null, "Veuillez séléctionner une ligne", "Erreur", JOptionPane.ERROR_MESSAGE);
-                    currentPanel = new RemoveDriver(mainContainer);
                 } else {
-                    try {
-                        operation(Integer.parseInt(driverJTable.getjTable().getValueAt(selectedItem,0).toString()));
-                        int result = JOptionPane.showConfirmDialog(null, "Êtes-vous sûrs de vouloir continuer? Les données seront perdues.", "Avertissement", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
-                        if (result == 0) {
-                            JOptionPane.showMessageDialog(null, txtConfirmDialog, "Information", JOptionPane.INFORMATION_MESSAGE);
-                            currentPanel = new FinaleJPanel(mainContainer, new RemoveDriver(mainContainer));
-                        }
-                    } catch (Exception exception) {
-                        JOptionPane.showMessageDialog(null, exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
-                    }
+                    currentPanel = operation(Integer.parseInt(driverJTable.getjTable().getValueAt(selectedItem,0).toString()), currentPanel, mainContainer);
                 }
             } else {
                 currentPanel = new WelcomeJPanel();
             }
             // add the panel to main container
-            AddUtils.addToMainContainer(mainContainer, currentPanel);
+            Utils.addToMainContainer(mainContainer, currentPanel);
         }
     }
     //endregion
     //region abstract methods
-    public abstract void operation(int driverNumber) throws Exception;
+    public abstract JPanel operation(int driverNumber, JPanel currentPanel,  Container mainContainer);
     //endregion
 }
 
