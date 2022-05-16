@@ -15,7 +15,7 @@ public class DriverDBAccess implements DriverDAO {
 
             PreparedStatement statement = SingletonConnexion.getInstance().prepareStatement(sql);
 
-            statement.setInt(1, driver.getSerialNumber());
+            statement.setInt(1, driver.getNumber());
             statement.setString(2, driver.getLastNameFirstName());
             statement.setString(3, driver.getPhoneNumber());
             statement.setString(4, driver.getStreetAndNumber());

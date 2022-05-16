@@ -27,7 +27,7 @@ public class Utils {
         }
     }
 
-    public static <T> Collector<T, ?, T> toSingleton() {
+    public static <T> Collector<T, ?, T> getOneElementOfAList() {
         return Collectors.collectingAndThen( Collectors.toList(), list -> {
                     if (list.size() != 1) {
                         throw new IllegalStateException();
@@ -35,6 +35,11 @@ public class Utils {
                     return list.get(0);
                 }
         );
+    }
+    public static void cleanWrongTextField(ArrayList<JTextField> textFields){
+        for (JTextField textField: textFields) {
+            textField.setText("");
+        }
     }
 
 

@@ -82,7 +82,7 @@ public class AddDriver extends JPanel {
                     Utils.addToMainContainer(mainContainer, new FinaleJPanel(mainContainer, new AddDriver(mainContainer)));
                 } else {
                     JOptionPane.showMessageDialog(null, errorInputMessage.toString(), "Erreur", JOptionPane.ERROR_MESSAGE);
-                    form.cleanWrongTextField();
+                    Utils.cleanWrongTextField(form.getTextFields());
                     errorInputMessage.setLength(0);
                 }
             }

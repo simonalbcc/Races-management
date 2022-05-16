@@ -236,8 +236,11 @@ public class FormDriver extends JPanel {
         //endregion
     }
 
+    public ArrayList<JTextField> getTextFields() {
+        return textFields;
+    }
     public void setFilledDriverForm(Driver driver){
-        number.setText(driver.getSerialNumber().toString());
+        number.setText(driver.getNumber().toString());
 
         int lastSpace = driver.getLastNameFirstName().trim().lastIndexOf(" ");
         lastName.setText(driver.getLastNameFirstName().trim().substring(0,lastSpace));
@@ -349,11 +352,4 @@ public class FormDriver extends JPanel {
         }
         return correct;
     }
-    public void cleanWrongTextField(){
-        for (JTextField textField: textFields) {
-            textField.setText("");
-        }
-    }
-
-
 }

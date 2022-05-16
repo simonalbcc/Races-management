@@ -3,7 +3,7 @@ package Model;
 import java.util.GregorianCalendar;
 
 public class Driver {
-    private Integer serialNumber;
+    private Integer number;
     private String lastNameFirstName;
     private String streetAndNumber;
     private String nationality;
@@ -16,7 +16,7 @@ public class Driver {
     private Accident[] accidents;
 
     public Driver(Integer serialNumber, String lastNameFirstName, String phoneNumber, String streetAndNumber, String nationality, Team team, Boolean hasRenewedCommitmentContract, GregorianCalendar birthdate, Locality home) {
-        setSerialNumber(serialNumber);
+        setNumber(serialNumber);
         this.lastNameFirstName = lastNameFirstName;
         this.phoneNumber = phoneNumber;
         this.streetAndNumber = streetAndNumber;
@@ -31,12 +31,12 @@ public class Driver {
         this.lastNameFirstName = lastNameFirstName;
     }
 
-    public Integer getSerialNumber() {
-        return serialNumber;
+    public Integer getNumber() {
+        return number;
     }
-    public void setSerialNumber(Integer serialNumber) {
-            if(serialNumber != null){
-                this.serialNumber = serialNumber;
+    public void setNumber(Integer number) {
+            if(number != null){
+                this.number = number;
             }
     }
 

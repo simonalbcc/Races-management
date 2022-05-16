@@ -15,13 +15,12 @@ public class AddDriverRanking extends JPanel {
     public AddDriverRanking(Container mainContainer) throws Exception {
         this.setLayout(new GridBagLayout());
         this.controller = new Controller();
+        this.buttonsPanel = new ButtonsPanel();
         this.gc = new GridBagConstraints();
+        this.gc.insets = new Insets(5,5,5,5);
 
         this.driversComboBox = new JComboBox(controller.getAllDrivers().stream().map(d -> d.getLastNameFirstName()).toArray());
-        this.teamsComboBox = new JComboBox(controller.getAllTeamsNames().toArray());
-
-
-        this.buttonsPanel = new ButtonsPanel();
+        this.teamsComboBox = new JComboBox(controller.getAllTeams().stream().map(t -> t.getName()).toArray());
 
         gc.gridy = 0;
         this.add(driversComboBox,gc);

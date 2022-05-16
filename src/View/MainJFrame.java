@@ -113,26 +113,23 @@ public class MainJFrame extends JFrame {
     //region inner classe 
     private class MenuItemListner implements ActionListener {
         public void actionPerformed(ActionEvent actionEvent) {
-            JPanel currentPanel = new WelcomeJPanel();
+            try{
+                JPanel currentPanel = new WelcomeJPanel();
                 if(actionEvent.getSource() == close){
-                    try {
-                        new Controller.Controller().closeConnection();
-                    } catch (Exception exception) {
-                        JOptionPane.showMessageDialog(null, exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
-                    }
+                    new Controller.Controller().closeConnection();
                     System.exit(0);
                 } else {
-                    try {
-                        currentPanel = new JPanelFactory().createJPanel(currentPanel, actionEvent);
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
+                    currentPanel = new JPanelFactory().createJPanel(actionEvent);
                 }
-            Utils.addToMainContainer(frameContainer, currentPanel);
+                Utils.addToMainContainer(frameContainer, currentPanel);
+            }catch (Exception exception){
+                JOptionPane.showMessageDialog(null, exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
     private class JPanelFactory {
-        public JPanel createJPanel(JPanel currentPanel, ActionEvent actionEvent) throws Exception {
+        public JPanel createJPanel(ActionEvent actionEvent) throws Exception {
+            JPanel currentPanel = new JPanel();
             if(actionEvent.getSource() == contactsInfos){
                 currentPanel = new ContactsInfosJPanel(frameContainer);
             }

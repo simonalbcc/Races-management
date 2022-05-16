@@ -9,7 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 
 
-import static Utility.Utils.toSingleton;
+import static Utility.Utils.getOneElementOfAList;
 //endregion
 
 public class ModifyJPanel extends OperationTemplate {
@@ -23,13 +23,14 @@ public class ModifyJPanel extends OperationTemplate {
     public JPanel operation(int driverNumber, JPanel currentPanel, Container mainContainer) throws Exception {
         Driver driver = null;
         try {
-            driver = getController().getAllDrivers().stream().filter(d -> d.getSerialNumber() == driverNumber).collect(toSingleton());
+            driver = getController().getAllDrivers().stream().filter(d -> d.getNumber() == driverNumber).collect(getOneElementOfAList()); // changer en requête sql
         } catch (Exception exception) {
             JOptionPane.showMessageDialog(null, exception.getMessage(), "Erreur",  JOptionPane.ERROR_MESSAGE);
         }
 
         AddDriver addDriver =  new AddDriver(mainContainer);
         addDriver.getForm().setFilledDriverForm(driver);
+        //addDriver.getForm().
 
         ButtonsPanel buttonsPanel = new ButtonsPanel("Retour", "Modifier");
         buttonsPanel.getNext().removeActionListener(buttonsPanel.getNext().getAction());
@@ -49,7 +50,7 @@ public class ModifyJPanel extends OperationTemplate {
                 }
             } else {
                 JOptionPane.showMessageDialog(null, addDriver.getErrorInputMessage().toString(), "Erreur", JOptionPane.ERROR_MESSAGE);
-                addDriver.getForm().cleanWrongTextField();
+                Utils.cleanWrongTextField( addDriver.getForm().getTextFields());
                 addDriver.getErrorInputMessage().setLength(0);
             }
         });

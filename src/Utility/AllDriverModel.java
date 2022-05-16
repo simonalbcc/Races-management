@@ -43,7 +43,7 @@ public class AllDriverModel extends AbstractTableModel {
     public Object getValueAt(int rowIndex, int columnIndex) {
         Model.Driver driver = drivers.get(rowIndex);
         switch (columnIndex){
-            case 0: return driver.getSerialNumber();
+            case 0: return driver.getNumber();
             case 1: return driver.getLastNameFirstName();
             case 2: return getPhoneOutput(driver);
             case 3: return driver.getStreetAndNumber();
