@@ -15,8 +15,8 @@ import java.awt.event.WindowEvent;
 public class MainJFrame extends JFrame {
     //region privates attributes & constructor
     private JMenuBar menuBar;
-    private JMenu applicationMenu, helpMenu, driversMenu, researchMenu;
-    private JMenuItem close, shortcuts, contactsInfos, addDriver, removeDriver, modifyDriver, showDriverList, researchAccident, researchCars, researchRanking;
+    private JMenu applicationMenu, helpMenu, driversMenu, researchMenu , rankingManagementMenu;
+    private JMenuItem close, contactsInfos, addDriver, removeDriver, modifyDriver, showDriverList, researchAccident, researchCars, researchRanking, rankingManagement;
     private Container frameContainer;
 
     public MainJFrame(){
@@ -41,18 +41,19 @@ public class MainJFrame extends JFrame {
         driversMenu = new JMenu("Pilotes");
         researchMenu = new JMenu("Recherches");
         helpMenu = new JMenu("Aide");
+        rankingManagementMenu = new JMenu("Gestion d'un classement");
+
 
         // add to bar menu
         menuBar.add(applicationMenu);
         menuBar.add(driversMenu);
         menuBar.add(researchMenu);
         menuBar.add(helpMenu);
+        menuBar.add(rankingManagementMenu);
 
         // add to menu
         close = new JMenuItem("Fermeture");
         close.addActionListener(new MenuItemListner());
-
-        shortcuts = new JMenuItem("Raccourcis");
 
         contactsInfos = new JMenuItem("Contact ");
         contactsInfos.addActionListener(new MenuItemListner());
@@ -78,6 +79,9 @@ public class MainJFrame extends JFrame {
         researchRanking = new JMenuItem("Recherche d'un classement");
         researchRanking.addActionListener(new MenuItemListner());
 
+        rankingManagement = new JMenuItem("Ajout d'un pilote à un classement");
+        rankingManagement.addActionListener(new MenuItemListner());
+
 
         driversMenu.add(addDriver);
         driversMenu.addSeparator();
@@ -95,9 +99,9 @@ public class MainJFrame extends JFrame {
         researchMenu.addSeparator();
         researchMenu.add(researchRanking);
 
-        helpMenu.add(shortcuts);
-        helpMenu.addSeparator();
         helpMenu.add(contactsInfos);
+
+        rankingManagementMenu.add(rankingManagement);
         //endregion
 
         // add to window
@@ -118,25 +122,28 @@ public class MainJFrame extends JFrame {
                     currentPanel = new ContactsInfosJPanel(frameContainer);
                 }
                 if(actionEvent.getSource() == addDriver){
-                    currentPanel = new  DriverForm(frameContainer);
+                    currentPanel = new DriverForm(frameContainer);
                 }
                 if(actionEvent.getSource() == removeDriver){
-                    currentPanel = new  RemoveDriver(frameContainer);
+                    currentPanel = new RemoveDriver(frameContainer);
                 }
                 if(actionEvent.getSource() == modifyDriver){
                     currentPanel = new ModifyJPanel(frameContainer);
                 }
                 if(actionEvent.getSource() == showDriverList){
-                    currentPanel = new  DriverJTable(frameContainer);
+                    currentPanel = new DriverJTable(frameContainer);
                 }
                 if(actionEvent.getSource() == researchAccident){
-                    currentPanel = new  ResearchAccidentsJPanel(frameContainer);
+                    currentPanel = new ResearchAccidentsJPanel(frameContainer);
                 }
                 if(actionEvent.getSource() == researchCars){
-                    currentPanel = new  ResearchCarJPanel(frameContainer);
+                    currentPanel = new ResearchCarJPanel(frameContainer);
                 }
                 if(actionEvent.getSource() == researchRanking){
-                    currentPanel = new  ResearchRankingJPanel(frameContainer);
+                    currentPanel = new ResearchRankingJPanel(frameContainer);
+                }
+                if(actionEvent.getSource() == rankingManagement){
+                    currentPanel = new AddDriverRanking(frameContainer);
                 }
                 AddUtils.addToMainContainer(frameContainer, currentPanel);
             }catch (Exception exception){

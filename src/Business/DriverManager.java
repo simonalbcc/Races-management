@@ -49,4 +49,8 @@ public class DriverManager {
 
     public ArrayList<Race> getWinningSponsorsOfACircuit(String circuitName){return raceAccess.getWinningSponsorsOfACircuit(circuitName);}
 
+    public ArrayList<String> getAllDriversNames(){return driverAccess.getAllDriversNames();}
+
+    public ArrayList<String> getAllTeamsNames()throws Exception{return teamAccess.getAllTeamsNames();};
+
 }

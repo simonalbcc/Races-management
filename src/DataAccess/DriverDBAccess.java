@@ -107,6 +107,26 @@ public class DriverDBAccess implements DriverDAO {
         return drivers;
     }
 
+    public ArrayList<String> getAllDriversNames(){
+        ArrayList<String> DriversNames = new ArrayList<String>();
+
+        try{
+            String sql = "select last_name_first_name from Driver;";
+
+            PreparedStatement statement = SingletonConnexion.getInstance().prepareStatement(sql);
+
+            ResultSet data = statement.executeQuery();
+
+            while (data.next()){
+                DriversNames.add(data.getString(1));
+            }
+
+        }catch (SQLException exception){
+            exception.printStackTrace();
+        }
+
+        return DriversNames;
+    }
 }
 
 

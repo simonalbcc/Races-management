@@ -9,5 +9,6 @@ public interface DriverDAO {
     public void addDriver(Model.Driver driver) throws Exception;
     public void updateDriver()throws Exception;
     public void deleteDriver(int driverNumber)throws Exception;
+    public ArrayList<String> getAllDriversNames();
 
 }

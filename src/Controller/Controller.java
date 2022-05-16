@@ -44,6 +44,10 @@ public class Controller {
     public ArrayList<Accident> getAccidentedDrivers(Date startDate, Date endDate)throws Exception{return driverManager.getAccidentedDrivers(startDate, endDate);}
 
     public ArrayList<Race> getWinningSponsorsOfACircuit(String circuitName){return driverManager.getWinningSponsorsOfACircuit(circuitName);}
+
+    public ArrayList<String> getAllDriversNames(){return driverManager.getAllDriversNames();}
+
+    public ArrayList<String> getAllTeamsNames()throws Exception{return driverManager.getAllTeamsNames();}
 }
 
 
