@@ -82,7 +82,7 @@ public class ResearchAccidentsJPanel extends JPanel {
                             currentPanel = new AccidentsJTable();
                             iNumPanel++;
                         } catch (Exception exception) {
-                            JOptionPane.showMessageDialog(null, exception.getMessage(),"Erreur", JOptionPane.ERROR_MESSAGE); // peut être fait là car dans view
+                            JOptionPane.showMessageDialog(null, exception.getMessage(),"Erreur", JOptionPane.ERROR_MESSAGE);
                         }
                     } else if (iNumPanel == 1){
                         int result = JOptionPane.showConfirmDialog(null, "Êtes-vous sûrs de vouloir continuer? Les données seront perdues.", "Avertissement", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);

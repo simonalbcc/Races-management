@@ -4,6 +4,7 @@ import Controller.Controller;
 import Utility.FinaleJPanel;
 import Utility.JTableUtils;
 import Utility.RankingModel;
+import Utility.Utils;
 
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicBorders;
@@ -22,7 +23,7 @@ public class ResearchRankingJPanel extends JPanel {
     private Integer iPanel;
     private Controller controller;
 
-    public ResearchRankingJPanel(Container mainContainer){
+    public ResearchRankingJPanel(Container mainContainer) throws Exception {
 
         this.mainContainer = mainContainer;
         buttonsPanel = new ButtonsPanel("Précédent", "Suivant");
@@ -36,9 +37,9 @@ public class ResearchRankingJPanel extends JPanel {
         this.setBorder(new BasicBorders.FieldBorder(Color.BLACK, Color.black, Color.BLACK, Color.BLACK));
 
         iPanel = 1;
-
-        setCurrentPanel();
-        updatePanel();
+        this.add(new CircuitsPanel(), gc);
+        gc.gridy = 1;
+        this.add(buttonsPanel, gc);
     }
 
     public void updatePanel(){
@@ -50,19 +51,27 @@ public class ResearchRankingJPanel extends JPanel {
             this.add(buttonsPanel, gc);
         }
     }
-
     public void setCurrentPanel() {
         try{
             if(iPanel == 0){
-                currentPanel = new WelcomeJPanel();
-            } else if (iPanel == 1){
-                currentPanel = new CircuitsPanel();
-            } else if (iPanel == 2){
-                currentPanel = new DatePanel();
-            } else if (iPanel == 3){
-                currentPanel = new RankingTable();
-            } else if (iPanel == 4){
-                currentPanel = new FinaleJPanel(mainContainer, new ResearchRankingJPanel(mainContainer));
+                Utils.addToMainContainer(mainContainer, new WelcomeJPanel());
+            }else{
+                switch (iPanel){
+                    case 1 :
+                        currentPanel = new CircuitsPanel();
+                        break;
+                    case 2 :
+                        currentPanel = new DatePanel();
+                        break;
+                    case 3 :
+                        currentPanel = new RankingTable();
+                        break;
+                    case 4 :
+                        currentPanel = new FinaleJPanel(mainContainer, new ResearchRankingJPanel(mainContainer));
+                        break;
+                }
+                updatePanel();
+                Utils.addToMainContainer(mainContainer, ResearchRankingJPanel.this);
             }
         }catch (Exception exception){
             JOptionPane.showMessageDialog(null, exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
@@ -114,8 +123,6 @@ public class ResearchRankingJPanel extends JPanel {
     private class ButtonListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
-            mainContainer.removeAll();
-
             if(e.getSource() == buttonsPanel.getBack()){
                 iPanel--;
             }
@@ -123,12 +130,7 @@ public class ResearchRankingJPanel extends JPanel {
             if(e.getSource() == buttonsPanel.getNext()){
                 iPanel++;
             }
-
             setCurrentPanel();
-            updatePanel();
-
-            mainContainer.repaint();
-            mainContainer.validate();
         }
     }
 
