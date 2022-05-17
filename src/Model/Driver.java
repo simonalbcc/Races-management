@@ -81,13 +81,13 @@ public class Driver {
         output.append("- Equipe : "+getTeam().getName()+"\n");
         output.append("- Numéro : "+getNumber()+"\n");
         output.append("- Numéro de téléphone : "+getPhoneNumber()+"\n");
-        if(rankings.length > 0){
+        if(rankings != null && rankings.length > 0 ){
             output.append("apparaît dans"+(rankings.length > 1 ?"le classement":"les classements")+" suivant+\n");
             for (Ranking ranking:rankings) {
                 output.append("- "+ranking.getRace().getCircuit()+"\n");
             }
         }
-        if(accidents.length > 0){
+        if(accidents != null && accidents.length > 0){
             output.append("a eu "+(rankings.length > 1 ?"plusieurs accidents aux dates suivantes":"un accident à la date suivante")+" :\n");
             for (Accident accident:accidents) {
                 output.append("- "+accident.getDate()+"\n");

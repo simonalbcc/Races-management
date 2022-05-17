@@ -132,7 +132,7 @@ public class DriverDBAccess implements DriverDAO {
         try{
 
             String sql = "select driver.number, " +
-                    "            last_name_first_name, " +
+                                "last_name_first_name, " +
                                 "phone_number, " +
                                 "street_and_number, " +
                                 "nationality, " +

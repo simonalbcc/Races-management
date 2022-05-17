@@ -45,8 +45,6 @@ public class DriverJTable extends JPanel {
 
         jTable = new JTable(new AllDriverModel(controller.getAllDrivers()));
 
-        jTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
         JScrollPane sp = new JTableUtils().centerTableData(jTable);
 
         // add to the panel

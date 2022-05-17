@@ -123,12 +123,10 @@ public class ResearchRankingJPanel extends JPanel {
             if(e.getSource() == buttonsPanel.getNext()){
                 iPanel++;
             }
+
             setCurrentPanel();
             updatePanel();
 
-            if(iPanel > 0){
-                mainContainer.add(ResearchRankingJPanel.this);
-            }
             mainContainer.repaint();
             mainContainer.validate();
         }

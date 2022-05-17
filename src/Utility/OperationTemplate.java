@@ -10,6 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 //endregion
 
 public abstract class OperationTemplate<mainContainer> extends JPanel {
@@ -62,14 +63,20 @@ public abstract class OperationTemplate<mainContainer> extends JPanel {
             if(e.getSource() == buttonsPanel.getNext()){
                 // get selected line
                 ListSelectionModel listSelect = driverJTable.getjTable().getSelectionModel();
-                int selectedItem = listSelect.getMinSelectionIndex();
+                int[] listSelectedDrivers = listSelect.getSelectedIndices();
+                int lengthListSelectedDrivers = listSelectedDrivers.length ;
+                int indSelected = 0;
+
                 // check if 1 line is selected
-                if(selectedItem == -1){
+                if(lengthListSelectedDrivers == 0){
                     JOptionPane.showMessageDialog(null, "Veuillez séléctionner une ligne", "Erreur", JOptionPane.ERROR_MESSAGE);
                 } else {
                     try {
-                        currentPanel = operation(Integer.parseInt(driverJTable.getjTable().getValueAt(selectedItem,0).toString()), currentPanel, mainContainer);
-                    } catch (Exception exception) {
+                        while(indSelected < lengthListSelectedDrivers) {
+                            currentPanel = operation(Integer.parseInt(driverJTable.getjTable().getValueAt(listSelectedDrivers[indSelected], 0).toString()), currentPanel, mainContainer);
+                            indSelected++;
+                            }
+                        } catch (Exception exception) {
                         JOptionPane.showMessageDialog(null, exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
                     }
                 }
