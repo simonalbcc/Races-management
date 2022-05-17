@@ -16,6 +16,9 @@ public class Controller {
     public void addDriver(Driver driver) throws Exception {
        driverManager.addDriver(driver);
     }
+    public void updateDriver(Driver driver) throws Exception{
+        driverManager.updateDriver(driver);
+    }
 
     public Integer getNumberLocality(Locality locality)throws Exception{
        return driverManager.getNumberLocality(locality);
@@ -29,6 +32,9 @@ public class Controller {
     }
     public ArrayList<Driver> getAllDrivers() throws Exception{
         return driverManager.getAllDrivers();
+    }
+    public Driver getADriver(int driverNumber) throws Exception{
+        return driverManager.getADriver(driverNumber);
     }
 
     public ArrayList<String> getAllCircuitsNames()throws Exception{

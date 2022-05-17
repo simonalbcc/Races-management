@@ -49,6 +49,7 @@ public abstract class OperationTemplate<mainContainer> extends JPanel {
     public Controller getController() {
         return controller;
     }
+    public Container getMainContainer(){return mainContainer;}
     public void setNextText(String action){
         this.getButtonsPanel().getNext().setText(action+" l'élément séléctionné");
     }

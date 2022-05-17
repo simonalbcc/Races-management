@@ -5,7 +5,7 @@ import Model.Driver;
 public class UpdateException extends Exception {
     private Driver driver;
     private Exception sqlException;
-    public UpdateException(Driver driver, Exception sqlException) {
+    public UpdateException(Exception sqlException, Driver driver) {
         this.driver = driver;
         this.sqlException = sqlException;
     }

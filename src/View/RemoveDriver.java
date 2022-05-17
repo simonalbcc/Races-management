@@ -19,14 +19,14 @@ public class RemoveDriver extends OperationTemplate {
     @Override
     public JPanel operation(int driverNumber, JPanel currentPanel, Container mainContainer) throws Exception {
         try {
-            getController().deleteDriver(driverNumber);
+            int result = JOptionPane.showConfirmDialog(null, "Êtes-vous sûrs de vouloir continuer? Les données seront perdues."+getController().getADriver(driverNumber).toString(), "Avertissement", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+            if (result == 0) {
+                JOptionPane.showMessageDialog(null, "Supprimé", "Information", JOptionPane.INFORMATION_MESSAGE);
+                getController().deleteDriver(driverNumber);
+                currentPanel = new FinaleJPanel(mainContainer, new RemoveDriver(mainContainer));
+            }
         } catch (Exception exception) {
             JOptionPane.showMessageDialog(null, "Erreur lors de la suppression (erreur détaillée : "+exception.getMessage()+")", "Erreur", JOptionPane.ERROR_MESSAGE); // à changer
-        }
-        int result = JOptionPane.showConfirmDialog(null, "Êtes-vous sûrs de vouloir continuer? Les données seront perdues.", "Avertissement", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
-        if (result == 0) {
-            JOptionPane.showMessageDialog(null, "Supprimé", "Information", JOptionPane.INFORMATION_MESSAGE);
-            currentPanel = new FinaleJPanel(mainContainer, new RemoveDriver(mainContainer));
         }
         return currentPanel;
     }

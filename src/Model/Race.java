@@ -25,6 +25,8 @@ public class Race {
         this.rankings[0] = ranking;
     }
 
+    public Circuit getCircuit(){return circuit;}
+
     public Date getDate() {
         return date;
     }

@@ -21,4 +21,9 @@ public class Circuit {
         this.distance = distance;
         this.nbChicanesPerRound = nbChicanesPerRound;
     }
+
+    @Override
+    public String toString() {
+        return name+" ("+distance+"km)";
+    }
 }

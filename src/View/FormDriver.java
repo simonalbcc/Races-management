@@ -352,4 +352,7 @@ public class FormDriver extends JPanel {
         }
         return correct;
     }
+    public void setDisablePK(){
+        number.setEnabled(false);
+    }
 }
