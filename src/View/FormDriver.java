@@ -285,7 +285,7 @@ public class FormDriver extends JPanel {
                 errorInputMessage.append("- Le code postal entré est invalide ("+ (zipCode.getText().length() > 5 ? "trop long" : "ne contient pas de chiffres") +")\n");
                 textFields.add(zipCode);
             }
-            if(!lastName.getText().trim().matches("^[A-ZÀ-ÖØà-ÿa-z][à-ÿa-z]{1,6}\\s[A-ZÀ-ÖØà-ÿa-z][à-ÿa-z]{1,9}|^[A-ZÀ-ÖØ][à-ÿa-z]{1,14}")){
+            if(!lastName.getText().trim().matches("[A-ZÀ-ÖØà-ÿa-z][à-ÿa-z]{1,6}\\s[A-ZÀ-ÖØà-ÿa-z][à-ÿa-z]{1,9}|[A-ZÀ-ÖØà-ÿa-z][à-ÿa-z]{1,14}")){
                 errorInputMessage.append("- Le nom de famille entré est invalide ("+(lastName.getText().length() > 15 ? "trop long" : "doit contenir uniquement des lettres")+")\n");
                 textFields.add(lastName);
             }
