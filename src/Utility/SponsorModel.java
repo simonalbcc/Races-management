@@ -36,14 +36,24 @@ public class SponsorModel extends AbstractTableModel {
     public Object getValueAt(int rowIndex, int columnIndex) {
         Model.Race race = races.get(rowIndex);
         switch (columnIndex) {
-            case 0:
-                return race.getDate();
-            case 1:
-                return race.getRankings()[0].getCar().getMembership().getName();
-            case 2:
-                return race.getRankings()[0].getCar().getMembership().getCompanies()[0].getName();
-            default:
-                return null;
+            case 0: return race.getDate();
+            case 1: return race.getRankings()[0].getCar().getMembership().getName();
+            case 2: return race.getRankings()[0].getCar().getMembership().getCompanies()[0].getName();
+            default: return null;
         }
+    }
+    public Class getColumnClass (int column)
+    { Class c;
+        switch (column)
+        {
+            case 0:
+            case 1: c = Integer.class;
+                break;
+            case 2 :
+            case 4 : c = Double.class;
+                break;
+            default: c = String.class;
+        }
+        return c;
     }
 }

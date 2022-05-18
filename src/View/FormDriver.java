@@ -271,8 +271,8 @@ public class FormDriver extends JPanel {
                 errorInputMessage.append("- Le champs '"+ textField.getName() +"' doit être remplis \n");
             }
         }
+        textFields.clear();
         if(filled){
-            textFields.clear();
             if(!number.getText().matches("\\d{1,3}")){
                 errorInputMessage.append("- Le numéro du pilote entré est invalide ("+ (number.getText().length() > 3 ? "trop long" : "contient des lettres") +")\n");
                 textFields.add(number);

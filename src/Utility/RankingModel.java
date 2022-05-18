@@ -43,4 +43,18 @@ public class RankingModel extends AbstractTableModel {
             default: return null;
         }
     }
+    public Class getColumnClass (int column)
+    { Class c;
+        switch (column)
+        {
+            case 0:
+            case 1: c = Integer.class;
+                break;
+            case 2 :
+            case 4 : c = Double.class;
+                break;
+            default: c = String.class;
+        }
+        return c;
+    }
 }

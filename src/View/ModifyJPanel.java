@@ -14,6 +14,7 @@ import java.awt.event.ActionListener;
 public class ModifyJPanel extends OperationTemplate {
     private AddDriver addDriver;
     private Driver driverFromForm, selectedDriver;
+    private ButtonsPanel buttonsPanel;
 
     public ModifyJPanel(Container mainContainer) throws Exception {
         super(mainContainer);
@@ -35,7 +36,7 @@ public class ModifyJPanel extends OperationTemplate {
             JOptionPane.showMessageDialog(null, exception.getMessage(), "Erreur",  JOptionPane.ERROR_MESSAGE);
         }
 
-        ButtonsPanel buttonsPanel = new ButtonsPanel("Retour", "Modifier");
+        buttonsPanel = new ButtonsPanel("Retour", "Modifier");
         buttonsPanel.getNext().removeActionListener(buttonsPanel.getNext().getAction());
         buttonsPanel.getNext().addActionListener(new ModifyButtonListener());
         addDriver.changeButtonsPanel(buttonsPanel);
@@ -46,7 +47,7 @@ public class ModifyJPanel extends OperationTemplate {
     private class ModifyButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if(e.getSource() == getButtonsPanel().getNext()){
+            if(e.getSource() == buttonsPanel.getNext()){
                 if(addDriver.getForm().isCorrect( addDriver.getErrorInputMessage())){
                     // create the driver to add and check if locality exists in DB (else -> create a new one)
                     try {

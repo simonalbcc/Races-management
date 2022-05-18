@@ -5,6 +5,7 @@ import Model.Accident;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
+import java.util.Date;
 //endregion
 
 public class AccidentModel extends AbstractTableModel {
@@ -42,19 +43,23 @@ public class AccidentModel extends AbstractTableModel {
     public Object getValueAt(int rowIndex, int columnIndex) {
         Model.Accident accident = accidents.get(rowIndex);
         switch (columnIndex) {
-            case 0:
-                return accident.getDate();
-            case 1:
-                return accident.getDriver().getLastNameFirstName();
-            case 2:
-                return accident.getDriver().getStreetAndNumber();
-            case 3:
-                return accident.getDriver().getHome().getCity();
-            case 4:
-                return accident.getDriver().getTeam().getName();
-            default:
-                return null;
+            case 0: return accident.getDate();
+            case 1: return accident.getDriver().getLastNameFirstName();
+            case 2: return accident.getDriver().getStreetAndNumber();
+            case 3: return accident.getDriver().getHome().getCity();
+            case 4: return accident.getDriver().getTeam().getName();
+            default: return null;
         }
+    }
+    public Class getColumnClass (int column)
+    { Class c;
+        switch (column)
+        {
+            case 0 : c = Date.class;
+                break;
+            default: c = String.class;
+        }
+        return c;
     }
     //endregion
 }

@@ -52,6 +52,9 @@ public class Driver {
         return nationality;
     }
     public String getPhoneNumber() {
+        if(phoneNumber == null){
+            phoneNumber = "";
+        }
         return phoneNumber;
     }
     public void setPhoneNumber(String phoneNumber){
