@@ -9,19 +9,26 @@ import Exception.DataBaseException;
 import Model.Locality;
 
 public class LocalityDBAccess implements LocalityDAO{
-    public Integer getNumberLocality(Locality locality)throws DataBaseException{
-        Integer number = null;
+    public Integer getNumberLocality(Locality locality)throws LocalityException{
+        Integer number;
         try{
-            String sql = "select number from Locality where city_name = '"+locality.getCity()+"' and postal_code = "+locality.getPostalCode()+" and country = '"+locality.getCountry()+"'";
+            System.out.println(locality.getCountry());
+            System.out.println(locality.getCity());
+            System.out.println(locality.getPostalCode());
+            String sql = "select number from Locality where city_name = ? and postal_code = ? and country = ?";
             PreparedStatement statement = SingletonConnexion.getInstance().prepareStatement(sql);
+
+            statement.setString(1, locality.getCity());
+            statement.setInt(2, locality.getPostalCode());
+            statement.setString(3, locality.getCountry());
 
             ResultSet data = statement.executeQuery();
             data.next();
-
-            number = data.getInt(1);
+            System.out.println(data.getInt(1));
+            number = data.getInt("number");
 
         } catch (SQLException exception){
-            throw new DataBaseException(exception);
+            throw new LocalityException(exception);
         }
         return number;
     }

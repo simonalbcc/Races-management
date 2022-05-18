@@ -21,7 +21,7 @@ public class Driver {
     public Driver(Integer serialNumber, String lastNameFirstName, String phoneNumber, String streetAndNumber, String nationality, Team team, Boolean hasRenewedCommitmentContract, GregorianCalendar birthdate, Locality home) {
         setNumber(serialNumber);
         this.lastNameFirstName = lastNameFirstName;
-        this.phoneNumber = phoneNumber;
+        setPhoneNumber(phoneNumber);
         this.streetAndNumber = streetAndNumber;
         this.nationality = nationality;
         this.team = team;
@@ -53,6 +53,9 @@ public class Driver {
     }
     public String getPhoneNumber() {
         return phoneNumber;
+    }
+    public void setPhoneNumber(String phoneNumber){
+        this.phoneNumber = phoneNumber;
     }
     public Team getTeam() {
         return team;

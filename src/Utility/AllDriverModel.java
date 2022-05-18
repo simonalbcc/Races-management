@@ -78,8 +78,10 @@ public class AllDriverModel extends AbstractTableModel {
         return output.format(driver.getBirthdate().getTime());
     }
     public String getPhoneOutput(Driver driver){
-        String output = String.valueOf(driver.getPhoneNumber());
-        output = "+"+output.substring(0,2) +" "+  output.substring(2) ;
+        String output = "N/A";
+        if(driver.getPhoneNumber() != null){
+            output = driver.getPhoneNumber().toString() ;
+        }
         return output;
     }
     public String getCityName(Driver driver){

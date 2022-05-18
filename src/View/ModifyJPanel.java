@@ -18,6 +18,7 @@ public class ModifyJPanel extends OperationTemplate {
     public ModifyJPanel(Container mainContainer) throws Exception {
         super(mainContainer);
         setNextText("Modifier");
+        super.getjTable().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
 
     //region abstract methods
@@ -45,22 +46,24 @@ public class ModifyJPanel extends OperationTemplate {
     private class ModifyButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if(addDriver.getForm().isCorrect( addDriver.getErrorInputMessage())){
-                // create the driver to add and check if locality exists in DB (else -> create a new one)
-                try {
-                    driverFromForm = addDriver.getForm().createDriver();
-                    getController().updateDriver(driverFromForm);
+            if(e.getSource() == getButtonsPanel().getNext()){
+                if(addDriver.getForm().isCorrect( addDriver.getErrorInputMessage())){
+                    // create the driver to add and check if locality exists in DB (else -> create a new one)
+                    try {
+                        driverFromForm = addDriver.getForm().createDriver();
+                        getController().updateDriver(driverFromForm);
 
-                    // save message + update db
-                    JOptionPane.showMessageDialog(null, "Modification effectuée", "Information", JOptionPane.INFORMATION_MESSAGE);
-                    Utils.addToMainContainer(getMainContainer(), new FinaleJPanel(getMainContainer(), new AddDriver(getMainContainer())));
-                } catch (Exception exception) {
-                    JOptionPane.showMessageDialog(null, exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
+                        // save message + update db
+                        JOptionPane.showMessageDialog(null, "Modification effectuée", "Information", JOptionPane.INFORMATION_MESSAGE);
+                        Utils.addToMainContainer(getMainContainer(), new FinaleJPanel(getMainContainer(), new AddDriver(getMainContainer())));
+                    } catch (Exception exception) {
+                        JOptionPane.showMessageDialog(null, exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, addDriver.getErrorInputMessage().toString(), "Erreur", JOptionPane.ERROR_MESSAGE);
+                    Utils.cleanWrongTextField( addDriver.getForm().getTextFields());
+                    addDriver.getErrorInputMessage().setLength(0);
                 }
-            } else {
-                JOptionPane.showMessageDialog(null, addDriver.getErrorInputMessage().toString(), "Erreur", JOptionPane.ERROR_MESSAGE);
-                Utils.cleanWrongTextField( addDriver.getForm().getTextFields());
-                addDriver.getErrorInputMessage().setLength(0);
             }
         }
     }

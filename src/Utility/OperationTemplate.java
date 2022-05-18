@@ -2,6 +2,7 @@
 package Utility;
 
 import Controller.Controller;
+import Model.Driver;
 import View.ButtonsPanel;
 import View.DriverJTable;
 import View.WelcomeJPanel;
@@ -51,6 +52,7 @@ public abstract class OperationTemplate<mainContainer> extends JPanel {
         return controller;
     }
     public Container getMainContainer(){return mainContainer;}
+    public JTable getjTable(){return driverJTable.getjTable();}
     public void setNextText(String action){
         this.getButtonsPanel().getNext().setText(action+" l'élément séléctionné");
     }

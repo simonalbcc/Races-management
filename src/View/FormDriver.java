@@ -250,7 +250,7 @@ public class FormDriver extends JPanel {
         date.setModel(spinnerDateModel);
 
         origin.setSelectedItem(driver.getNationality());
-        phoneNumber.setText(driver.getPhoneNumber());
+        phoneNumber.setText(driver.getPhoneNumber().toString());
 
         String numberOnly = Arrays.stream(driver.getStreetAndNumber().split("([A-Za-zÀ-ÖØ-öø-ÿ]\s?)+")).collect(Collectors.joining());
         streetNumber.setText(numberOnly);
@@ -285,11 +285,11 @@ public class FormDriver extends JPanel {
                 errorInputMessage.append("- Le code postal entré est invalide ("+ (zipCode.getText().length() > 5 ? "trop long" : "ne contient pas de chiffres") +")\n");
                 textFields.add(zipCode);
             }
-            if(!lastName.getText().matches("^[A-ZÀ-ÖØ][à-ÿa-z]{1,6}\\s[A-ZÀ-ÖØ][à-ÿa-z]{1,9}|^[A-ZÀ-ÖØ][à-ÿa-z]{1,14}")){
+            if(!lastName.getText().trim().matches("^[A-ZÀ-ÖØà-ÿa-z][à-ÿa-z]{1,6}\\s[A-ZÀ-ÖØà-ÿa-z][à-ÿa-z]{1,9}|^[A-ZÀ-ÖØ][à-ÿa-z]{1,14}")){
                 errorInputMessage.append("- Le nom de famille entré est invalide ("+(lastName.getText().length() > 15 ? "trop long" : "doit contenir uniquement des lettres")+")\n");
                 textFields.add(lastName);
             }
-            if(!firstName.getText().replaceAll("\\s", "").matches("^[A-ZÀ-ÖØ][à-ÿa-z]{1,6}\\s[A-ZÀ-ÖØ][à-ÿa-z]{1,9}|^[A-ZÀ-ÖØ][à-ÿa-z]{1,14}?")){
+            if(!firstName.getText().trim().replaceAll("\\s", "").matches("^[A-ZÀ-ÖØà-ÿa-z][à-ÿa-z]{1,6}\\s[A-ZÀ-ÖØà-ÿa-z][à-ÿa-z]{1,9}|^[A-ZÀ-ÖØà-ÿa-z][à-ÿa-z]{1,14}?")){
                 errorInputMessage.append("- Le prénom entré est invalide ("+(firstName.getText().length() > 15 ? "trop long" : "doit contenir uniquement des lettres")+")\n");
                 textFields.add(firstName);
             }
@@ -318,21 +318,21 @@ public class FormDriver extends JPanel {
         return (textFields.size() < 1 & filled) && dateIsCorrect() && (origin.getSelectedIndex() != 0 && country.getSelectedIndex() != 0);
     }
     public Driver createDriver() throws Exception {
-        GregorianCalendar birtdate = new GregorianCalendar(Integer.parseInt(new SimpleDateFormat("yyyy").format(date.getValue())), Integer.parseInt(new SimpleDateFormat("MM").format(date.getValue()))-1, Integer.parseInt(new SimpleDateFormat("dd").format(date.getValue())));
+        GregorianCalendar birthdate = new GregorianCalendar(Integer.parseInt(new SimpleDateFormat("yyyy").format(date.getValue())), Integer.parseInt(new SimpleDateFormat("MM").format(date.getValue()))-1, Integer.parseInt(new SimpleDateFormat("dd").format(date.getValue())));
         Locality locality = new Locality(null, Integer.parseInt(zipCode.getText()), city.getText(), country.getSelectedItem().toString());
 
         Driver driver = new Driver(  Integer.parseInt(number.getText()),
                 lastName.getText()+" "+firstName.getText(),
-                phoneNumber.getText(),
+                (phoneNumber.getText().equals("") ? null : phoneNumber.getText()),
                 streetName.getText().concat(" "+streetNumber.getText()),
                 continents[origin.getSelectedIndex()],
                 teamsDB.get(team.getSelectedIndex()),
                 hasRenewedContract.isSelected(),
-                birtdate,
-                locality);
-
+                birthdate,
+                locality);;
+        System.out.println(controller.getNumberLocality(driver.getHome()));
             if(controller.getNumberLocality(driver.getHome())== null){
-            controller.createLocality(driver.getHome());
+                controller.createLocality(driver.getHome());
             }
             driver.getHome().setNumber(controller.getNumberLocality(driver.getHome()));
         return driver;

@@ -3,6 +3,8 @@ package DataAccess;
 import Model.*;
 import Model.Driver;
 import Exception.*;
+
+import javax.swing.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
@@ -17,7 +19,11 @@ public class DriverDBAccess implements DriverDAO {
 
             statement.setInt(1, driver.getNumber());
             statement.setString(2, driver.getLastNameFirstName());
-            statement.setString(3, driver.getPhoneNumber());
+            if(driver.getNumber() == null){
+                statement.setNull(3,Types.INTEGER);
+            }else{
+                statement.setString(3, driver.getPhoneNumber());
+            }
             statement.setString(4, driver.getStreetAndNumber());
             statement.setString(5, driver.getNationality());
             statement.setString(6, driver.getTeam().getName());

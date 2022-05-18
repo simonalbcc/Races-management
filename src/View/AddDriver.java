@@ -27,7 +27,7 @@ public class AddDriver extends JPanel {
         this.mainContainer = mainContainer;
         this.form = new FormDriver();
         this.errorInputMessage = new StringBuilder("Action requise : \n");
-
+        this.controller = new Controller();
         buttonsPanel = new ButtonsPanel("Retour", "Réinitialiser");
         save = new JButton("Sauvegarder");
         buttonsPanel.add(save);
@@ -68,7 +68,7 @@ public class AddDriver extends JPanel {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if(e.getSource() == buttonsPanel.getNext()){
+            if(e.getSource() == buttonsPanel.getBack()){
                 Utils.addToMainContainer(mainContainer, new WelcomeJPanel());
             }
             try {
@@ -76,6 +76,7 @@ public class AddDriver extends JPanel {
                 if(form.isCorrect(errorInputMessage)){
                     // create the driver to add and check if locality exists in DB (else -> create a new one)
                     Driver driver = form.createDriver();
+                    System.out.println(driver.getPhoneNumber());
                     controller.addDriver(driver);
                     // save message + update db
                     JOptionPane.showMessageDialog(null, "Ajout effectué", "Information", JOptionPane.INFORMATION_MESSAGE);
