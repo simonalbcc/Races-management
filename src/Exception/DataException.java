@@ -1,9 +1,9 @@
 package Exception;
 
-public class DataBaseException extends Exception{
+public class DataException extends Exception{
     private Exception exception;
 
-    public DataBaseException(Exception exception) {
+    public DataException(Exception exception) {
         this.exception = exception;
     }
 

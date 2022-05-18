@@ -38,7 +38,7 @@ public class Driver {
         return number;
     }
     public void setNumber(Integer number) {
-            if(number != null){
+            if(number < 1000 && number > 0){
                 this.number = number;
             }
     }
@@ -66,11 +66,16 @@ public class Driver {
     public void setTeam(Team stable) {
         this.team = stable;
     }
-    public Boolean isHasRenewedCommitmentContract() {
+    public Boolean getHasRenewedCommitmentContract() {
         return hasRenewedCommitmentContract;
     }
     public GregorianCalendar getBirthdate() {
         return birthdate;
+    }
+    public void setBirthdate(GregorianCalendar birthdate) {
+        if(birthdate.before(new GregorianCalendar(LocalDate.now().getYear()-18, LocalDate.now().getMonthValue(), LocalDate.now().getDayOfMonth()).getTime())) {
+            this.birthdate = birthdate;
+        }
     }
     public Locality getHome() {
         return home;

@@ -1,14 +1,14 @@
 package Exception;
 
 public class DeleteDriverException extends Exception{
-    private Exception sqlException; // à supprimer
+    private Exception dataException; // à supprimer
 
-    public DeleteDriverException(Exception sqlException) {
-        this.sqlException = sqlException;
+    public DeleteDriverException(Exception dataException) {
+        this.dataException = dataException;
     }
 
     @Override
     public String getMessage() {
-        return "Erreur, le pilote sélectionné n'existe pas dans la base de données (erreur détaillée : "+sqlException.getMessage()+").";
+        return "Erreur, le pilote sélectionné n'existe pas dans la base de données (erreur détaillée : "+dataException.getMessage()+").";
     }
 }

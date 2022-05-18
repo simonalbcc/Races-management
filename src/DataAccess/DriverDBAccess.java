@@ -27,7 +27,7 @@ public class DriverDBAccess implements DriverDAO {
             statement.setString(4, driver.getStreetAndNumber());
             statement.setString(5, driver.getNationality());
             statement.setString(6, driver.getTeam().getName());
-            statement.setBoolean(7, driver.isHasRenewedCommitmentContract());
+            statement.setBoolean(7, driver.getHasRenewedCommitmentContract());
             statement.setDate(8, new java.sql.Date(driver.getBirthdate().getTimeInMillis()));
             statement.setInt(9, driver.getHome().getNumber());
 
@@ -49,7 +49,7 @@ public class DriverDBAccess implements DriverDAO {
             statement.setString(3, driver.getStreetAndNumber());
             statement.setString(4, driver.getNationality());
             statement.setString(5, driver.getTeam().getName());
-            statement.setBoolean(6, driver.isHasRenewedCommitmentContract());
+            statement.setBoolean(6, driver.getHasRenewedCommitmentContract());
             statement.setDate(7, new java.sql.Date(driver.getBirthdate().getTimeInMillis()));
             statement.setInt(8, driver.getHome().getNumber());
             statement.setInt(9, driver.getNumber());
@@ -84,7 +84,7 @@ public class DriverDBAccess implements DriverDAO {
         }
     }
 
-    public ArrayList<Driver> getAllDrivers()throws DataBaseException{
+    public ArrayList<Driver> getAllDrivers()throws DataException{
         ArrayList<Driver> drivers = new  ArrayList<Driver>();
         try{
             Driver driver;
@@ -129,7 +129,7 @@ public class DriverDBAccess implements DriverDAO {
             }
 
         } catch (SQLException exception){
-            throw new DataBaseException(exception);
+            throw new DataException(exception);
         }
         return drivers;
     }

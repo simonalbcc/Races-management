@@ -1,14 +1,14 @@
 package Exception;
 
 public class LocalityException extends Exception{
-    private Exception sqlException; // à changer
+    private Exception dataException; // à changer
 
-    public LocalityException(Exception sqlException) {
-        this.sqlException = sqlException;
+    public LocalityException(Exception dataException) {
+        this.dataException = dataException;
     }
 
     @Override
     public String getMessage() {
-        return "Erreur la création de la localité dans la base de données (erreur détaillée : "+sqlException.getMessage()+")."; // à changer
+        return "Erreur la création de la localité dans la base de données (erreur détaillée : "+dataException.getMessage()+")."; // à changer
     }
 }

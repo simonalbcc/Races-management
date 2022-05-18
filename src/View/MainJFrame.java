@@ -3,7 +3,6 @@ package View;
 
 import DataAccess.SingletonConnexion;
 import Utility.Utils;
-import Exception.DataBaseException;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;

@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import Exception.LocalityException;
-import Exception.DataBaseException;
 import Model.Locality;
 
 public class LocalityDBAccess implements LocalityDAO{

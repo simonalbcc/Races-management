@@ -2,7 +2,7 @@ package Business;
 
 import DataAccess.*;
 import Model.*;
-import Exception.DataBaseException;
+import Exception.DataException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -55,7 +55,7 @@ public class DriverManager {
 
     public ArrayList<Race> getWinningSponsorsOfACircuit(String circuitName){return raceAccess.getWinningSponsorsOfACircuit(circuitName);}
 
-    public void closeConnection() throws DataBaseException {
+    public void closeConnection() throws DataException {
         new DBAccess().closeConnection();
     }
 

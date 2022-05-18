@@ -1,14 +1,14 @@
 package DataAccess;
 
 import Model.Team;
-import Exception.DataBaseException;
+import Exception.DataException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class TeamDBAccess implements TeamDAO{
-    public ArrayList<Team> getAllTeams() throws DataBaseException {
+    public ArrayList<Team> getAllTeams() throws DataException {
         ArrayList<Team> teams = new  ArrayList<Team>();
         try{
             String sql = "select * from Team";
@@ -22,12 +22,12 @@ public class TeamDBAccess implements TeamDAO{
 
 
         } catch (SQLException exception){
-            throw new DataBaseException(exception);
+            throw new DataException(exception);
         }
         return teams;
     }
 
-    public ArrayList<String> getAllTeamsNames()throws DataBaseException{
+    public ArrayList<String> getAllTeamsNames()throws DataException{
         ArrayList<String> teamsNames = new  ArrayList<String>();
         try{
             String sql = "select name from Team";
@@ -41,7 +41,7 @@ public class TeamDBAccess implements TeamDAO{
 
 
         } catch (SQLException exception){
-            throw new DataBaseException(exception);
+            throw new DataException(exception);
         }
         return teamsNames;
     }

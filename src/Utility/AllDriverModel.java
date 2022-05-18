@@ -49,7 +49,7 @@ public class AllDriverModel extends AbstractTableModel {
             case 3: return driver.getStreetAndNumber();
             case 4: return driver.getNationality();
             case 5: return teamNameOfDriver(driver);
-            case 6: return driver.isHasRenewedCommitmentContract();
+            case 6: return driver.getHasRenewedCommitmentContract();
             case 7: return getBirthdateOutput(driver);
             case 8: return getCityName(driver);
             default:return null;

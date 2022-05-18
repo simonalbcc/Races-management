@@ -1,14 +1,14 @@
 package Exception;
 
 public class CircuitException extends Exception{
-    private Exception sqlException; // à changer
+    private Exception dataException; // à changer
 
-    public CircuitException(Exception sqlException) {
-        this.sqlException = sqlException;
+    public CircuitException(Exception dataException) {
+        this.dataException = dataException;
     }
 
     @Override
     public String getMessage() {
-        return "Erreur lors de la recherche du circuit dans la base de données (erreur détaillée : "+sqlException.getMessage()+").";
+        return "Erreur lors de la recherche du circuit dans la base de données (erreur détaillée : "+dataException.getMessage()+").";
     }
 }

@@ -261,7 +261,7 @@ public class FormDriver extends JPanel {
         city.setText(driver.getHome().getCity());
         country.setSelectedItem(driver.getHome().getCountry());
         team.setSelectedItem(driver.getTeam().getName());
-        hasRenewedContract.setSelected(driver.isHasRenewedCommitmentContract());
+        hasRenewedContract.setSelected(driver.getHasRenewedCommitmentContract());
     }
     public boolean isCorrect(StringBuilder errorInputMessage){
         boolean filled = true;

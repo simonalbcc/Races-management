@@ -4,14 +4,14 @@ import Model.Driver;
 
 public class AddDriverException extends Exception {
     private Driver driver;
-    private Exception sqlException;
-    public AddDriverException(Driver driver, Exception sqlException) {
+    private Exception dataException;
+    public AddDriverException(Driver driver, Exception dataException) {
         this.driver = driver;
-        this.sqlException = sqlException;
+        this.dataException = dataException;
     }
 
     @Override
     public String getMessage() {
-        return "Erreur, le pilote '"+driver.getLastNameFirstName()+"' existe déjà (erreur détaillée : "+sqlException.getMessage()+")";
+        return "Erreur, le pilote '"+driver.getLastNameFirstName()+"' existe déjà (erreur détaillée : "+dataException.getMessage()+")";
     }
 }
