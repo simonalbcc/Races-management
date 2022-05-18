@@ -12,6 +12,7 @@
       <library>
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../mysql-connector-java-8.0.29/mysql-connector-java-8.0.29.jar!/" />
+          <root url="jar://$MODULE_DIR$/../mysql-connector-java-8.0.29/mysql-connector-java-8.0.29/mysql-connector-java-8.0.29.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
