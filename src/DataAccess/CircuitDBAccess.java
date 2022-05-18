@@ -24,7 +24,7 @@ public class CircuitDBAccess implements CircuitDAO {
             }
 
         } catch (SQLException exception){
-            throw new DataBaseException();
+            throw new DataBaseException(exception);
         }
         return circuits;
     }

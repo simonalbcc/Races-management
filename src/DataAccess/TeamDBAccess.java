@@ -22,7 +22,7 @@ public class TeamDBAccess implements TeamDAO{
 
 
         } catch (SQLException exception){
-            throw new DataBaseException();
+            throw new DataBaseException(exception);
         }
         return teams;
     }
@@ -41,7 +41,7 @@ public class TeamDBAccess implements TeamDAO{
 
 
         } catch (SQLException exception){
-            throw new DataBaseException();
+            throw new DataBaseException(exception);
         }
         return teamsNames;
     }

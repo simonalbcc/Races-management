@@ -123,7 +123,7 @@ public class DriverDBAccess implements DriverDAO {
             }
 
         } catch (SQLException exception){
-            throw new DataBaseException();
+            throw new DataBaseException(exception);
         }
         return drivers;
     }

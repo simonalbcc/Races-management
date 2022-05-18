@@ -39,7 +39,7 @@ public class AccidentDBAccess implements AccidentDAO{
             }
 
         } catch (SQLException exception){
-            throw new DataBaseException();
+            throw new DataBaseException(exception);
         }
         return accidents;
     }

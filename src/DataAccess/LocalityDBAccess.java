@@ -21,7 +21,7 @@ public class LocalityDBAccess implements LocalityDAO{
             number = data.getInt(1);
 
         } catch (SQLException exception){
-            throw new DataBaseException();
+            throw new DataBaseException(exception);
         }
         return number;
     }
