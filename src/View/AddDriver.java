@@ -73,7 +73,7 @@ public class AddDriver extends JPanel {
             }
             try {
             if(e.getSource() == save){
-                if(form.isCorrect(errorInputMessage)){
+                if(Utils.isCorrect(form.getTextFields(), errorInputMessage)){
                     // create the driver to add and check if locality exists in DB (else -> create a new one)
                     Driver driver = form.createDriver();
                     System.out.println(driver.getPhoneNumber());
@@ -83,7 +83,6 @@ public class AddDriver extends JPanel {
                     Utils.addToMainContainer(mainContainer, new FinaleJPanel(mainContainer, new AddDriver(mainContainer)));
                 } else {
                     JOptionPane.showMessageDialog(null, errorInputMessage.toString(), "Erreur", JOptionPane.ERROR_MESSAGE);
-                    Utils.cleanWrongTextField(form.getTextFields());
                     errorInputMessage.setLength(0);
                 }
             }

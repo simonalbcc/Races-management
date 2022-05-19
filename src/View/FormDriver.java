@@ -74,14 +74,14 @@ public class FormDriver extends JPanel {
 
         streetName = new JTextField();
         streetName.setToolTipText("Veuillez entrer le nom de la rue du pilote (obligatoire)");
-        streetName.setName("adresse");
+        streetName.setName("nom de rue");
         streetName.setPreferredSize(new Dimension(200,40));
         addressPanel.add(streetName);
         textFields.add(streetName);
 
         streetNumber = new JTextField();
         streetNumber.setToolTipText("Veuillez entrer le numéro de la maison du pilote (obligatoire)");
-        streetNumber.setName("adresse");
+        streetNumber.setName("numéro maison");
         streetNumber.setPreferredSize(new Dimension(50,40));
         addressPanel.add(streetNumber);
         textFields.add(streetNumber);
@@ -263,60 +263,7 @@ public class FormDriver extends JPanel {
         team.setSelectedItem(driver.getTeam().getName());
         hasRenewedContract.setSelected(driver.getHasRenewedCommitmentContract());
     }
-    public boolean isCorrect(StringBuilder errorInputMessage){
-        boolean filled = true;
-        for (JTextField textField : textFields) {
-            if(!textField.getName().equals("numéro de téléphone") && textField.getText().equals("")){
-                filled = false;
-                errorInputMessage.append("- Le champs '"+ textField.getName() +"' doit être remplis \n");
-            }
-        }
-        textFields.clear();
-        if(filled){
-            if(!number.getText().matches("\\d{1,3}")){
-                errorInputMessage.append("- Le numéro du pilote entré est invalide ("+ (number.getText().length() > 3 ? "trop long" : "contient des lettres") +")\n");
-                textFields.add(number);
-            }
-            if(!phoneNumber.getText().equals("") && !phoneNumber.getText().matches("\\d{4}\\.?\\/?(\\d+\\.?){3}")){
-                errorInputMessage.append("- Le numéro de téléphone entré est invalide ("+ (phoneNumber.getText().length() > 10 ? "trop long" : "contient des lettres") +")\n");
-                textFields.add(phoneNumber);
-            }
-            if(!zipCode.getText().matches("\\d{4,5}") && !zipCode.getClass().getSimpleName().equals("Integer")){
-                errorInputMessage.append("- Le code postal entré est invalide ("+ (zipCode.getText().length() > 5 ? "trop long" : "ne contient pas de chiffres") +")\n");
-                textFields.add(zipCode);
-            }
-            if(!lastName.getText().trim().matches("[A-ZÀ-ÖØà-ÿa-z][à-ÿa-z]{1,6}\\s[A-ZÀ-ÖØà-ÿa-z][à-ÿa-z]{1,9}|[A-ZÀ-ÖØà-ÿa-z][à-ÿa-z]{1,14}")){
-                errorInputMessage.append("- Le nom de famille entré est invalide ("+(lastName.getText().length() > 15 ? "trop long" : "doit contenir uniquement des lettres")+")\n");
-                textFields.add(lastName);
-            }
-            if(!firstName.getText().trim().replaceAll("\\s", "").matches("^[A-ZÀ-ÖØà-ÿa-z][à-ÿa-z]{1,6}\\s[A-ZÀ-ÖØà-ÿa-z][à-ÿa-z]{1,9}|^[A-ZÀ-ÖØà-ÿa-z][à-ÿa-z]{1,14}?")){
-                errorInputMessage.append("- Le prénom entré est invalide ("+(firstName.getText().length() > 15 ? "trop long" : "doit contenir uniquement des lettres")+")\n");
-                textFields.add(firstName);
-            }
-            if(!streetName.getText().matches("(\\s?[À-ÖØà-ÿ-a-zA-Z-]+\\s?)+") ||  streetName.getText().length() > 25){
-                errorInputMessage.append("- Le nom de la rue entré est invalide ("+(streetName.getText().length() > 25 ? "trop long" : "doit contenir uniquement des lettres")+")\n");
-                textFields.add(streetName);
-            }
-            if(!streetNumber.getText().matches("\\d{1,3}")){
-                errorInputMessage.append("- Le numéro du domicile entré est invalide ("+(streetNumber.getText().length() > 3 ? "trop long" : "doit contenir uniquement des chiffres")+")\n");
-                textFields.add(streetNumber);
-            }
-            if(!city.getText().matches("[À-ÖØà-ÿ-a-zA-Z-]{4,20}")){
-                errorInputMessage.append("- La ville entrée n'est pas valide ("+(city.getText().length() > 20 ? "trop long" : "doit contenir uniquement des lettres")+")\n");
-                textFields.add(city);
-            }
-            if(country.getSelectedIndex() == 0){
-                errorInputMessage.append("- Vous devez séléctionner un pays\n");
-            }
-            if(origin.getSelectedIndex() == 0){
-                errorInputMessage.append("- Vous devez séléctionner un pays\n");
-            }
-            if(team.getSelectedIndex() == 0){
-                errorInputMessage.append("- Vous devez séléctionner une équipe\n");
-            }
-        }
-        return (textFields.size() < 1 & filled) && dateIsCorrect() && (origin.getSelectedIndex() != 0 && country.getSelectedIndex() != 0);
-    }
+
     public Driver createDriver() throws Exception {
         GregorianCalendar birthdate = new GregorianCalendar(Integer.parseInt(new SimpleDateFormat("yyyy").format(date.getValue())), Integer.parseInt(new SimpleDateFormat("MM").format(date.getValue()))-1, Integer.parseInt(new SimpleDateFormat("dd").format(date.getValue())));
         Locality locality = new Locality(null, Integer.parseInt(zipCode.getText()), city.getText(), country.getSelectedItem().toString());

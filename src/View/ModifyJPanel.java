@@ -48,7 +48,7 @@ public class ModifyJPanel extends OperationTemplate {
         @Override
         public void actionPerformed(ActionEvent e) {
             if(e.getSource() == buttonsPanel.getNext()){
-                if(addDriver.getForm().isCorrect( addDriver.getErrorInputMessage())){
+                if( Utils.isCorrect(addDriver.getForm().getTextFields(), addDriver.getErrorInputMessage())){
                     // create the driver to add and check if locality exists in DB (else -> create a new one)
                     try {
                         driverFromForm = addDriver.getForm().createDriver();

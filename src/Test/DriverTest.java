@@ -1,6 +1,8 @@
 package Test;
 
 import Model.Driver;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -9,7 +11,7 @@ class DriverTest {
     private Driver firstDriver;
     private Driver secondDriver;
 
-    @org.junit.jupiter.api.BeforeEach
+    @BeforeEach
     void setUp(){
         firstDriver = new Driver(15,null,null,null,null,null,true,null,null);
         secondDriver = new Driver(15,null,null,null,null,null,false,null,null);
