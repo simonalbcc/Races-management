@@ -37,6 +37,26 @@ public class CarAccess implements CarDAO{
         return carsNameAndNumber;
     }
 
+    public int getCarFromName(String carName) throws DataException {
+            int car;
+            try{
+
+                String sql = "select number from Car where name = ? ";
+
+                PreparedStatement statement = connection.prepareStatement(sql);
+                statement.setString(1,carName);
+
+                ResultSet data = statement.executeQuery();
+
+                data.next();
+                car = data.getInt(1);
+
+            } catch (SQLException exception){
+                throw new DataException(exception); // à changer
+            }
+            return car;
+        }
+
     @Override
     public void addCar(Car car) throws AddCarException {
         try{

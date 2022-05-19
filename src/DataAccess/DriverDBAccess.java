@@ -46,9 +46,9 @@ public class DriverDBAccess implements DriverDAO {
                     "values(?,?,?,?,?,?,?);";
 
             PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setInt(1,ranking.getDriver().getNumber());
+            statement.setInt(1,ranking.getCar().getNumber());
             statement.setInt(2,ranking.getRace().getSerialNumber());
-            statement.setInt(3,ranking.getRace().getPosition());
+            statement.setInt(3,ranking.getPosition());
             statement.setNull(4, Types.NULL);
             statement.setInt(5,ranking.getDriver().getNumber());
             statement.setNull(6,Types.NULL);

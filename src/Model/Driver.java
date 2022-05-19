@@ -33,6 +33,9 @@ public class Driver {
     public Driver(String lastNameFirstName){
         this.lastNameFirstName = lastNameFirstName;
     }
+    public Driver(Integer number){
+        this.number = number;
+    }
 
     public Integer getNumber() {
         return number;

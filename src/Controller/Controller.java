@@ -48,12 +48,19 @@ public class Controller {
     public ArrayList getAllCarsName(String teamName) throws Exception{
         return driverManager.getAllCarsName(teamName);
     }
+    public int getCarFromName(String carName) throws Exception{
+        return driverManager.getCarFromName(carName);
+    }
     public void addCar(Car car) throws Exception {
         driverManager.addCar(car);
     }
 
     public ArrayList<String> getAllCircuitsNames()throws Exception{
         return driverManager.getAllCircuitsNames();
+    }
+
+    public Integer getARaceNumber(String circuitName, Date date) throws Exception{
+        return driverManager.getARaceNumber(circuitName,date);
     }
 
     public ArrayList<Date> getRaceDatesOfACircuit(String circuitName)throws Exception {return driverManager.getRaceDatesOfACircuit(circuitName);}

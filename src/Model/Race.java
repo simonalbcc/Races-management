@@ -34,4 +34,9 @@ public class Race {
     public Ranking[] getRankings() {
         return rankings;
     }
+
+    public Integer getSerialNumber() {
+        return serialNumber;
+    }
+
 }

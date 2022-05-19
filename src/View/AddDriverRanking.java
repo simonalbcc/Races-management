@@ -2,9 +2,7 @@ package View;
 
 
 import Controller.Controller;
-import Model.Car;
-import Model.Ranking;
-import Model.Team;
+import Model.*;
 import Utility.JTableUtils;
 import Utility.RankingModel;
 import Utility.Utils;
@@ -13,6 +11,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -132,7 +131,10 @@ public class AddDriverRanking extends JPanel {
             if(e.getSource() == buttonsPanel.getNext()){
                 try {
                     try {
-                        controller.addDriverToRanking(dodo);
+                        int carSerialNumber = controller.getCarFromName(carsComboBox.getSelectedItem().toString());
+                        int raceSerialNumber = controller.getARaceNumber(circuitsCombobox.getSelectedItem().toString(),new SimpleDateFormat("dd-MM-yyyy").parse(datesCombobox.getSelectedItem().toString()));
+                        int driverNumber = controller.getADriver(driversComboBox.getSelectedItem().toString()).getNumber();
+                        controller.addDriverToRanking(new Ranking(carSerialNumber,raceSerialNumber,Integer.parseInt(positionCombobox.getSelectedItem().toString()),driverNumber));
                         tableModel = new RankingModel(controller.getARaceRanking(circuitsCombobox.getSelectedItem().toString(), datesCombobox.getSelectedItem().toString()));
                         jTable.setModel(tableModel);
                     } catch (Exception exception) {

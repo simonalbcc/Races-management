@@ -85,6 +85,13 @@ public class DriverManager {
         return positionsRemaining;
     }
 
+    public int getCarFromName(String carName) throws Exception {
+        return carAccess.getCarFromName(carName);
+    }
+    public Integer getARaceNumber(String circuitName, Date date) throws Exception {
+        return raceAccess.getARaceNumber(circuitName,date);
+    }
+
     public void closeConnection() throws DataException {
         new DBAccess().closeConnection();
     }
