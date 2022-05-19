@@ -92,11 +92,9 @@ public class RaceDBAccess implements RaceDAO{
     }
     public ArrayList<Integer> getPositionsRemainingInARanking(int numRace)throws RaceException{
         ArrayList<Integer> positions = new ArrayList<>();
-        for(Integer position = 1; position <= 20 ;position++){ // optimiser
-            positions.add(position);
-        }
+
         try{
-            String sql = "select position from Ranking where race = ?";
+            String sql = "select position from Ranking where race = ? order by position ";
 
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1,numRace);
@@ -104,8 +102,7 @@ public class RaceDBAccess implements RaceDAO{
             ResultSet data = statement.executeQuery();
 
             while(data.next()){
-                int position = data.getInt(1)-1;
-                positions.remove(position);
+                positions.add(data.getInt(1));
             }
 
         } catch (SQLException exception){

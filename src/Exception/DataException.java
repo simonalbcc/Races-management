@@ -9,6 +9,6 @@ public class DataException extends Exception{
 
     @Override
     public String getMessage() {
-        return "Erreur, la base de donnée n'est pas connectée ou vide( "+exception.getMessage()+" )";
+        return "Erreur, la base de donnée n'est pas connectée ou vide ("+exception.getMessage()+")";
     }
 }

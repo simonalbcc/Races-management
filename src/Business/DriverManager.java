@@ -3,6 +3,8 @@ package Business;
 import DataAccess.*;
 import Model.*;
 import Exception.DataException;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -66,7 +68,14 @@ public class DriverManager {
     public ArrayList<Race> getWinningSponsorsOfACircuit(String circuitName) throws Exception {return raceAccess.getWinningSponsorsOfACircuit(circuitName);}
 
     public ArrayList<Integer> getPositionsRemainingInARanking(int numRace) throws Exception {
-        return raceAccess.getPositionsRemainingInARanking(numRace);
+        ArrayList<Integer> positionsRemaining = new ArrayList<>();
+        // remaining raceAccess.getPositionsRemainingInARanking(numRace);
+        for(Integer position = 1; position <= 20 ;position++){ // optimiser
+            raceAccess.getPositionsRemainingInARanking(numRace).add(position-1, position);
+        }
+
+
+        return positionsRemaining;
     }
 
     public void closeConnection() throws DataException {

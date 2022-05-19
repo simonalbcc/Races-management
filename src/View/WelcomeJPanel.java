@@ -1,3 +1,4 @@
+//region packages & imports
 package View;
 
 import javax.imageio.ImageIO;
@@ -9,7 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.IOException;
-
+//endregion
 
 public class WelcomeJPanel extends JPanel {
     private JLabel welcomeLabel;
@@ -17,7 +18,7 @@ public class WelcomeJPanel extends JPanel {
     private CarPanel carPanel;
     private GridBagConstraints gc;
 
-    public WelcomeJPanel(){
+    public WelcomeJPanel() {
 
         this.setLayout(new GridBagLayout());
 
@@ -70,7 +71,7 @@ public class WelcomeJPanel extends JPanel {
         private GraphicCar graphicCar;
         private Wall leftWall, rightWall;
 
-        public CarPanel(){
+        public CarPanel() {
             setLayout(new BorderLayout());
             graphicCar = new GraphicCar();
             leftWall = new Wall(0,0,20,150);
@@ -102,7 +103,7 @@ public class WelcomeJPanel extends JPanel {
                         this.panel.repaint();
                     }
                     catch (InterruptedException exception){
-                        exception.printStackTrace();
+                        JOptionPane.showMessageDialog(null, "Problème avec le mouvement de l'image!", "Erreur", JOptionPane.ERROR_MESSAGE);
                     }
                 }
             }
@@ -114,31 +115,31 @@ public class WelcomeJPanel extends JPanel {
             private int deltaX;
             private int speed;
 
-            public GraphicCar(){
+            public GraphicCar() {
                 try{
                     carImage = ImageIO.read(new FileInputStream("images\\car.png"));
                 }catch (IOException e){
-                    e.printStackTrace(); // à changer
+                    JOptionPane.showMessageDialog(null, "Problème avec l'image de la voiture", "Erreur", JOptionPane.ERROR_MESSAGE);
                 }
                 rectangle = new Rectangle(20,25,120,100);
                 speed = 11;
                 deltaX = 1;
             }
 
-            public void move(){
+            public void move() {
                 if(carPanel.rightWall.collision(this) || carPanel.leftWall.collision(this)){
                     deltaX *= -1;
                     if(deltaX == -1){
                         try{
                             carImage = ImageIO.read(new FileInputStream("images\\carReversed.png"));
                         }catch (IOException e){
-                            e.printStackTrace();
+                            JOptionPane.showMessageDialog(null, "Problème avec l'image de la voiture", "Erreur", JOptionPane.ERROR_MESSAGE);
                         }
                     }else{
                         try{
                             carImage = ImageIO.read(new FileInputStream("images\\car.png"));
                         }catch (IOException e){
-                            e.printStackTrace();
+                            JOptionPane.showMessageDialog(null, "Problème avec l'image de la voiture", "Erreur", JOptionPane.ERROR_MESSAGE);
                         }
                     }
                 }

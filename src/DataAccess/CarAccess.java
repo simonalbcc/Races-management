@@ -1,11 +1,13 @@
 package DataAccess;
 
+import java.awt.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import Exception.CarException;
 import Exception.DataException;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 
@@ -31,7 +33,7 @@ public class CarAccess implements CarDAO{
                 carsNameAndNumber.add(data.getString(1));
             }
 
-        } catch (Exception exception){
+        } catch (SQLException exception){
             throw new CarException();
         }
         return carsNameAndNumber;
