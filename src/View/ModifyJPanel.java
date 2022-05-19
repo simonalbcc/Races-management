@@ -38,7 +38,7 @@ public class ModifyJPanel extends OperationTemplate {
 
         buttonsPanel = new ButtonsPanel("Retour", "Modifier");
         buttonsPanel.getNext().removeActionListener(buttonsPanel.getNext().getAction());
-        buttonsPanel.getNext().addActionListener(new ModifyButtonListener());
+        buttonsPanel.addActionListener(new ModifyButtonListener());
         addDriver.changeButtonsPanel(buttonsPanel);
 
         return addDriver;
@@ -48,7 +48,7 @@ public class ModifyJPanel extends OperationTemplate {
         @Override
         public void actionPerformed(ActionEvent e) {
             if(e.getSource() == buttonsPanel.getNext()){
-                if( Utils.isCorrect(addDriver.getForm().getTextFields(), addDriver.getErrorInputMessage())){
+                if(addDriver.getForm().isCorrect(addDriver.getErrorInputMessage())){
                     // create the driver to add and check if locality exists in DB (else -> create a new one)
                     try {
                         driverFromForm = addDriver.getForm().createDriver();
@@ -64,6 +64,12 @@ public class ModifyJPanel extends OperationTemplate {
                     JOptionPane.showMessageDialog(null, addDriver.getErrorInputMessage().toString(), "Erreur", JOptionPane.ERROR_MESSAGE);
                     Utils.cleanWrongTextField( addDriver.getForm().getTextFields());
                     addDriver.getErrorInputMessage().setLength(0);
+                }
+            } else {
+                try {
+                    Utils.addToMainContainer(getMainContainer(), new ModifyJPanel(getMainContainer()));
+                } catch (Exception exception) {
+                    JOptionPane.showMessageDialog(null, exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
                 }
             }
         }

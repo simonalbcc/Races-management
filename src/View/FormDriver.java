@@ -4,7 +4,7 @@ import Controller.Controller;
 import Model.Driver;
 import Model.Locality;
 import Model.Team;
-import Utility.Utils;
+import Utility.*;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -299,7 +299,90 @@ public class FormDriver extends JPanel {
         }
         return correct;
     }
+    public boolean isCorrect(StringBuilder errorInputMessage){
+        Checker checkerFactory = new Checker();
+        String regex;
+        for (JTextField textField : textFields) {
+            regex = checkerFactory.createRegex(textField.getName());
+            if(!textField.getName().equals("numéro de téléphone")){
+                if(textField.getText().equals("")){
+                    errorInputMessage.append("- Le champs '"+ textField.getName() +"' doit être rempli \n");
+                } else if(!textField.getText().matches(regex)){
+                    errorInputMessage.append("- Le champs '"+ textField.getName() +" est invalide ("+checkerFactory.selectErrorReasonForRegex(textField.getName())+")\n");
+
+                } else if(textField.getText().length() > checkerFactory.chooseSize(textField.getName())){
+                    errorInputMessage.append("- Le champs '"+ textField.getName() +" est invalide (trop long)\n");
+                }
+            } else {
+                if(!textField.getText().equals("") && (!textField.getText().matches(regex) || textField.getText().length() < 10)){
+                    errorInputMessage.append("- Le champs '"+ textField.getName() +" est invalide ("+ (textField.getText().length() > checkerFactory.chooseSize(textField.getName()) ? "trop long" : checkerFactory.selectErrorReasonForRegex(textField.getName())) +")\n");
+                }
+            }
+        }
+        if(origin.getSelectedIndex() == 0){
+            errorInputMessage.append("- Veuillez sélectionner une origine\n");
+        }
+        if(team.getSelectedIndex() == 0){
+            errorInputMessage.append("- Veuillez sélectionner une équipe\n");
+        }
+        if(country.getSelectedIndex() == 0){
+            errorInputMessage.append("- Veuillez sélectionner un pays\n");
+        }
+        return errorInputMessage.equals("") && dateIsCorrect()  && team.getSelectedIndex() > 0 && country.getSelectedIndex() > 0;
+    }
     public void setDisablePK(){
         number.setEnabled(false);
+    }
+
+
+    private class Checker{
+        public Checker(){}
+        String createRegex(String textFieldName){
+            switch (textFieldName){
+                case "code postal":
+                case "numéro maison":
+                case "numéro de téléphone":
+                case "numéro":
+                    return "(?!\\s)\\d+(?!\\s)";
+                case "nom de rue":
+                case "nom":
+                case "prénom":
+                case "ville":
+                    return "[A-ZÀ-ÖØà-ÿa-z][à-ÿa-z]{1,6}\\s[A-ZÀ-ÖØà-ÿa-z][à-ÿa-z]{1,9}|[A-ZÀ-ÖØà-ÿa-z][à-ÿa-z]+|(\\s?[À-ÖØà-ÿ-a-zA-Z-]+\\s?)+";
+                default:return "";
+            }
+        }
+        Integer chooseSize(String textFieldName){
+            switch (textFieldName){
+                case "code postal":
+                    return 5;
+                case "nom de rue":
+                    return 25;
+                case "numéro maison":
+                case "numéro":
+                    return 3;
+                case "nom":
+                case "prénom":
+                    return 15;
+                case "ville":
+                    return 20;
+                default:return 0;
+            }
+        }
+        String selectErrorReasonForRegex(String textFieldName){
+            switch (textFieldName){
+                case "numéro de téléphone":
+                case "code postal":
+                case "numéro maison":
+                case "numéro":
+                    return "contient des lettres ou caractères invalides";
+                case "nom de rue":
+                case "nom":
+                case "prénom":
+                case "ville":
+                    return "contient des chiffres ou caractères invalides";
+                default:return "";
+            }
+        }
     }
 }

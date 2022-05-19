@@ -73,7 +73,7 @@ public class AddDriver extends JPanel {
             }
             try {
             if(e.getSource() == save){
-                if(Utils.isCorrect(form.getTextFields(), errorInputMessage)){
+                if(form.isCorrect(errorInputMessage)){
                     // create the driver to add and check if locality exists in DB (else -> create a new one)
                     Driver driver = form.createDriver();
                     System.out.println(driver.getPhoneNumber());
