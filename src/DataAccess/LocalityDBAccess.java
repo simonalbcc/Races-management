@@ -4,6 +4,7 @@ package DataAccess;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import Exception.DataException;
 import Exception.LocalityException;
 import Model.Locality;
 
@@ -26,7 +27,7 @@ public class LocalityDBAccess implements LocalityDAO{
             System.out.println(data.getInt(1));
             number = data.getInt("number");
 
-        } catch (SQLException exception){
+        } catch (SQLException | DataException exception){
             throw new LocalityException(exception);
         }
         return number;

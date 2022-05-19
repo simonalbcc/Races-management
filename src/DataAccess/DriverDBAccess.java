@@ -157,7 +157,6 @@ public class DriverDBAccess implements DriverDAO {
                                 " where driver.number = ?";
 
             PreparedStatement statement = SingletonConnexion.getInstance().prepareStatement(sql);
-
             statement.setInt(1, driverNumber);
 
             ResultSet data = statement.executeQuery();
@@ -176,7 +175,7 @@ public class DriverDBAccess implements DriverDAO {
                                 data.getBoolean(8),
                                 birthdate,
                                 new Locality(data.getInt(10), data.getInt(11), data.getString(12), data.getString(13)));
-        } catch (SQLException exception){
+        } catch (SQLException | DataException exception){
             throw new SelectADriverException(exception);
         }
         return driver;
