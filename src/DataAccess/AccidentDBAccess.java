@@ -1,3 +1,4 @@
+//region packages & imports
 package DataAccess;
 
 import Model.Accident;
@@ -5,16 +6,24 @@ import Model.Driver;
 import Model.Locality;
 import Model.Team;
 import Exception.DataException;
+import Exception.AccidentException;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+//endregion
 
 public class AccidentDBAccess implements AccidentDAO{
+    private Connection connection;
+    public AccidentDBAccess() throws DataException {
+        connection = SingletonConnexion.getInstance();
+    }
+
     @Override
-    public ArrayList<Accident> getAccidentedDrivers(Date startDate, Date endDate) throws DataException {
+    public ArrayList<Accident> getAccidentedDrivers(Date startDate, Date endDate) throws AccidentException {
         ArrayList<Accident> accidents = new ArrayList<Accident>();
         try{
 
@@ -25,7 +34,7 @@ public class AccidentDBAccess implements AccidentDAO{
                     "where accident.date between ? and ?\n" +
                     "order by date";
 
-            PreparedStatement statement = SingletonConnexion.getInstance().prepareStatement(sql);
+            PreparedStatement statement = connection.prepareStatement(sql);
             statement.setDate(1,new java.sql.Date(startDate.getTime()));
             statement.setDate(2,new java.sql.Date(endDate.getTime()));
 
@@ -39,9 +48,8 @@ public class AccidentDBAccess implements AccidentDAO{
             }
 
         } catch (SQLException exception){
-            throw new DataException(exception);
+            throw new AccidentException(exception); // vérifier + changer
         }
         return accidents;
     }
-
 }

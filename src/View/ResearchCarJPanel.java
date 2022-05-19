@@ -59,7 +59,7 @@ public class ResearchCarJPanel extends JPanel {
         private JLabel title;
         private GridBagConstraints gc;
 
-        public CarsJTable() {
+        public CarsJTable() throws Exception {
             this.setLayout(new GridBagLayout());
             this.gc = new GridBagConstraints();
 
@@ -95,18 +95,18 @@ public class ResearchCarJPanel extends JPanel {
             }
 
             if(e.getSource() == buttonsPanel.getNext()){
-                if(iNumPanel == 0){
-                    currentPanel = new CarsJTable();
-                }else{
-                    int result = JOptionPane.showConfirmDialog(null, "Êtes-vous sûrs de vouloir continuer? Les données seront perdues.", "Avertissement", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
-                    if(result == 0){
-                        try {
+                try {
+                    if(iNumPanel == 0){
+                        currentPanel = new CarsJTable();
+                    }else{
+                        int result = JOptionPane.showConfirmDialog(null, "Êtes-vous sûrs de vouloir continuer? Les données seront perdues.", "Avertissement", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+                        if(result == 0){
                             currentPanel = new FinaleJPanel(mainContainer, new ResearchCarJPanel(mainContainer));
-                        } catch (Exception exception) {
-                            JOptionPane.showMessageDialog(null, exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
                         }
                     }
-                 }
+                } catch (Exception exception) {
+                    JOptionPane.showMessageDialog(null, exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
+                }
                 iNumPanel++;
             }
             Utils.addToMainContainer(mainContainer, currentPanel);

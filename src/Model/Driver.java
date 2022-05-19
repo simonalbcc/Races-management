@@ -38,7 +38,7 @@ public class Driver {
         return number;
     }
     public void setNumber(Integer number) {
-            if(number < 1000 && number > 0){
+            if(number < 1000 && number > -1){
                 this.number = number;
             }
     }

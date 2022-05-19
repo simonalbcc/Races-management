@@ -315,7 +315,7 @@ public class FormDriver extends JPanel {
                 }
             } else {
                 if(!textField.getText().equals("") && (!textField.getText().matches(regex) || textField.getText().length() < 10)){
-                    errorInputMessage.append("- Le champs '"+ textField.getName() +" est invalide ("+ (textField.getText().length() > checkerFactory.chooseSize(textField.getName()) ? "trop long" : checkerFactory.selectErrorReasonForRegex(textField.getName())) +")\n");
+                    errorInputMessage.append("- Le champs '"+ textField.getName() +" est invalide ("+ (textField.getText().length() > checkerFactory.chooseSize(textField.getName()) ? "trop longdd" : checkerFactory.selectErrorReasonForRegex(textField.getName())) +")\n");
                 }
             }
         }

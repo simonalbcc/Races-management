@@ -1,20 +1,28 @@
+//region packages & imports
 package DataAccess;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import Exception.DataException;
+import Exception.CircuitException;
+//endregion
 
 public class CircuitDBAccess implements CircuitDAO {
-    public ArrayList<String> getAllCircuitsNames() throws DataException {
+    private Connection connection;
+    public CircuitDBAccess()throws DataException {
+        connection = SingletonConnexion.getInstance();
+    }
+    public ArrayList<String> getAllCircuitsNames() throws CircuitException {
         ArrayList<String> circuits = new ArrayList<String>();
         try{
             String circuit;
 
             String sql = "select name from Circuit";
 
-            PreparedStatement statement = SingletonConnexion.getInstance().prepareStatement(sql);
+            PreparedStatement statement = connection.prepareStatement(sql);
 
             ResultSet data = statement.executeQuery();
 
@@ -24,7 +32,7 @@ public class CircuitDBAccess implements CircuitDAO {
             }
 
         } catch (SQLException exception){
-            throw new DataException(exception);
+            throw new CircuitException(exception); // vérifier + changer
         }
         return circuits;
     }

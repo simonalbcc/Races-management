@@ -2,6 +2,9 @@ package DataAccess;
 
 import Model.*;
 import Exception.RaceException;
+import Exception.DataException;
+
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,8 +12,13 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class RaceDBAccess implements RaceDAO{
+    private Connection connection;
+    public RaceDBAccess() throws DataException {
+        connection = SingletonConnexion.getInstance();
+    }
+
     public ArrayList<Date> getRaceDatesOfACircuit(String circuitName) throws RaceException {
-        ArrayList<Date> dates = new ArrayList<Date>();
+        ArrayList<Date> dates = new ArrayList<>();
         try{
 
             String sql = "select date from Race where circuit = ? ";
@@ -29,7 +37,7 @@ public class RaceDBAccess implements RaceDAO{
         }
         return dates;
     }
-    public ArrayList<Ranking> getARaceRanking(String circuitName, String raceDate){
+    public ArrayList<Ranking> getARaceRankings(String circuitName, String raceDate) throws RaceException {
         ArrayList<Ranking> rankings = new ArrayList<Ranking>();
         try{
             String sql = "select ranking.position, car.number, car.power, driver.last_name_first_name, ranking.record\n" +
@@ -40,7 +48,7 @@ public class RaceDBAccess implements RaceDAO{
                     "where race.circuit = ? and race.date = ?\n" +
                     "order by position;";
 
-            PreparedStatement statement = SingletonConnexion.getInstance().prepareStatement(sql);
+            PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1,circuitName);
             statement.setString(2,raceDate);
 
@@ -52,12 +60,12 @@ public class RaceDBAccess implements RaceDAO{
                         new Driver(data.getString("driver.last_name_first_name"))));
             }
 
-        } catch (Exception exception){
-            exception.printStackTrace(); // à changer
+        } catch (SQLException exception){
+            throw new RaceException(exception); // vérifier
         }
         return rankings;
     }
-    public ArrayList<Race> getWinningSponsorsOfACircuit(String circuitName){
+    public ArrayList<Race> getWinningSponsorsOfACircuit(String circuitName) throws RaceException{
         ArrayList<Race> races = new ArrayList<Race>();
         try{
             String sql = "select race.date, team.name, sponsor.company\n" +
@@ -67,7 +75,7 @@ public class RaceDBAccess implements RaceDAO{
                          "inner join Sponsor sponsor on team.name = sponsor.team\n" +
                          "where ranking.position = 1 and race.circuit = ?;";
 
-            PreparedStatement statement = SingletonConnexion.getInstance().prepareStatement(sql);
+            PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1,circuitName);
 
             ResultSet data = statement.executeQuery();
@@ -77,10 +85,52 @@ public class RaceDBAccess implements RaceDAO{
                           new Ranking(new Car(new Team(data.getString(2), new Company((data.getString(3))))))));
             }
 
-        } catch (Exception exception){
-            exception.printStackTrace(); // à changer
+        } catch (SQLException exception){
+            throw new RaceException(exception); // vérifier
         }
         return races;
+    }
+    public ArrayList<Integer> getPositionsRemainingInARanking(int numRace)throws RaceException{
+        ArrayList<Integer> positions = new ArrayList<>();
+        for(Integer position = 1; position <= 20 ;position++){ // optimiser
+            positions.add(position);
+        }
+        try{
+            String sql = "select position from Ranking where race = ?";
+
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1,numRace);
+
+            ResultSet data = statement.executeQuery();
+
+            while(data.next()){
+                int position = data.getInt(1)-1;
+                positions.remove(position);
+            }
+
+        } catch (SQLException exception){
+            throw new RaceException(exception); // vérifier
+        }
+        return positions;
+    }
+
+    public Integer getARaceNumber(String circuitName, Date date) throws RaceException{
+        Integer number = null;
+        try{
+            String sql = "select serial_number from Race where circuit = ? and date = ?";
+
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1,circuitName);
+            statement.setDate(2, (java.sql.Date) date);
+
+            ResultSet data = statement.executeQuery();
+            data.next();
+            number = data.getInt(1);
+
+        } catch (SQLException exception){
+            throw new RaceException(exception); // vérifier
+        }
+        return number;
     }
 
 }

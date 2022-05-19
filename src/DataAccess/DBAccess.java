@@ -2,12 +2,17 @@ package DataAccess;
 
 import Exception.DataException;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 
 public class DBAccess {
+    private Connection connection;
+    public DBAccess()throws DataException {
+        connection = SingletonConnexion.getInstance();
+    }
     public void closeConnection() throws DataException {
         try {
-            SingletonConnexion.getInstance().close();
+            connection.close();
         } catch (SQLException exception) {
             throw new DataException(exception);
         }
