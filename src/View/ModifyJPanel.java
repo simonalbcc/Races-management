@@ -62,7 +62,7 @@ public class ModifyJPanel extends OperationTemplate {
                     }
                 } else {
                     JOptionPane.showMessageDialog(null, addDriver.getErrorInputMessage().toString(), "Erreur", JOptionPane.ERROR_MESSAGE);
-                    Utils.cleanWrongTextField( addDriver.getForm().getTextFields());
+                    Utils.cleanTextField( addDriver.getForm().getTextFields());
                     addDriver.getErrorInputMessage().setLength(0);
                 }
             } else {

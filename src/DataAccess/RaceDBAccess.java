@@ -55,7 +55,7 @@ public class RaceDBAccess implements RaceDAO{
             ResultSet data = statement.executeQuery();
 
             while(data.next()){
-                rankings.add(new Ranking(new Car(data.getInt("car.number"),data.getDouble("car.power")),
+                rankings.add(new Ranking(new Car(data.getInt("car.number"),data.getInt("car.power")),
                         null,data.getInt("ranking.position"),null,null,data.getDouble("ranking.record"),
                         new Driver(data.getString("driver.last_name_first_name"))));
             }
@@ -65,6 +65,7 @@ public class RaceDBAccess implements RaceDAO{
         }
         return rankings;
     }
+
     public ArrayList<Race> getWinningSponsorsOfACircuit(String circuitName) throws RaceException{
         ArrayList<Race> races = new ArrayList<Race>();
         try{
@@ -90,14 +91,15 @@ public class RaceDBAccess implements RaceDAO{
         }
         return races;
     }
-    public ArrayList<Integer> getPositionsRemainingInARanking(int numRace)throws RaceException{
+
+    public ArrayList<Integer> getPositionsRemainingInARanking(String circuitName, Date date)throws RaceException{
         ArrayList<Integer> positions = new ArrayList<>();
 
         try{
             String sql = "select position from Ranking where race = ? order by position ";
 
             PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setInt(1,numRace);
+            statement.setInt(1,getARaceNumber(circuitName, date));
 
             ResultSet data = statement.executeQuery();
 
@@ -110,7 +112,6 @@ public class RaceDBAccess implements RaceDAO{
         }
         return positions;
     }
-
     public Integer getARaceNumber(String circuitName, Date date) throws RaceException{
         Integer number = null;
         try{

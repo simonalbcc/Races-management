@@ -76,7 +76,6 @@ public class AddDriver extends JPanel {
                 if(form.isCorrect(errorInputMessage)){
                     // create the driver to add and check if locality exists in DB (else -> create a new one)
                     Driver driver = form.createDriver();
-                    System.out.println(driver.getPhoneNumber());
                     controller.addDriver(driver);
                     // save message + update db
                     JOptionPane.showMessageDialog(null, "Ajout effectué", "Information", JOptionPane.INFORMATION_MESSAGE);

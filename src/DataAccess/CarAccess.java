@@ -1,13 +1,11 @@
 package DataAccess;
 
-import java.awt.*;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import Exception.CarException;
-import Exception.DataException;
+import java.sql.*;
 
-import java.sql.SQLException;
+import Exception.AddCarException;
+import Exception.DataException;
+import Model.Car;
+
 import java.util.ArrayList;
 
 
@@ -18,7 +16,7 @@ public class CarAccess implements CarDAO{
     }
 
     @Override
-    public ArrayList getAllCarsName(String teamName) throws CarException {
+    public ArrayList getAllCarsName(String teamName) throws DataException {
         ArrayList<String> carsNameAndNumber = new ArrayList<>();
         try{
 
@@ -34,9 +32,34 @@ public class CarAccess implements CarDAO{
             }
 
         } catch (SQLException exception){
-            throw new CarException();
+            throw new DataException(exception); // à changer
         }
         return carsNameAndNumber;
     }
 
+    @Override
+    public void addCar(Car car) throws AddCarException {
+        try{
+            String sql = "insert into Car\n" +
+                    "values(?,?,?,?,?,?);";
+
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            statement.setInt(1,car.getNumber());
+            statement.setDouble(2,car.getAverageConsumption());
+            statement.setInt(3,car.getPower());
+            if(car.getImprovedFrom() == null){
+                statement.setNull(4, Types.NULL);
+            }else{
+                statement.setInt(4,car.getImprovedFrom().getNumber());
+            }
+            statement.setString(5,car.getMembership().getName());
+            statement.setString(6,car.getName());
+
+            statement.executeUpdate();
+
+        } catch (SQLException exception) {
+            throw new AddCarException(exception);
+        }
+    }
 }

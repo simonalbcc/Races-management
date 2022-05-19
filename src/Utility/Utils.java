@@ -27,7 +27,7 @@ public class Utils {
         }
     }
 
-    public static void cleanWrongTextField(ArrayList<JTextField> textFields){
+    public static void cleanTextField(ArrayList<JTextField> textFields){
         for (JTextField textField: textFields) {
             textField.setText("");
         }

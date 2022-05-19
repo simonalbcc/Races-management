@@ -40,29 +40,25 @@ public class DriverDBAccess implements DriverDAO {
             throw new AddDriverException(driver, exception);
         }
     }
-    public void addDriverToRanking(Driver driver) throws AddDriverException {
+    public void addDriverToRanking(Ranking ranking) throws RaceException{
         try{
-            String sql = "";
-            PreparedStatement statement = connection.prepareStatement(sql);
+            String sql = "insert into Ranking\n" +
+                    "values(?,?,?,?,?,?,?);";
 
-            statement.setInt(1, driver.getNumber());
-            statement.setString(2, driver.getLastNameFirstName());
-            if(driver.getNumber() == null){
-                statement.setNull(3,Types.INTEGER);
-            }else{
-                statement.setString(3, driver.getPhoneNumber());
-            }
-            statement.setString(4, driver.getStreetAndNumber());
-            statement.setString(5, driver.getNationality());
-            statement.setString(6, driver.getTeam().getName());
-            statement.setBoolean(7, driver.getHasRenewedCommitmentContract());
-            statement.setDate(8, new java.sql.Date(driver.getBirthdate().getTimeInMillis()));
-            statement.setInt(9, driver.getHome().getNumber());
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1,ranking.getDriver().getNumber());
+            statement.setInt(2,ranking.getRace().getSerialNumber());
+            statement.setInt(3,ranking.getRace().getPosition());
+            statement.setNull(4, Types.NULL);
+            statement.setInt(5,ranking.getDriver().getNumber());
+            statement.setNull(6,Types.NULL);
+            statement.setNull(7,Types.NULL);
+
 
             statement.executeUpdate();
 
-        } catch (Exception exception){
-            throw new AddDriverException(driver, exception); // à changer
+        } catch (SQLException exception){
+            throw new RaceException(exception);
         }
     }
     public void updateDriver(Driver driver) throws UpdateException {

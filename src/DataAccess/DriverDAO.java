@@ -2,6 +2,8 @@
 package DataAccess;
 
 import Model.Driver;
+import Model.Ranking;
+
 import java.util.ArrayList;
 //endregion
 
@@ -14,5 +16,5 @@ public interface DriverDAO {
     public Driver getADriver(String name) throws Exception;
     public void updateDriver(Driver driver) throws Exception;
 
-    public void addDriverToRanking(Driver driver)throws Exception;
+    public void addDriverToRanking(Ranking ranking)throws Exception;
 }

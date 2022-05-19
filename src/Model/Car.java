@@ -3,14 +3,14 @@ package Model;
 public class Car {
     private Integer number;
     private Double averageConsumption;
-    private Double power;
+    private Integer power;
     private Team membership;
     private Car improvedFrom;
     private String name;
     private Ranking[] rankings;
 
 
-    public Car(Integer number, Double averageConsumption, Double power, Team membership, Car improvedFrom, String name, Ranking[] rankings) {
+    public Car(Integer number, Double averageConsumption, Integer power, Team membership, Car improvedFrom, String name, Ranking[] rankings) {
         this.number = number;
         this.averageConsumption = averageConsumption;
         this.power = power;
@@ -20,9 +20,22 @@ public class Car {
         this.rankings = rankings;
     }
 
-    public Car(Integer number, Double power){
+    public Car(Integer number, Double averageConsumption, Integer power, Team membership, String name) {
+        this.number = number;
+        this.averageConsumption = averageConsumption;
+        this.power = power;
+        this.membership = membership;
+        this.improvedFrom = improvedFrom;
+        this.name = name;
+        this.rankings = rankings;
+    }
+
+    public Car(Integer number, Integer power){
         this.number = number;
         this.power = power;
+    }
+    public Car(Integer number){
+        this.number = number;
     }
 
     public Car(Team membership){
@@ -32,10 +45,19 @@ public class Car {
     public Integer getNumber() {
         return number;
     }
-    public Double getPower() {
+    public Integer getPower() {
         return power;
     }
     public Team getMembership() {
         return membership;
+    }
+    public Double getAverageConsumption() {
+        return averageConsumption;
+    }
+    public Car getImprovedFrom() {
+        return improvedFrom;
+    }
+    public String getName() {
+        return name;
     }
 }

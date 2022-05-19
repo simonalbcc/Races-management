@@ -17,8 +17,8 @@ public class Controller {
     public void addDriver(Driver driver) throws Exception {
        driverManager.addDriver(driver);
     }
-    public void addDriverToRanking(Driver driver) throws Exception {
-        driverManager.addDriverToRanking(driver);
+    public void addDriverToRanking(Ranking ranking) throws Exception {
+        driverManager.addDriverToRanking(ranking);
     }
     public void updateDriver(Driver driver) throws Exception{
         driverManager.updateDriver(driver);
@@ -48,24 +48,24 @@ public class Controller {
     public ArrayList getAllCarsName(String teamName) throws Exception{
         return driverManager.getAllCarsName(teamName);
     }
+    public void addCar(Car car) throws Exception {
+        driverManager.addCar(car);
+    }
+
     public ArrayList<String> getAllCircuitsNames()throws Exception{
         return driverManager.getAllCircuitsNames();
     }
+
     public ArrayList<Date> getRaceDatesOfACircuit(String circuitName)throws Exception {return driverManager.getRaceDatesOfACircuit(circuitName);}
     public ArrayList<Ranking> getARaceRanking(String circuitName, String raceDate)throws Exception{return driverManager.getARaceRanking(circuitName,raceDate);}
-    public ArrayList<Integer> getPositionsRemainingInARanking(int numRace) throws Exception {
-        return driverManager.getPositionsRemainingInARanking(numRace);
+    public ArrayList<Integer> getPositionsRemainingInARanking(String circuitName, Date raceDate) throws Exception {
+        return driverManager.getPositionsRemainingInARanking(circuitName, raceDate);
     }
     public ArrayList<Accident> getAccidentedDrivers(Date startDate, Date endDate)throws Exception{return driverManager.getAccidentedDrivers(startDate, endDate);}
-
     public ArrayList<Race> getWinningSponsorsOfACircuit(String circuitName) throws Exception {return driverManager.getWinningSponsorsOfACircuit(circuitName);}
 
     public void closeConnection() throws DataException {
         driverManager.closeConnection();
-    }
-
-    public int getARaceNumber(String circuitName, Date date)throws Exception {
-        return driverManager.getARaceNumber(circuitName, date);
     }
 }
 

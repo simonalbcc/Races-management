@@ -41,7 +41,7 @@ public class FormDriver extends JPanel {
         // set bounds, init & pretty borders
         this.setBounds(10,80,500,150);
         this.setLayout(new GridLayout(13,2, 5,10));
-
+        errorInputMessage = new StringBuilder();
         textFields = new ArrayList<>();
         controller = new Controller();
         addressPanel = new JPanel();
@@ -328,7 +328,7 @@ public class FormDriver extends JPanel {
         if(country.getSelectedIndex() == 0){
             errorInputMessage.append("- Veuillez sélectionner un pays\n");
         }
-        return errorInputMessage.equals("") && dateIsCorrect()  && team.getSelectedIndex() > 0 && country.getSelectedIndex() > 0;
+        return errorInputMessage.toString().equals("") && dateIsCorrect()  && team.getSelectedIndex() > 0 && country.getSelectedIndex() > 0;
     }
     public void setDisablePK(){
         number.setEnabled(false);

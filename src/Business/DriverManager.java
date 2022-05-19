@@ -31,17 +31,11 @@ public class DriverManager {
     public void addDriver(Driver driver) throws Exception {
         driverAccess.addDriver(driver);
     }
-    public void addDriverToRanking(Driver driver) throws Exception {
-        driverAccess.addDriverToRanking(driver);
+    public void addDriverToRanking(Ranking ranking) throws Exception {
+        driverAccess.addDriverToRanking(ranking);
     }
     public void updateDriver(Driver driver) throws Exception{
         driverAccess.updateDriver(driver);
-    }
-    public void createLocality(Locality locality)throws Exception{
-        localityAccess.createLocality(locality);
-    }
-    public ArrayList<Team> getAllTeams()throws Exception{
-        return teamAccess.getAllTeams();
     }
     public ArrayList<Driver> getAllDrivers()throws Exception {
         return driverAccess.getAllDrivers();
@@ -52,29 +46,42 @@ public class DriverManager {
     public Driver getADriver(String name) throws Exception{
         return driverAccess.getADriver(name);
     }
+    public ArrayList<Accident> getAccidentedDrivers(Date startDate, Date endDate)throws Exception{return accidentAccess.getAccidentedDrivers(startDate,endDate);}
+
+    public void createLocality(Locality locality)throws Exception{
+        localityAccess.createLocality(locality);
+    }
+    public Integer getNumberLocality(Locality locality)throws Exception{
+        return localityAccess.getNumberLocality(locality);
+    }
+
+    public ArrayList<Team> getAllTeams()throws Exception{
+        return teamAccess.getAllTeams();
+    }
 
     public ArrayList<String> getAllCircuitsNames()throws Exception{
         return circuitAccess.getAllCircuitsNames();
     }
+
     public ArrayList<Date> getRaceDatesOfACircuit(String circuitName) throws Exception {return raceAccess.getRaceDatesOfACircuit(circuitName);}
     public ArrayList<Ranking> getARaceRanking(String circuitName, String raceDate) throws Exception{ return raceAccess.getARaceRankings(circuitName,raceDate);}
-    public ArrayList<Accident> getAccidentedDrivers(Date startDate, Date endDate)throws Exception{return accidentAccess.getAccidentedDrivers(startDate,endDate);}
-    public Integer getNumberLocality(Locality locality)throws Exception{
-        return localityAccess.getNumberLocality(locality);
-    }
+    public ArrayList<Race> getWinningSponsorsOfACircuit(String circuitName) throws Exception {return raceAccess.getWinningSponsorsOfACircuit(circuitName);}
+
     public ArrayList getAllCarsName(String teamName) throws Exception{
         return carAccess.getAllCarsName(teamName);
     }
-    public ArrayList<Race> getWinningSponsorsOfACircuit(String circuitName) throws Exception {return raceAccess.getWinningSponsorsOfACircuit(circuitName);}
+    public void addCar(Car car) throws Exception {
+        carAccess.addCar(car);
+    }
 
-    public ArrayList<Integer> getPositionsRemainingInARanking(int numRace) throws Exception {
+    public ArrayList<Integer> getPositionsRemainingInARanking(String circuitName, Date date) throws Exception {
+        ArrayList<Integer> positionsTaken = raceAccess.getPositionsRemainingInARanking(circuitName, date);
         ArrayList<Integer> positionsRemaining = new ArrayList<>();
-        // remaining raceAccess.getPositionsRemainingInARanking(numRace);
-        for(Integer position = 1; position <= 20 ;position++){ // optimiser
-            raceAccess.getPositionsRemainingInARanking(numRace).add(position-1, position);
+        for (int position = 1; position < 20; position++){
+            if(!positionsTaken.contains(position)) {
+                positionsRemaining.add(position);
+            }
         }
-
-
         return positionsRemaining;
     }
 
@@ -82,7 +89,4 @@ public class DriverManager {
         new DBAccess().closeConnection();
     }
 
-    public int getARaceNumber(String circuitName, Date date)throws Exception {
-        return raceAccess.getARaceNumber(circuitName, date);
-    }
 }
