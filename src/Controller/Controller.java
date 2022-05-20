@@ -59,13 +59,13 @@ public class Controller {
         return driverManager.getAllCircuitsNames();
     }
 
-    public Integer getARaceNumber(String circuitName, Date date) throws Exception{
+    public Integer getARaceNumber(String circuitName, String date) throws Exception{
         return driverManager.getARaceNumber(circuitName,date);
     }
 
     public ArrayList<Date> getRaceDatesOfACircuit(String circuitName)throws Exception {return driverManager.getRaceDatesOfACircuit(circuitName);}
     public ArrayList<Ranking> getARaceRanking(String circuitName, String raceDate)throws Exception{return driverManager.getARaceRanking(circuitName,raceDate);}
-    public ArrayList<Integer> getPositionsRemainingInARanking(String circuitName, Date raceDate) throws Exception {
+    public ArrayList<Integer> getPositionsRemainingInARanking(String circuitName, String raceDate) throws Exception {
         return driverManager.getPositionsRemainingInARanking(circuitName, raceDate);
     }
     public ArrayList<Accident> getAccidentedDrivers(Date startDate, Date endDate)throws Exception{return driverManager.getAccidentedDrivers(startDate, endDate);}

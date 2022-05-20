@@ -92,7 +92,7 @@ public class AddDriverRanking extends JPanel {
         try {
             tableModel = new RankingModel(controller.getARaceRanking(circuitsCombobox.getSelectedItem().toString(), datesCombobox.getSelectedItem().toString()));
             jTable.setModel(tableModel);
-            Date date = controller.getRaceDatesOfACircuit(circuitsCombobox.getSelectedItem().toString()).get(datesCombobox.getSelectedIndex());
+            String date = datesCombobox.getSelectedItem().toString();
             positionsModel = new DefaultComboBoxModel<>(controller.getPositionsRemainingInARanking(circuitsCombobox.getSelectedItem().toString(),date).toArray());
             positionCombobox.setModel(positionsModel);
         } catch (Exception exception) {
@@ -132,7 +132,7 @@ public class AddDriverRanking extends JPanel {
                 try {
                     try {
                         int carSerialNumber = controller.getCarFromName(carsComboBox.getSelectedItem().toString());
-                        int raceSerialNumber = controller.getARaceNumber(circuitsCombobox.getSelectedItem().toString(),new SimpleDateFormat("dd-MM-yyyy").parse(datesCombobox.getSelectedItem().toString()));
+                        int raceSerialNumber = controller.getARaceNumber(circuitsCombobox.getSelectedItem().toString(), datesCombobox.getSelectedItem().toString());
                         int driverNumber = controller.getADriver(driversComboBox.getSelectedItem().toString()).getNumber();
                         controller.addDriverToRanking(new Ranking(carSerialNumber,raceSerialNumber,Integer.parseInt(positionCombobox.getSelectedItem().toString()),driverNumber));
                         tableModel = new RankingModel(controller.getARaceRanking(circuitsCombobox.getSelectedItem().toString(), datesCombobox.getSelectedItem().toString()));

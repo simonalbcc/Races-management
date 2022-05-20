@@ -92,7 +92,7 @@ public class RaceDBAccess implements RaceDAO{
         return races;
     }
 
-    public ArrayList<Integer> getPositionsRemainingInARanking(String circuitName, Date date)throws RaceException{
+    public ArrayList<Integer> getPositionsRemainingInARanking(String circuitName, String date)throws RaceException{
         ArrayList<Integer> positions = new ArrayList<>();
 
         try{
@@ -112,14 +112,14 @@ public class RaceDBAccess implements RaceDAO{
         }
         return positions;
     }
-    public Integer getARaceNumber(String circuitName, Date date) throws RaceException{
+    public Integer getARaceNumber(String circuitName, String date) throws RaceException{
         Integer number = null;
         try{
             String sql = "select serial_number from Race where circuit = ? and date = ?";
 
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1,circuitName);
-            statement.setDate(2, (java.sql.Date) date);
+            statement.setString(2, date);
 
             ResultSet data = statement.executeQuery();
             data.next();

@@ -74,7 +74,7 @@ public class DriverManager {
         carAccess.addCar(car);
     }
 
-    public ArrayList<Integer> getPositionsRemainingInARanking(String circuitName, Date date) throws Exception {
+    public ArrayList<Integer> getPositionsRemainingInARanking(String circuitName, String date) throws Exception {
         ArrayList<Integer> positionsTaken = raceAccess.getPositionsRemainingInARanking(circuitName, date);
         ArrayList<Integer> positionsRemaining = new ArrayList<>();
         for (int position = 1; position < 20; position++){
@@ -88,7 +88,7 @@ public class DriverManager {
     public int getCarFromName(String carName) throws Exception {
         return carAccess.getCarFromName(carName);
     }
-    public Integer getARaceNumber(String circuitName, Date date) throws Exception {
+    public Integer getARaceNumber(String circuitName, String date) throws Exception {
         return raceAccess.getARaceNumber(circuitName,date);
     }
 
