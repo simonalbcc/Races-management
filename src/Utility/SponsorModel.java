@@ -4,6 +4,7 @@ import Model.Race;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class SponsorModel extends AbstractTableModel {
     private ArrayList<Race> races;
@@ -46,11 +47,7 @@ public class SponsorModel extends AbstractTableModel {
     { Class c;
         switch (column)
         {
-            case 0:
-            case 1: c = Integer.class;
-                break;
-            case 2 :
-            case 4 : c = Double.class;
+            case 0: c = Date.class;
                 break;
             default: c = String.class;
         }

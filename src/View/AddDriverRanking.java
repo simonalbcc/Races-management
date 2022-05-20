@@ -102,6 +102,7 @@ public class AddDriverRanking extends JPanel {
 
     public void updateCarsListe() throws Exception {
         carsNameList = controller.getRemainingCarsInARanking(circuitsCombobox.getSelectedItem().toString(), datesCombobox.getSelectedItem().toString(), teamsComboBox.getSelectedItem().toString());
+        carsNameList.add(carsNameList.size(), "Ajouter une voiture...");
         carsModel = new DefaultComboBoxModel(carsNameList.toArray());
         carsComboBox.setModel(carsModel);
     }
@@ -162,10 +163,7 @@ public class AddDriverRanking extends JPanel {
             if(e.getSource() == teamsComboBox){
                 if(teamsComboBox.getSelectedIndex() > 0){
                     try {
-                        carsNameList = controller.getAllCarsName(teamsComboBox.getSelectedItem().toString());
-                        carsNameList.add(carsNameList.size(), "Ajouter une voiture...");
-                        carsModel = new DefaultComboBoxModel(carsNameList.toArray());
-                        carsComboBox.setModel(carsModel);
+                        updateCarsListe();
                         carsComboBox.setVisible(true);
                     } catch (Exception exception) {
                         JOptionPane.showMessageDialog(null, exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
@@ -190,11 +188,11 @@ public class AddDriverRanking extends JPanel {
                 }
             } else if(e.getSource() == datesCombobox){
                 updateJTable();
-                try {
-                    updateCarsListe();
-                } catch (Exception exception) {
-                    JOptionPane.showMessageDialog(null, exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
-                }
+            }
+            try {
+                updateCarsListe();
+            } catch (Exception exception) {
+                JOptionPane.showMessageDialog(null, exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
             }
         }
     }

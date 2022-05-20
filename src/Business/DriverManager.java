@@ -105,4 +105,12 @@ public class DriverManager {
         }
         return allCars;
     }
+   /* public ArrayList<String> getAllDriversInARace(String circuitName,String date) throws Exception{
+        ArrayList<String> driversEngaged = driverAccess.getAllDriversNameInARace(circuitName, date);
+        ArrayList<Driver> allDriver = driverAccess.getAllDrivers();
+        for(int iCar = 0; iCar < driversEngaged.size(); iCar++){
+            allDriver.remove(driversEngaged.get(iCar));
+        }
+        return allDriver;
+    } */
 }

@@ -105,7 +105,30 @@ public class DriverDBAccess implements DriverDAO {
            throw new DeleteDriverException(exception);
         }
     }
+    public ArrayList<String> getAllDriversNameInARace(String circuitName,String date)throws DataException{
+        ArrayList<String> engagedDriversName = new ArrayList<String>();
+        try{
+            String sql = "select driver.name\n" +
+                    "from Ranking ranking\n" +
+                    "inner join Driver driver on ranking.driver = driver.number\n" +
+                    "where race.circuit = ? and race.date = ?";
 
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            statement.setString(1,circuitName);
+            statement.setString(2,date);
+
+            ResultSet data = statement.executeQuery();
+
+            while(data.next()){
+                engagedDriversName.add(data.getString(1));
+            }
+
+        } catch (SQLException exception) {
+            throw new DataException(exception);
+        }
+        return engagedDriversName;
+    }
 
     public ArrayList<Driver> getAllDrivers()throws DataException{
         ArrayList<Driver> drivers = new  ArrayList<Driver>();
