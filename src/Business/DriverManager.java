@@ -96,4 +96,13 @@ public class DriverManager {
         new DBAccess().closeConnection();
     }
 
+    public ArrayList<String> getRemainingCarsInARanking(String circuitName, String date ,String teamName) throws Exception {
+        ArrayList<String> allCars = carAccess.getAllCarsName(teamName);
+        ArrayList<String> invalidCars = carAccess.getEngagedCars(circuitName,date,teamName);
+
+        for(int iCar = 0; iCar < invalidCars.size(); iCar++){
+            allCars.remove(invalidCars.get(iCar));
+        }
+        return allCars;
+    }
 }

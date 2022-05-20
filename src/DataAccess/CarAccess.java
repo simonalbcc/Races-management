@@ -82,4 +82,32 @@ public class CarAccess implements CarDAO{
             throw new AddCarException(exception);
         }
     }
+
+    public ArrayList<String> getEngagedCars(String circuitName, String date, String teamName) throws AddCarException {
+        ArrayList<String> engagedCarsName = new ArrayList<String>();
+        try{
+            String sql = "select car.name\n" +
+                         "from Ranking ranking\n" +
+                         "inner join Car car on ranking.car = car.number\n" +
+                         "inner join Race race on ranking.race = race.serial_number\n" +
+                         "inner join Driver driver on ranking.driver = driver.number\n" +
+                         "where race.circuit = ? and race.date = ? and driver.team = ?";
+
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            statement.setString(1,circuitName);
+            statement.setString(2,date);
+            statement.setString(3,teamName);
+
+            ResultSet data = statement.executeQuery();
+
+            while(data.next()){
+                engagedCarsName.add(data.getString(1));
+            }
+
+        } catch (SQLException exception) {
+            throw new AddCarException(exception);
+        }
+        return engagedCarsName;
+    }
 }

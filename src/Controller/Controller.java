@@ -54,6 +54,9 @@ public class Controller {
     public void addCar(Car car) throws Exception {
         driverManager.addCar(car);
     }
+    public ArrayList<String> getRemainingCarsInARanking(String circuitName, String date ,String teamName) throws Exception{
+        return driverManager.getRemainingCarsInARanking(circuitName, date, teamName);
+    }
 
     public ArrayList<String> getAllCircuitsNames()throws Exception{
         return driverManager.getAllCircuitsNames();

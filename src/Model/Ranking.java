@@ -18,12 +18,14 @@ public class Ranking {
         this.record = record;
         this.driver = driver;
     }
-    public Ranking(Integer carNumber, Integer raceNumber, Integer position , Integer driverNumber){
+    public Ranking(Integer carNumber, Integer raceNumber, Integer nbStopsPits, Integer position , Integer driverNumber, Double record){
 
         this.car = new Car(carNumber,null);
         this.race = new Race(raceNumber,null,null,null,null,null);
         this.position = position;
         this.driver = new Driver(driverNumber);
+        this.nbStopsPits = nbStopsPits;
+        this.record = record;
     }
     public Ranking(Car car){
         this.car = car;
@@ -46,4 +48,7 @@ public class Ranking {
         return race;
     }
 
+    public Integer getNbStopsPits() {
+        return nbStopsPits;
+    }
 }
