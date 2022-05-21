@@ -26,7 +26,7 @@ public class ModifyJPanel extends OperationTemplate {
     public JPanel operation(int driverNumber, JPanel currentPanel, Container mainContainer) throws Exception {
         selectedDriver = getController().getADriver(driverNumber);
 
-        formDriver =  new FormDriver();
+        formDriver = new FormDriver();
         formDriver.setFilledDriverForm(selectedDriver);
         formDriver.setDisablePK();
 
@@ -42,7 +42,8 @@ public class ModifyJPanel extends OperationTemplate {
         public void actionPerformed(ActionEvent e) {
             try{
                 if(e.getSource() == buttonsPanel.getNext()){
-                    if(formDriver.isCorrect()){
+                    String errorMessage = formDriver.errorInputMessageString();
+                    if(errorMessage.equals("")){
                         // create the driver to add and check if locality exists in DB (else -> create a new one)
                         driverFromForm = formDriver.createDriver();
                         getController().updateDriver(driverFromForm);
@@ -50,6 +51,10 @@ public class ModifyJPanel extends OperationTemplate {
                         // save message + update db
                         JOptionPane.showMessageDialog(null, "Modification effectuée", "Information", JOptionPane.INFORMATION_MESSAGE);
                         Utils.addToMainContainer(getMainContainer(), new FinaleJPanel(getMainContainer(), new ModifyJPanel(getMainContainer())));
+                    } else {
+                        Utils.showErrorMessage(errorMessage);
+                        Utils.cleanTextField(formDriver.getWrongTextFields());
+                        formDriver.resetErrorInputMessage();
                     }
                 } else {
                     Utils.addToMainContainer(getMainContainer(), new ModifyJPanel(getMainContainer()));

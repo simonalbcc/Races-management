@@ -243,6 +243,13 @@ public class FormDriver extends JPanel {
         //endregion
     }
 
+    public ArrayList<JTextField> getWrongTextFields() {
+        return wrongTextFields;
+    }
+
+    public void resetErrorInputMessage(){
+        errorInputMessage.delete(0, errorInputMessage.length());
+    }
     public void setFilledDriverForm(Driver driver){
         number.setText(driver.getNumber().toString());
 
@@ -267,16 +274,9 @@ public class FormDriver extends JPanel {
         team.setSelectedItem(driver.getTeam().getName());
         hasRenewedContract.setSelected(driver.getHasRenewedCommitmentContract());
     }
-    public String getErrorInputMessageString() {
-        return errorInputMessage.toString();
-    }
-    public void resetErrorMessage(){
-        errorInputMessage.setLength(0);
-    }
     public void setDisablePK(){
         number.setEnabled(false);
     }
-
 
     public Driver createDriver() throws Exception {
         GregorianCalendar birthdate = new GregorianCalendar(Integer.parseInt(new SimpleDateFormat("yyyy").format(date.getValue())), Integer.parseInt(new SimpleDateFormat("MM").format(date.getValue()))-1, Integer.parseInt(new SimpleDateFormat("dd").format(date.getValue())));
@@ -296,7 +296,7 @@ public class FormDriver extends JPanel {
         return driver;
     }
 
-    public boolean isCorrect(){
+    public String errorInputMessageString(){
         wrongTextFields = new ArrayList<>();
 
         String regNumber = "\\d+";
@@ -309,22 +309,14 @@ public class FormDriver extends JPanel {
         validateInput("(\s?("+regString+")+\s?)+", 25, streetName);
         validateInput(regNumber, 3, streetNumber);
 
-        boolean filled = true;
         for(JComboBox jComboBox : comboBoxes){
             if(jComboBox.getSelectedIndex() == 0){
-                filled = false;
                 errorInputMessage.append("- Vous devez séléctionner une valeur pour le champs '"+jComboBox.getName()+"' \n");
             }
         }
 
-        if(!filled && wrongTextFields.size() > 1){
-            Utils.showErrorMessage(errorInputMessage.toString());
-            resetErrorMessage();
-            Utils.cleanTextField(wrongTextFields);
-        }
-        return filled && wrongTextFields.size() > 1;
+        return errorInputMessage.toString();
     }
-
     public void validateInput(String regex, Integer size, JTextField textField){
         String field = "- Le champs '"+textField.getName()+"'";
         // phone number is facultative -> can't be treated as the others, moreover -> size mustn't be under 9 and not over 10

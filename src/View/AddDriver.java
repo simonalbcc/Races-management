@@ -58,13 +58,18 @@ public class AddDriver extends JPanel {
             }
             try {
             if(e.getSource() == save){
-                if(form.isCorrect()){
+                String errorMessage = form.errorInputMessageString();
+                if(errorMessage.equals("")){
                     // create the driver to add and check if locality exists in DB (else -> create a new one)
                     Driver driver = form.createDriver();
                     controller.addDriver(driver);
                     // save message + update db
                     JOptionPane.showMessageDialog(null, "Ajout effectué", "Information", JOptionPane.INFORMATION_MESSAGE);
                     Utils.addToMainContainer(mainContainer, new FinaleJPanel(mainContainer, new AddDriver(mainContainer)));
+                } else {
+                    Utils.showErrorMessage(errorMessage);
+                    Utils.cleanTextField(form.getWrongTextFields());
+                    form.resetErrorInputMessage();
                 }
             }
             if(e.getSource() == buttonsPanel.getNext()){
