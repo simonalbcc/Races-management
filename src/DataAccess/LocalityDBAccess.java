@@ -1,13 +1,16 @@
+//region packages & imports
 package DataAccess;
-
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+
 import Exception.DataException;
 import Exception.LocalityException;
 import Model.Locality;
+//endregion
 
 public class LocalityDBAccess implements LocalityDAO{
     private Connection connection;
@@ -17,9 +20,6 @@ public class LocalityDBAccess implements LocalityDAO{
     public Integer getNumberLocality(Locality locality)throws LocalityException{
         Integer number;
         try{
-            System.out.println(locality.getCountry());
-            System.out.println(locality.getCity());
-            System.out.println(locality.getPostalCode());
             String sql = "select number from Locality where city_name = ? and postal_code = ? and country = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
 
@@ -29,7 +29,6 @@ public class LocalityDBAccess implements LocalityDAO{
 
             ResultSet data = statement.executeQuery();
             data.next();
-            System.out.println(data.getInt(1));
             number = data.getInt("number");
 
         } catch (SQLException exception){
@@ -37,20 +36,21 @@ public class LocalityDBAccess implements LocalityDAO{
         }
         return number;
     }
-    public void createLocality(Locality locality) throws LocalityException {
+    public HashMap getLocalitiesName() throws DataException {
+        HashMap<Integer, String> localities = new HashMap<>();
+        localities.put(0, "Séléctionner...");
         try{
-            String sql = "insert into Locality (city_name, postal_code, country) values (?,?,?)";
+            String sql = "select postal_code, city_name from Locality";
             PreparedStatement statement = connection.prepareStatement(sql);
 
-            statement.setString(1, locality.getCity());
-            statement.setInt(2, locality.getPostalCode());
-            statement.setString(3, locality.getCountry());
+            ResultSet data = statement.executeQuery();
+            while (data.next()){
+                localities.put(data.getInt(1), data.getString(2));
+            }
 
-            statement.executeUpdate();
-
-        } catch(SQLException exception){
-            throw new LocalityException(exception);
+        } catch (SQLException exception){
+            throw new DataException();
         }
+        return localities;
     }
-
 }

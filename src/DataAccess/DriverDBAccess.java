@@ -105,6 +105,7 @@ public class DriverDBAccess implements DriverDAO {
            throw new DeleteDriverException(exception);
         }
     }
+
     public ArrayList<String> getAllDriversNameInARace(String circuitName,String date)throws DataException{
         ArrayList<String> engagedDriversName = new ArrayList<String>();
         try{
@@ -125,11 +126,10 @@ public class DriverDBAccess implements DriverDAO {
             }
 
         } catch (SQLException exception) {
-            throw new DataException(exception);
+            throw new DataException();
         }
         return engagedDriversName;
     }
-
     public ArrayList<Driver> getAllDrivers()throws DataException{
         ArrayList<Driver> drivers = new  ArrayList<Driver>();
         try{
@@ -159,23 +159,12 @@ public class DriverDBAccess implements DriverDAO {
             ResultSet data = statement.executeQuery();
 
             while(data.next()){
-                GregorianCalendar birthdate = new GregorianCalendar();
-                birthdate.setTime(data.getDate(9));
-
-                driver = new Driver(data.getInt(1),
-                                    data.getString(2),
-                                    data.getString(3),
-                                    data.getString(4),
-                                    data.getString(5),
-                                    new Team(data.getString(6), data.getString(7)),
-                                    data.getBoolean(8),
-                                    birthdate,
-                                    new Locality(data.getInt(10), data.getInt(11), data.getString(12), data.getString(13)));
+                driver = createDriver(data);
                 drivers.add(driver);
             }
 
         } catch (SQLException exception){
-            throw new DataException(exception);
+            throw new DataException();
         }
         return drivers;
     }
@@ -201,32 +190,18 @@ public class DriverDBAccess implements DriverDAO {
                     "country " +
                     "from Driver driver inner join Team team on driver.team = team.name inner join Locality loc on driver.home = loc.number" +
                     " where driver.number = ?";
-
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, driverNumber);
-
             ResultSet data = statement.executeQuery();
-
             data.next();
+            driver = createDriver(data);
 
-            GregorianCalendar birthdate = new GregorianCalendar();
-            birthdate.setTime(data.getDate(9));
-
-            driver = new Driver(data.getInt(1),
-                    data.getString(2),
-                    data.getString(3),
-                    data.getString(4),
-                    data.getString(5),
-                    new Team(data.getString(6), data.getString(7)),
-                    data.getBoolean(8),
-                    birthdate,
-                    new Locality(data.getInt(10), data.getInt(11), data.getString(12), data.getString(13)));
         } catch (SQLException exception){
             throw new DriverException();
         }
         return driver;
     }
-    public Driver getADriver(String name)throws DriverException{
+    public Driver getADriver(String name)throws DataException{
         Driver driver;
         try{
 
@@ -248,30 +223,32 @@ public class DriverDBAccess implements DriverDAO {
                     "country " +
                     "from Driver driver inner join Team team on driver.team = team.name inner join Locality loc on driver.home = loc.number" +
                     " where driver.last_name_first_name = ?";
-
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, name);
-
             ResultSet data = statement.executeQuery();
-
             data.next();
+            driver = createDriver(data);
 
-            GregorianCalendar birthdate = new GregorianCalendar();
-            birthdate.setTime(data.getDate(9));
-
-            driver = new Driver(data.getInt(1),
-                    data.getString(2),
-                    data.getString(3),
-                    data.getString(4),
-                    data.getString(5),
-                    new Team(data.getString(6), data.getString(7)),
-                    data.getBoolean(8),
-                    birthdate,
-                    new Locality(data.getInt(10), data.getInt(11), data.getString(12), data.getString(13)));
-
-        } catch (SQLException exception){ // à vérifier
-            throw new DriverException();
+        } catch (SQLException exception){
+            throw new DataException();
         }
+        return driver;
+    }
+
+    public Driver createDriver(ResultSet data) throws SQLException {
+        Driver driver;
+        GregorianCalendar birthdate = new GregorianCalendar();
+        birthdate.setTime(data.getDate(9));
+
+        driver = new Driver(data.getInt(1),
+                data.getString(2),
+                data.getString(3),
+                data.getString(4),
+                data.getString(5),
+                new Team(data.getString(6), data.getString(7)),
+                data.getBoolean(8),
+                birthdate,
+                new Locality(data.getInt(10), data.getInt(11), data.getString(12), data.getString(13)));
         return driver;
     }
 
@@ -279,5 +256,4 @@ public class DriverDBAccess implements DriverDAO {
 }
 
 
-// à optimiser
 

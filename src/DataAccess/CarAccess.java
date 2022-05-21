@@ -32,7 +32,7 @@ public class CarAccess implements CarDAO{
             }
 
         } catch (SQLException exception){
-            throw new DataException(exception); // à changer
+            throw new DataException();
         }
         return carsNameAndNumber;
     }
@@ -52,7 +52,7 @@ public class CarAccess implements CarDAO{
                 car = data.getInt(1);
 
             } catch (SQLException exception){
-                throw new DataException(exception); // à changer
+                throw new DataException();
             }
             return car;
         }

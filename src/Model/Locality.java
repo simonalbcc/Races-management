@@ -9,10 +9,10 @@ public class Locality {
 
 
     public Locality(Integer number, Integer postalCode, String city, String country) {
-        this.number = number;
-        this.postalCode = postalCode;
-        this.city = city;
-        this.country = country;
+        setNumber(number);
+        setPostalCode(postalCode);
+        setCity(city);
+        setCountry(country);
     }
 
 

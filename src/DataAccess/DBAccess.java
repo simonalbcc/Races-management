@@ -14,7 +14,7 @@ public class DBAccess {
         try {
             connection.close();
         } catch (SQLException exception) {
-            throw new DataException(exception);
+            throw new DataException();
         }
     }
 }

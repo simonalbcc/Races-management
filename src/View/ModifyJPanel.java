@@ -12,7 +12,7 @@ import java.awt.event.ActionListener;
 //endregion
 
 public class ModifyJPanel extends OperationTemplate {
-    private AddDriver addDriver;
+    private FormDriver formDriver;
     private Driver driverFromForm, selectedDriver;
     private ButtonsPanel buttonsPanel;
 
@@ -22,59 +22,43 @@ public class ModifyJPanel extends OperationTemplate {
         super.getjTable().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
 
-    //region abstract methods
     @Override
     public JPanel operation(int driverNumber, JPanel currentPanel, Container mainContainer) throws Exception {
-        try {
-            selectedDriver = getController().getADriver(driverNumber);
+        selectedDriver = getController().getADriver(driverNumber);
 
-            addDriver =  new AddDriver(mainContainer);
-            addDriver.getForm().setFilledDriverForm(selectedDriver);
-            addDriver.getForm().setDisablePK();
-
-        } catch (Exception exception) {
-            JOptionPane.showMessageDialog(null, exception.getMessage(), "Erreur",  JOptionPane.ERROR_MESSAGE);
-        }
+        formDriver =  new FormDriver();
+        formDriver.setFilledDriverForm(selectedDriver);
+        formDriver.setDisablePK();
 
         buttonsPanel = new ButtonsPanel("Retour", "Modifier");
         buttonsPanel.getNext().removeActionListener(buttonsPanel.getNext().getAction());
         buttonsPanel.addActionListener(new ModifyButtonListener());
-        addDriver.changeButtonsPanel(buttonsPanel);
+        changePanels(formDriver, buttonsPanel);
 
-        return addDriver;
+        return ModifyJPanel.this;
     }
-
     private class ModifyButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if(e.getSource() == buttonsPanel.getNext()){
-                if(addDriver.getForm().isCorrect(addDriver.getErrorInputMessage())){
-                    // create the driver to add and check if locality exists in DB (else -> create a new one)
-                    try {
-                        driverFromForm = addDriver.getForm().createDriver();
+            try{
+                if(e.getSource() == buttonsPanel.getNext()){
+                    if(formDriver.isCorrect()){
+                        // create the driver to add and check if locality exists in DB (else -> create a new one)
+                        driverFromForm = formDriver.createDriver();
                         getController().updateDriver(driverFromForm);
 
                         // save message + update db
                         JOptionPane.showMessageDialog(null, "Modification effectuée", "Information", JOptionPane.INFORMATION_MESSAGE);
-                        Utils.addToMainContainer(getMainContainer(), new FinaleJPanel(getMainContainer(), new AddDriver(getMainContainer())));
-                    } catch (Exception exception) {
-                        JOptionPane.showMessageDialog(null, exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
+                        Utils.addToMainContainer(getMainContainer(), new FinaleJPanel(getMainContainer(), new ModifyJPanel(getMainContainer())));
                     }
                 } else {
-                    JOptionPane.showMessageDialog(null, addDriver.getErrorInputMessage().toString(), "Erreur", JOptionPane.ERROR_MESSAGE);
-                    Utils.cleanTextField( addDriver.getForm().getTextFields());
-                    addDriver.getErrorInputMessage().setLength(0);
-                }
-            } else {
-                try {
                     Utils.addToMainContainer(getMainContainer(), new ModifyJPanel(getMainContainer()));
-                } catch (Exception exception) {
-                    JOptionPane.showMessageDialog(null, exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
                 }
+            } catch (Exception exception){
+                JOptionPane.showMessageDialog(null, exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
 
-
-    //endregion
 }
+

@@ -67,19 +67,19 @@ public abstract class OperationTemplate<mainContainer> extends JPanel {
                 ListSelectionModel listSelect = driverJTable.getjTable().getSelectionModel();
                 int[] listSelectedDrivers = listSelect.getSelectedIndices();
                 int lengthListSelectedDrivers = listSelectedDrivers.length ;
-                int indSelected = 0;
 
                 // check if 1 line is selected
                 if(lengthListSelectedDrivers == 0){
                     JOptionPane.showMessageDialog(null, "Veuillez séléctionner une ligne", "Erreur", JOptionPane.ERROR_MESSAGE);
                 } else {
                     try {
+                        int indSelected = 0;
                         while(indSelected < lengthListSelectedDrivers) {
                             currentPanel = operation(Integer.parseInt(driverJTable.getjTable().getValueAt(listSelectedDrivers[indSelected], 0).toString()), currentPanel, mainContainer);
                             indSelected++;
                             }
                         } catch (Exception exception) {
-                        JOptionPane.showMessageDialog(null, exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
+                        Utils.showErrorMessage(exception.getMessage());
                     }
                 }
             } else {
@@ -88,6 +88,15 @@ public abstract class OperationTemplate<mainContainer> extends JPanel {
             // add the panel to main container
             Utils.addToMainContainer(mainContainer, currentPanel);
         }
+    }
+    public void changePanels(JPanel panel, ButtonsPanel buttonsPanel){
+        this.removeAll();
+        this.buttonsPanel = buttonsPanel;
+        gc.fill = GridBagConstraints.NONE;
+        gc.gridy= 0;
+        this.add(panel, gc);
+        gc.gridy = 1;
+        this.add(buttonsPanel, gc);
     }
     //endregion
     //region abstract methods

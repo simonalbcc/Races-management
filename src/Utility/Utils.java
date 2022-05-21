@@ -4,8 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Locale;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 public class Utils {
 
@@ -17,7 +15,6 @@ public class Utils {
         }
         return continents;
     }
-
     public static void addToMainContainer(Container mainContainer, JPanel panel){
         if(panel != null){
             mainContainer.removeAll();
@@ -26,10 +23,12 @@ public class Utils {
             mainContainer.validate();
         }
     }
-
     public static void cleanTextField(ArrayList<JTextField> textFields){
         for (JTextField textField: textFields) {
             textField.setText("");
         }
+    }
+    public static void showErrorMessage(String message){
+        JOptionPane.showMessageDialog(null, message, "Erreur", JOptionPane.ERROR_MESSAGE);
     }
 }

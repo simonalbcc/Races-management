@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class TeamDBAccess implements TeamDAO{
+
     public ArrayList<Team> getAllTeams() throws DataException {
         ArrayList<Team> teams = new  ArrayList<Team>();
         try{
@@ -22,11 +23,10 @@ public class TeamDBAccess implements TeamDAO{
 
 
         } catch (SQLException exception){
-            throw new DataException(exception);
+            throw new DataException();
         }
         return teams;
     }
-
     public ArrayList<String> getAllTeamsNames()throws DataException{
         ArrayList<String> teamsNames = new  ArrayList<String>();
         try{
@@ -41,8 +41,9 @@ public class TeamDBAccess implements TeamDAO{
 
 
         } catch (SQLException exception){
-            throw new DataException(exception);
+            throw new DataException();
         }
         return teamsNames;
     }
+
 }

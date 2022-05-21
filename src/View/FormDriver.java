@@ -1,3 +1,4 @@
+//region packages & imports
 package View;
 
 import Controller.Controller;
@@ -5,32 +6,34 @@ import Model.Driver;
 import Model.Locality;
 import Model.Team;
 import Utility.*;
+import jdk.jshell.execution.Util;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.GregorianCalendar;
+import java.util.*;
 import java.util.stream.Collectors;
+//endregion
 
 public class FormDriver extends JPanel {
-    //region private attributes & constructor
-    private JTextField number, lastName, firstName, phoneNumber, streetName, streetNumber, city, zipCode;
-    private ArrayList<JTextField> textFields;
+    private JTextField number, lastName, firstName, phoneNumber, streetName, streetNumber;
     private ArrayList<Team> teamsDB;
+    private ArrayList<JComboBox> comboBoxes;
+    private ArrayList<JTextField> wrongTextFields;
+    private HashMap<Integer, String> localities;
     private JLabel numberLabel, lastNameLabel, firstNameLabel, phoneNumberLabel, streetAddressLabel, cityLabel,
-            countryLabel, zipCodeLabel, originsLabel, teamsLabel, hasRenewedContractLabel, birthdateLabel, asterisk;
-    private JComboBox country, origin, team;
+                   countryLabel, zipCodeLabel, originsLabel, teamsLabel, hasRenewedContractLabel, birthdateLabel, asterisk;
+    private JComboBox country, origin, team, city, zipcode;
     private JCheckBox hasRenewedContract;
     private JSpinner date;
     private SpinnerDateModel spinnerDateModel;
-    private JPanel addressPanel;
+    private JPanel addressJPanel, localityJPanel;
     private Border border, margin;
     private ImageIcon driverIcon, phoneIcone, homeIcone, cityIcone, zipcodeIcone, lastNameIcone, firstNameIcone, countryIcone, originIcone, teamIcone, contractIcone, birthdateIcone;
     private Controller controller;
@@ -38,63 +41,102 @@ public class FormDriver extends JPanel {
     private static String[] continents = new String[]{"Séléctionner...", "Europe", "Afrique", "Amérique", "Océanie", "Asie"};
 
     public FormDriver() throws Exception {
-        // set bounds, init & pretty borders
+        //region set bounds, init & pretty borders
         this.setBounds(10,80,500,150);
         this.setLayout(new GridLayout(13,2, 5,10));
-        errorInputMessage = new StringBuilder();
-        textFields = new ArrayList<>();
+
         controller = new Controller();
-        addressPanel = new JPanel();
+        addressJPanel = new JPanel();
+        localityJPanel = new JPanel();
+        errorInputMessage = new StringBuilder();
 
         border = BorderFactory.createRaisedBevelBorder();
         margin = new EmptyBorder(10,10,10,10);
         this.setBorder(new CompoundBorder(border, margin));
+        //endregion
 
         //region textfields
 
         number = new JTextField();
         number.setToolTipText("Veuillez entrer le numéro du pilote (obligatoire)");
         number.setName("numéro");
-        textFields.add(number);
 
         lastName = new JTextField();
         lastName.setToolTipText("Veuillez entrer le nom de famille du pilote (obligatoire)");
         lastName.setName("nom");
-        textFields.add(lastName);
 
         firstName = new JTextField();
         firstName.setToolTipText("Veuillez entrer le prénom du pilote (obligatoire)");
         firstName.setName("prénom");
-        textFields.add(firstName);
 
         phoneNumber = new JTextField();
         phoneNumber.setToolTipText("Veuillez entrer le numéro de téléphone du pilote (facultatif)");
         phoneNumber.setName("numéro de téléphone");
-        textFields.add(phoneNumber);
 
         streetName = new JTextField();
         streetName.setToolTipText("Veuillez entrer le nom de la rue du pilote (obligatoire)");
         streetName.setName("nom de rue");
         streetName.setPreferredSize(new Dimension(200,40));
-        addressPanel.add(streetName);
-        textFields.add(streetName);
+        addressJPanel.add(streetName);
 
         streetNumber = new JTextField();
         streetNumber.setToolTipText("Veuillez entrer le numéro de la maison du pilote (obligatoire)");
         streetNumber.setName("numéro maison");
         streetNumber.setPreferredSize(new Dimension(50,40));
-        addressPanel.add(streetNumber);
-        textFields.add(streetNumber);
+        addressJPanel.add(streetNumber);
+        //endregion
 
-        city = new JTextField();
+        //region spinners
+        spinnerDateModel = new SpinnerDateModel();
+        spinnerDateModel.setStart(new GregorianCalendar(LocalDate.now().getYear()-70, LocalDate.now().getMonthValue(), LocalDate.now().getDayOfMonth()).getTime());
+        spinnerDateModel.setValue(new GregorianCalendar(LocalDate.now().getYear()-18, LocalDate.now().getMonthValue(), LocalDate.now().getDayOfMonth()).getTime());
+        spinnerDateModel.setEnd(new GregorianCalendar(LocalDate.now().getYear()-18, LocalDate.now().getMonthValue(), LocalDate.now().getDayOfMonth()).getTime());
+
+        date = new JSpinner(spinnerDateModel);
+        date.setEditor(new JSpinner.DateEditor(date, "dd-MM-yyyy"));
+
+        //endregion
+
+        //region combobox
+        comboBoxes = new ArrayList<>();
+        localities = controller.getLocalitiesName();
+
+        city = new JComboBox(localities.values().toArray());
+        city.addItemListener(new CityItemListener());
         city.setToolTipText("Veuillez entrer la ville où réside le pilote (obligatoire)");
         city.setName("ville");
-        textFields.add(city);
+        comboBoxes.add(city);
+        city.setPreferredSize(new Dimension(150,40));
 
-        zipCode = new JTextField();
-        zipCode.setToolTipText("Veuillez entrer le code postal de la ville du pilote (obligatoire)");
-        zipCode.setName("code postal");
-        textFields.add(zipCode);
+        zipcode = new JComboBox(localities.keySet().toArray());
+        zipcode.setToolTipText("code postal de la ville du pilote, varie en fonction de la ville");
+        zipcode.setEnabled(false);
+        zipcode.setPreferredSize(new Dimension(100,40));
+
+        localityJPanel.add(city);
+        localityJPanel.add(zipcode);
+
+        origin = new JComboBox(continents);
+        origin.setToolTipText("Choisissez l'origine du pilote (obligatoire)");
+        origin.setName("origine");
+        comboBoxes.add(origin);
+
+        country = new JComboBox(Utils.getCountriesArray().toArray());
+        country.setToolTipText("Veuillez entrer le code postal de la ville du pilote (obligatoire)");
+        country.setName("pays");
+        comboBoxes.add(country);
+
+        teamsDB = controller.getAllTeams();
+        teamsDB.add(0, new Team("Séléctionner..."));
+        team = new JComboBox(teamsDB.stream().map(t -> t.getName()).toArray());
+        team.setToolTipText("Choisissez l'équipe du pilote");
+        team.setName("équipe");
+        comboBoxes.add(team);
+        //endregion
+
+        //region checkbox
+        hasRenewedContract = new JCheckBox();
+        hasRenewedContract.setToolTipText("Cochez la case si le pilote a renouvelé son contrat d'engagement");
         //endregion
 
         //region images & labels
@@ -112,6 +154,11 @@ public class FormDriver extends JPanel {
         firstNameIcone = new ImageIcon("images\\firstName.png");
         firstNameIcone.setImage(firstNameIcone.getImage().getScaledInstance(40,30, Image.SCALE_SMOOTH));
         firstNameLabel.setIcon(firstNameIcone);
+
+        birthdateLabel = new JLabel("<html> Date de naissance    <font size = '2'> (18 ans minimum)</font>* : </html>");
+        birthdateIcone = new ImageIcon("images\\birthdate.png");
+        birthdateIcone.setImage(birthdateIcone.getImage().getScaledInstance(30,30, Image.SCALE_SMOOTH));
+        birthdateLabel.setIcon(birthdateIcone);
 
         phoneNumberLabel = new JLabel("Numéro de téléphone : ");
         phoneIcone = new ImageIcon("images\\phone.png");
@@ -138,41 +185,6 @@ public class FormDriver extends JPanel {
         countryIcone.setImage(countryIcone.getImage().getScaledInstance(30,40, Image.SCALE_SMOOTH));
         countryLabel.setIcon(countryIcone);
 
-        asterisk = new JLabel("<html> <font size = '2' color = 'red'> *champs obligatoires </font>");
-
-        //endregion
-
-        //region spinners
-        spinnerDateModel = new SpinnerDateModel();
-        spinnerDateModel.setStart(new GregorianCalendar(LocalDate.now().getYear()-70, LocalDate.now().getMonthValue(), LocalDate.now().getDayOfMonth()).getTime());
-        spinnerDateModel.setValue(new GregorianCalendar(LocalDate.now().getYear()-18, LocalDate.now().getMonthValue(), LocalDate.now().getDayOfMonth()).getTime());
-        spinnerDateModel.setEnd(new GregorianCalendar(LocalDate.now().getYear()-18, LocalDate.now().getMonthValue(), LocalDate.now().getDayOfMonth()).getTime());
-
-        date = new JSpinner(spinnerDateModel);
-        date.setEditor(new JSpinner.DateEditor(date, "dd-MM-yyyy"));
-
-        birthdateLabel = new JLabel("<html> Date de naissance    <font size = '2'> (18 ans minimum)</font>* : </html>");
-        birthdateIcone = new ImageIcon("images\\birthdate.png");
-        birthdateIcone.setImage(birthdateIcone.getImage().getScaledInstance(30,30, Image.SCALE_SMOOTH));
-        birthdateLabel.setIcon(birthdateIcone);
-        //endregion
-
-        //region combobox
-        origin = new JComboBox(continents);
-        origin.setToolTipText("Choisissez l'origine du pilote (obligatoire)");
-
-        country = new JComboBox(Utils.getCountriesArray().toArray());
-        country.setToolTipText("Veuillez entrer le code postal de la ville du pilote (obligatoire)");
-        country.setName("pays");
-
-        teamsDB = controller.getAllTeams();
-
-        teamsDB.add(0, new Team("Séléctionner..."));
-        team = new JComboBox(teamsDB.stream().map(t -> t.getName()).toArray());
-        team.setToolTipText("Choisissez l'équipe du pilote");
-
-
-        // images & labels
         originsLabel = new JLabel("Origine * : ");
         originIcone = new ImageIcon("images\\origin.png");
         originIcone.setImage(originIcone.getImage().getScaledInstance(30,40, Image.SCALE_SMOOTH));
@@ -182,16 +194,14 @@ public class FormDriver extends JPanel {
         teamIcone = new ImageIcon("images\\team.png");
         teamIcone.setImage(teamIcone.getImage().getScaledInstance(40,40, Image.SCALE_SMOOTH));
         teamsLabel.setIcon(teamIcone);
-        //endregion
-
-        //region checkbox
-        hasRenewedContract = new JCheckBox();
-        hasRenewedContract.setToolTipText("Cochez la case si le pilote a renouvelé son contrat d'engagement");
 
         hasRenewedContractLabel = new JLabel("A renouvelé son contrat d'engagement : ");
         contractIcone = new ImageIcon("images\\contract.png");
         contractIcone.setImage(contractIcone.getImage().getScaledInstance(40,40, Image.SCALE_SMOOTH));
         hasRenewedContractLabel.setIcon(contractIcone);
+
+        asterisk = new JLabel("<html> <font size = '2' color = 'red'> *champs obligatoires </font>");
+
         //endregion
 
         //region add all
@@ -214,13 +224,10 @@ public class FormDriver extends JPanel {
         this.add(phoneNumber);
 
         this.add(streetAddressLabel);
-        this.add(addressPanel);
-
-        this.add(zipCodeLabel);
-        this.add(zipCode);
+        this.add(addressJPanel);
 
         this.add(cityLabel);
-        this.add(city);
+        this.add(localityJPanel);
 
         this.add(countryLabel);
         this.add(country);
@@ -236,9 +243,6 @@ public class FormDriver extends JPanel {
         //endregion
     }
 
-    public ArrayList<JTextField> getTextFields() {
-        return textFields;
-    }
     public void setFilledDriverForm(Driver driver){
         number.setText(driver.getNumber().toString());
 
@@ -253,20 +257,30 @@ public class FormDriver extends JPanel {
         phoneNumber.setText(driver.getPhoneNumber().toString());
 
         String numberOnly = Arrays.stream(driver.getStreetAndNumber().split("([A-Za-zÀ-ÖØ-öø-ÿ]\s?)+")).collect(Collectors.joining());
-        streetNumber.setText(numberOnly);
+        streetNumber.setText(numberOnly.trim());
         streetName.setText(driver.getStreetAndNumber().replace(numberOnly, ""));
 
-        zipCode.setText(driver.getHome().getPostalCode().toString());
+        zipcode.setSelectedItem(driver.getHome().getPostalCode().toString());
 
-        city.setText(driver.getHome().getCity());
+        city.setSelectedItem(driver.getHome().getCity());
         country.setSelectedItem(driver.getHome().getCountry());
         team.setSelectedItem(driver.getTeam().getName());
         hasRenewedContract.setSelected(driver.getHasRenewedCommitmentContract());
     }
+    public String getErrorInputMessageString() {
+        return errorInputMessage.toString();
+    }
+    public void resetErrorMessage(){
+        errorInputMessage.setLength(0);
+    }
+    public void setDisablePK(){
+        number.setEnabled(false);
+    }
+
 
     public Driver createDriver() throws Exception {
         GregorianCalendar birthdate = new GregorianCalendar(Integer.parseInt(new SimpleDateFormat("yyyy").format(date.getValue())), Integer.parseInt(new SimpleDateFormat("MM").format(date.getValue()))-1, Integer.parseInt(new SimpleDateFormat("dd").format(date.getValue())));
-        Locality locality = new Locality(null, Integer.parseInt(zipCode.getText()), city.getText(), country.getSelectedItem().toString());
+        Locality locality = new Locality(null, Integer.parseInt(zipcode.getSelectedItem().toString()), city.getSelectedItem().toString(), country.getSelectedItem().toString());
 
         Driver driver = new Driver(  Integer.parseInt(number.getText()),
                 lastName.getText()+" "+firstName.getText(),
@@ -276,113 +290,76 @@ public class FormDriver extends JPanel {
                 teamsDB.get(team.getSelectedIndex()),
                 hasRenewedContract.isSelected(),
                 birthdate,
-                locality);;
-        System.out.println(controller.getNumberLocality(driver.getHome()));
-            if(controller.getNumberLocality(driver.getHome())== null){
-                controller.createLocality(driver.getHome());
-            }
+                locality);
+
             driver.getHome().setNumber(controller.getNumberLocality(driver.getHome()));
         return driver;
     }
-    public boolean dateIsCorrect(){
-        boolean correct = false;
-        GregorianCalendar birthdate;
-        Date current;
 
-        birthdate = new GregorianCalendar(Integer.parseInt(new SimpleDateFormat("yyyy").format(date.getValue())), Integer.parseInt(new SimpleDateFormat("MM").format(date.getValue()))-1, Integer.parseInt(new SimpleDateFormat("dd").format(date.getValue())));
-        current = new Date();
+    public boolean isCorrect(){
+        wrongTextFields = new ArrayList<>();
 
-        if(birthdate.getTime().after(current)){
-            errorInputMessage.append(" - La date de début est après la date de ce jour");
-        } else {
-            correct = true;
+        String regNumber = "\\d+";
+        String regString = "[A-ZÀ-ÖØà-ÿa-z'-]{1,6}\\s[A-ZÀ-ÖØà-ÿa-z'-]{1,9}|[A-ZÀ-ÖØà-ÿa-z'-]{1,14}";
+
+        validateInput(regNumber, 3, number);
+        validateInput(regNumber, 10, phoneNumber);
+        validateInput(regString, 15, lastName);
+        validateInput(regString, 15, firstName);
+        validateInput("(\s?("+regString+")+\s?)+", 25, streetName);
+        validateInput(regNumber, 3, streetNumber);
+
+        boolean filled = true;
+        for(JComboBox jComboBox : comboBoxes){
+            if(jComboBox.getSelectedIndex() == 0){
+                filled = false;
+                errorInputMessage.append("- Vous devez séléctionner une valeur pour le champs '"+jComboBox.getName()+"' \n");
+            }
         }
-        return correct;
-    }
-    public boolean isCorrect(StringBuilder errorInputMessage){
-        Checker checkerFactory = new Checker();
-        String regex;
-        for (JTextField textField : textFields) {
-            regex = checkerFactory.createRegex(textField.getName());
-            if(!textField.getName().equals("numéro de téléphone")){
-                if(textField.getText().equals("")){
-                    errorInputMessage.append("- Le champs '"+ textField.getName() +"' doit être rempli \n");
-                } else if(!textField.getText().matches(regex)){
-                    errorInputMessage.append("- Le champs '"+ textField.getName() +" est invalide ("+checkerFactory.selectErrorReasonForRegex(textField.getName())+")\n");
 
-                } else if(textField.getText().length() > checkerFactory.chooseSize(textField.getName())){
-                    errorInputMessage.append("- Le champs '"+ textField.getName() +" est invalide (trop long)\n");
+        if(!filled && wrongTextFields.size() > 1){
+            Utils.showErrorMessage(errorInputMessage.toString());
+            resetErrorMessage();
+            Utils.cleanTextField(wrongTextFields);
+        }
+        return filled && wrongTextFields.size() > 1;
+    }
+
+    public void validateInput(String regex, Integer size, JTextField textField){
+        String field = "- Le champs '"+textField.getName()+"'";
+        // phone number is facultative -> can't be treated as the others, moreover -> size mustn't be under 9 and not over 10
+        if(textField.equals(phoneNumber)){
+            if(!phoneNumber.getText().trim().equals("")){
+                if(!phoneNumber.getText().trim().matches(regex)){
+                    errorInputMessage.append(field + " contient des lettres ou autres caractères invalides (pas de . / ou indicatif téléphonique)\n");
+                    wrongTextFields.add(textField);
+                } else if(phoneNumber.getText().trim().length() > size){
+                    errorInputMessage.append(field + " est trop long\n");
+                    wrongTextFields.add(textField);
+                } else if(phoneNumber.getText().trim().length() < 9){
+                    errorInputMessage.append(field + "  est trop court\n");
+                    wrongTextFields.add(textField);
                 }
-            } else {
-                if(!textField.getText().equals("") && (!textField.getText().matches(regex) || textField.getText().length() < 10)){
-                    errorInputMessage.append("- Le champs '"+ textField.getName() +" est invalide ("+ (textField.getText().length() > checkerFactory.chooseSize(textField.getName()) ? "trop longdd" : checkerFactory.selectErrorReasonForRegex(textField.getName())) +")\n");
-                }
             }
+        } else if(textField.getText().trim().equals("")){
+            errorInputMessage.append(field + " est obligatoire\n");
+            wrongTextFields.add(textField);
+            // check if contains what's asked -> numbers/letters
+        } else if(!textField.getText().trim().matches(regex)){
+            errorInputMessage.append(field + " contient des "+ (textField.equals(number) || textField.equals(streetNumber) ? "lettres":"chiffres" )+ " ou autres caractères invalides\n");
+            wrongTextFields.add(textField);
+            // then it's a size issue
+        } else if(textField.getText().length() > size){
+            errorInputMessage.append(field + " est trop long\n");
+            wrongTextFields.add(textField);
         }
-        if(origin.getSelectedIndex() == 0){
-            errorInputMessage.append("- Veuillez sélectionner une origine\n");
-        }
-        if(team.getSelectedIndex() == 0){
-            errorInputMessage.append("- Veuillez sélectionner une équipe\n");
-        }
-        if(country.getSelectedIndex() == 0){
-            errorInputMessage.append("- Veuillez sélectionner un pays\n");
-        }
-        return errorInputMessage.toString().equals("") && dateIsCorrect()  && team.getSelectedIndex() > 0 && country.getSelectedIndex() > 0;
-    }
-    public void setDisablePK(){
-        number.setEnabled(false);
     }
 
+    private class CityItemListener implements ItemListener{
 
-    private class Checker{
-        public Checker(){}
-        String createRegex(String textFieldName){
-            switch (textFieldName){
-                case "code postal":
-                case "numéro maison":
-                case "numéro de téléphone":
-                case "numéro":
-                    return "(?!\\s)\\d+(?!\\s)";
-                case "nom de rue":
-                case "nom":
-                case "prénom":
-                case "ville":
-                    return "[A-ZÀ-ÖØà-ÿa-z][à-ÿa-z]{1,6}\\s[A-ZÀ-ÖØà-ÿa-z][à-ÿa-z]{1,9}|[A-ZÀ-ÖØà-ÿa-z][à-ÿa-z]+|(\\s?[À-ÖØà-ÿ-a-zA-Z-]+\\s?)+";
-                default:return "";
-            }
-        }
-        Integer chooseSize(String textFieldName){
-            switch (textFieldName){
-                case "code postal":
-                    return 5;
-                case "nom de rue":
-                    return 25;
-                case "numéro maison":
-                case "numéro":
-                    return 3;
-                case "nom":
-                case "prénom":
-                    return 15;
-                case "ville":
-                    return 20;
-                default:return 0;
-            }
-        }
-        String selectErrorReasonForRegex(String textFieldName){
-            switch (textFieldName){
-                case "numéro de téléphone":
-                case "code postal":
-                case "numéro maison":
-                case "numéro":
-                    return "contient des lettres ou caractères invalides";
-                case "nom de rue":
-                case "nom":
-                case "prénom":
-                case "ville":
-                    return "contient des chiffres ou caractères invalides";
-                default:return "";
-            }
+        @Override
+        public void itemStateChanged(ItemEvent e) {
+            zipcode.setSelectedIndex(city.getSelectedIndex());
         }
     }
 }

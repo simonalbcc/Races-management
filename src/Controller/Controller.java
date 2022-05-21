@@ -1,6 +1,6 @@
 package Controller;
 
-import Business.DriverManager;
+import Business.Manager;
 import Model.*;
 import Exception.DataException;
 import java.util.ArrayList;
@@ -8,74 +8,75 @@ import java.util.Date;
 import java.util.HashMap;
 
 public class Controller {
-    private DriverManager driverManager;
+    private Manager manager;
     public Controller() throws DataException {
-        driverManager = new DriverManager();
+        manager = new Manager();
     }
 
-    public void deleteDriver(Integer driverNumber) throws Exception {driverManager.deleteDriver(driverNumber); }
+    public void deleteDriver(Integer driverNumber) throws Exception {
+        manager.deleteDriver(driverNumber); }
     public void addDriver(Driver driver) throws Exception {
-       driverManager.addDriver(driver);
+       manager.addDriver(driver);
     }
     public void addDriverToRanking(Ranking ranking) throws Exception {
-        driverManager.addDriverToRanking(ranking);
+        manager.addDriverToRanking(ranking);
     }
     public void updateDriver(Driver driver) throws Exception{
-        driverManager.updateDriver(driver);
+        manager.updateDriver(driver);
     }
 
     public Integer getNumberLocality(Locality locality)throws Exception{
-       return driverManager.getNumberLocality(locality);
+       return manager.getNumberLocality(locality);
     }
-    public void createLocality(Locality locality)throws Exception{
-        driverManager.createLocality(locality);
+    public HashMap getLocalitiesName() throws DataException{
+        return manager.getLocalitiesName();
     }
 
     public ArrayList<Team> getAllTeams()throws Exception{
-        return driverManager.getAllTeams();
+        return manager.getAllTeams();
     }
 
     public ArrayList<Driver> getAllDrivers() throws Exception{
-        return driverManager.getAllDrivers();
+        return manager.getAllDrivers();
     }
     public Driver getADriver(int driverNumber) throws Exception{
-        return driverManager.getADriver(driverNumber);
+        return manager.getADriver(driverNumber);
     }
     public Driver getADriver(String name) throws Exception{
-        return driverManager.getADriver(name);
+        return manager.getADriver(name);
     }
 
     public ArrayList getAllCarsName(String teamName) throws Exception{
-        return driverManager.getAllCarsName(teamName);
+        return manager.getAllCarsName(teamName);
     }
     public int getCarFromName(String carName) throws Exception{
-        return driverManager.getCarFromName(carName);
+        return manager.getCarFromName(carName);
     }
     public void addCar(Car car) throws Exception {
-        driverManager.addCar(car);
+        manager.addCar(car);
     }
     public ArrayList<String> getRemainingCarsInARanking(String circuitName, String date ,String teamName) throws Exception{
-        return driverManager.getRemainingCarsInARanking(circuitName, date, teamName);
+        return manager.getRemainingCarsInARanking(circuitName, date, teamName);
     }
 
     public ArrayList<String> getAllCircuitsNames()throws Exception{
-        return driverManager.getAllCircuitsNames();
+        return manager.getAllCircuitsNames();
     }
 
     public Integer getARaceNumber(String circuitName, String date) throws Exception{
-        return driverManager.getARaceNumber(circuitName,date);
+        return manager.getARaceNumber(circuitName,date);
     }
 
-    public ArrayList<Date> getRaceDatesOfACircuit(String circuitName)throws Exception {return driverManager.getRaceDatesOfACircuit(circuitName);}
-    public ArrayList<Ranking> getARaceRanking(String circuitName, String raceDate)throws Exception{return driverManager.getARaceRanking(circuitName,raceDate);}
+    public ArrayList<Date> getRaceDatesOfACircuit(String circuitName)throws Exception {return manager.getRaceDatesOfACircuit(circuitName);}
+    public ArrayList<Ranking> getARaceRanking(String circuitName, String raceDate)throws Exception{return manager.getARaceRanking(circuitName,raceDate);}
     public ArrayList<Integer> getPositionsRemainingInARanking(String circuitName, String raceDate) throws Exception {
-        return driverManager.getPositionsRemainingInARanking(circuitName, raceDate);
+        return manager.getPositionsRemainingInARanking(circuitName, raceDate);
     }
-    public ArrayList<Accident> getAccidentedDrivers(Date startDate, Date endDate)throws Exception{return driverManager.getAccidentedDrivers(startDate, endDate);}
-    public ArrayList<Race> getWinningSponsorsOfACircuit(String circuitName) throws Exception {return driverManager.getWinningSponsorsOfACircuit(circuitName);}
+    public ArrayList<Accident> getAccidentedDrivers(Date startDate, Date endDate)throws Exception{return manager.getAccidentedDrivers(startDate, endDate);}
+    public ArrayList<Race> getWinningSponsorsOfACircuit(String circuitName) throws Exception {return manager.getWinningSponsorsOfACircuit(circuitName);}
 
     public void closeConnection() throws DataException {
-        driverManager.closeConnection();
+        manager.closeConnection();
     }
 }
 

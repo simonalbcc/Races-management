@@ -16,7 +16,6 @@ public class AddDriver extends JPanel {
     private JLabel title;
     private GridBagConstraints gc;
     private Container mainContainer;
-    private StringBuilder errorInputMessage;
     private FormDriver form;
     private Controller controller;
     private ButtonsPanel buttonsPanel;
@@ -26,7 +25,6 @@ public class AddDriver extends JPanel {
         // container, buttons & form init
         this.mainContainer = mainContainer;
         this.form = new FormDriver();
-        this.errorInputMessage = new StringBuilder("Action requise : \n");
         this.controller = new Controller();
         buttonsPanel = new ButtonsPanel("Retour", "Réinitialiser");
         save = new JButton("Sauvegarder");
@@ -38,7 +36,7 @@ public class AddDriver extends JPanel {
         gc = new GridBagConstraints();
 
         // title init
-        title = new JLabel("<html> <h3> <u> Formulaire d'ajout d'un pilote : </u> </h3> </html>");
+        title = new JLabel("<html> <h2> <u> Formulaire d'ajout d'un pilote : </u> </h2> </html>");
 
         // add all
         this.add(title, gc);
@@ -51,19 +49,6 @@ public class AddDriver extends JPanel {
 
     //endregion
 
-
-    public FormDriver getForm() {
-        return form;
-    }
-    public StringBuilder getErrorInputMessage() {
-        return errorInputMessage;
-    }
-    public void changeButtonsPanel(ButtonsPanel buttonsPanel){
-        this.remove(2);
-        this.buttonsPanel = buttonsPanel;
-        this.add(buttonsPanel, gc);
-    }
-
     private class ButtonsFormListener implements ActionListener {
 
         @Override
@@ -73,23 +58,20 @@ public class AddDriver extends JPanel {
             }
             try {
             if(e.getSource() == save){
-                if(form.isCorrect(errorInputMessage)){
+                if(form.isCorrect()){
                     // create the driver to add and check if locality exists in DB (else -> create a new one)
                     Driver driver = form.createDriver();
                     controller.addDriver(driver);
                     // save message + update db
                     JOptionPane.showMessageDialog(null, "Ajout effectué", "Information", JOptionPane.INFORMATION_MESSAGE);
                     Utils.addToMainContainer(mainContainer, new FinaleJPanel(mainContainer, new AddDriver(mainContainer)));
-                } else {
-                    JOptionPane.showMessageDialog(null, errorInputMessage.toString(), "Erreur", JOptionPane.ERROR_MESSAGE);
-                    errorInputMessage.setLength(0);
                 }
             }
             if(e.getSource() == buttonsPanel.getNext()){
                 Utils.addToMainContainer(mainContainer, new AddDriver(mainContainer));
             }
-        }catch (Exception exception) {
-                JOptionPane.showMessageDialog(null, exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception exception) {
+                Utils.showErrorMessage(exception.getMessage());
             }
         }
     }
