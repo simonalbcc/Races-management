@@ -1,5 +1,7 @@
 package Model;
 
+import javax.swing.*;
+
 public class Locality {
     private Integer number;
     private Integer postalCode;

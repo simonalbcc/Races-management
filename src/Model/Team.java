@@ -10,12 +10,10 @@ public class Team {
     public Team(String name) {
         this.name = name;
     }
-
     public Team(String name, String webSiteAdress) {
         this.name = name;
         this.webSiteAdress = webSiteAdress;
     }
-
     public Team(String name, String webSiteAdress, Company[] companies) {
         this.name = name;
         this.webSiteAdress = webSiteAdress;
@@ -34,12 +32,6 @@ public class Team {
         this.name = name;
     }
 
-    public String getWebSiteAdress() {
-        return webSiteAdress;
-    }
-    public void setWebSiteAdress(String webSiteAdress) {
-        this.webSiteAdress = webSiteAdress;
-    }
 
     public Company[] getCompanies() {
         return companies;

@@ -85,9 +85,6 @@ public class Manager {
  } */
     //endregion
     //region car
-    public ArrayList getAllCarsName(String teamName) throws Exception{
-        return carAccess.getAllCarsName(teamName);
-    }
     public void addCar(Car car) throws Exception {
         carAccess.addCar(car);
     }

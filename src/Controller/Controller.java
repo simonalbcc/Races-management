@@ -46,9 +46,6 @@ public class Controller {
         return manager.getADriver(name);
     }
 
-    public ArrayList getAllCarsName(String teamName) throws Exception{
-        return manager.getAllCarsName(teamName);
-    }
     public int getCarFromName(String carName) throws Exception{
         return manager.getCarFromName(carName);
     }

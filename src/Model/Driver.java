@@ -1,6 +1,5 @@
 package Model;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.GregorianCalendar;
@@ -20,14 +19,14 @@ public class Driver {
 
     public Driver(Integer serialNumber, String lastNameFirstName, String phoneNumber, String streetAndNumber, String nationality, Team team, Boolean hasRenewedCommitmentContract, GregorianCalendar birthdate, Locality home) {
         setNumber(serialNumber);
-        this.lastNameFirstName = lastNameFirstName;
+        setLastNameFirstName(lastNameFirstName);
         setPhoneNumber(phoneNumber);
-        this.streetAndNumber = streetAndNumber;
-        this.nationality = nationality;
-        this.team = team;
-        this.hasRenewedCommitmentContract = hasRenewedCommitmentContract;
-        this.birthdate = birthdate;
-        this.home = home;
+        setStreetAndNumber(streetAndNumber);
+        setNationality(nationality);
+        setTeam(team);
+        setHasRenewedCommitmentContract(hasRenewedCommitmentContract);
+        setBirthdate(birthdate);
+        setHome(home);
     }
 
     public Driver(String lastNameFirstName){
@@ -41,48 +40,71 @@ public class Driver {
         return number;
     }
     public void setNumber(Integer number) {
-            if(number < 1000 && number > -1){
+        if(number != null) {
+            if (number < 1000 && number > -1) {
                 this.number = number;
             }
+        } else {
+            this.number = number;
+        }
     }
+
     public String getLastNameFirstName() {
         return lastNameFirstName;
     }
+    public void setLastNameFirstName(String lastNameFirstName) {
+        this.lastNameFirstName = lastNameFirstName;
+    }
+
     public String getStreetAndNumber() {
         return streetAndNumber;
     }
+    public void setStreetAndNumber(String streetAndNumber) {
+        this.streetAndNumber = streetAndNumber;
+    }
+
     public String getNationality() {
         return nationality;
     }
+    public void setNationality(String nationality) {
+        this.nationality = nationality;
+    }
+
     public String getPhoneNumber() {
-        if(phoneNumber == null){
-            phoneNumber = "";
-        }
         return phoneNumber;
     }
     public void setPhoneNumber(String phoneNumber){
         this.phoneNumber = phoneNumber;
     }
+
     public Team getTeam() {
         return team;
     }
     public void setTeam(Team stable) {
         this.team = stable;
     }
+
     public Boolean getHasRenewedCommitmentContract() {
         return hasRenewedCommitmentContract;
     }
+    public void setHasRenewedCommitmentContract(Boolean hasRenewedCommitmentContract) {
+        this.hasRenewedCommitmentContract = hasRenewedCommitmentContract;
+    }
+
     public GregorianCalendar getBirthdate() {
         return birthdate;
     }
     public void setBirthdate(GregorianCalendar birthdate) {
-        if(birthdate.before(new GregorianCalendar(LocalDate.now().getYear()-18, LocalDate.now().getMonthValue(), LocalDate.now().getDayOfMonth()).getTime())) {
-            this.birthdate = birthdate;
-        }
+        this.birthdate = birthdate;
     }
+
     public Locality getHome() {
         return home;
     }
+    public void setHome(Locality home) {
+        this.home = home;
+    }
+
     public int getAge(){
         return Period.between(LocalDate.now(), birthdate.toZonedDateTime().toLocalDate()).getYears();
     }
