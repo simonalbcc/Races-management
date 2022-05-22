@@ -9,7 +9,6 @@ import java.util.ArrayList;
 
 public class AllDriverModel extends AbstractTableModel {
 
-    // region privates attributes & constructor
     private ArrayList<String> columnNames;
     private ArrayList<Model.Driver> drivers;
     public AllDriverModel(ArrayList<Model.Driver> drivers){
@@ -25,7 +24,7 @@ public class AllDriverModel extends AbstractTableModel {
         columnNames.add("Date de naissance");
         columnNames.add("Domicile");
     }
-    //endregion
+
 
     //region abstract methods
     public String getColumnName(int col){
@@ -55,10 +54,11 @@ public class AllDriverModel extends AbstractTableModel {
             default:return null;
         }
     }
-    public Class getColumnClass (int column)
-    { Class c;
-        switch (column)
-        {   case 0: c = Integer.class;
+    @Override
+    public Class getColumnClass (int column) {
+        Class c;
+        switch (column) {
+            case 0: c = Integer.class;
                 break;
             case 6: c = Boolean.class;
                 break;
@@ -80,7 +80,7 @@ public class AllDriverModel extends AbstractTableModel {
     public String getPhoneOutput(Driver driver){
         String output = "N/A";
         if(driver.getPhoneNumber() != null){
-            output = driver.getPhoneNumber().toString() ;
+            output = driver.getPhoneNumber() ;
         }
         return output;
     }
@@ -88,4 +88,5 @@ public class AllDriverModel extends AbstractTableModel {
         return driver.getHome().getCity();
     }
     //endregion
+
 }

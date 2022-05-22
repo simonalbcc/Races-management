@@ -2,7 +2,7 @@
 package View;
 
 
-import Utility.FinaleJPanel;
+import Utility.FinalePanel;
 import Utility.OperationTemplate;
 
 import javax.swing.*;
@@ -11,7 +11,7 @@ import java.awt.*;
 
 public class RemoveDriver extends OperationTemplate {
     public RemoveDriver(Container mainContainer) throws Exception {
-        super(mainContainer);
+        super(mainContainer, "Suppression d'un pilote", true);
         setNextText("Supprimer");
     }
 
@@ -23,7 +23,7 @@ public class RemoveDriver extends OperationTemplate {
             if (result == 0) {
                 JOptionPane.showMessageDialog(null, "Supprimé", "Information", JOptionPane.INFORMATION_MESSAGE);
                 getController().deleteDriver(driverNumber);
-                currentPanel = new FinaleJPanel(mainContainer, new RemoveDriver(mainContainer));
+                currentPanel = new FinalePanel(mainContainer, new RemoveDriver(mainContainer));
             }
         } catch (Exception exception) {
             JOptionPane.showMessageDialog(null, "Erreur lors de la suppression (erreur détaillée : "+exception.getMessage()+")", "Erreur", JOptionPane.ERROR_MESSAGE); // à changer

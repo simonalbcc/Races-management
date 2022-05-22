@@ -1,7 +1,8 @@
+//region packages & imports
 package Utility;
-
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
+//endregion
 
 public class RankingModel extends AbstractTableModel {
     private ArrayList<String> columnNames;
@@ -18,6 +19,8 @@ public class RankingModel extends AbstractTableModel {
         columnNames.add("Record en piste");
     }
 
+
+    //region abstract methods
     public String getColumnName(int col){
         return columnNames.get(col);
     }
@@ -25,12 +28,10 @@ public class RankingModel extends AbstractTableModel {
     public int getRowCount() {
         return rankings.size();
     }
-
     @Override
     public int getColumnCount() {
         return columnNames.size();
     }
-
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         Model.Ranking ranking = rankings.get(rowIndex);
@@ -43,10 +44,10 @@ public class RankingModel extends AbstractTableModel {
             default: return null;
         }
     }
-    public Class getColumnClass (int column)
-    { Class c;
-        switch (column)
-        {
+    @Override
+    public Class getColumnClass (int column) {
+        Class c;
+        switch (column) {
             case 0:
             case 1: c = Integer.class;
                 break;
@@ -57,4 +58,6 @@ public class RankingModel extends AbstractTableModel {
         }
         return c;
     }
+    //endregion
+
 }

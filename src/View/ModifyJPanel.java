@@ -2,7 +2,8 @@
 package View;
 
 import Model.Driver;
-import Utility.FinaleJPanel;
+import Utility.ButtonsJPanel;
+import Utility.FinalePanel;
 import Utility.OperationTemplate;
 import Utility.Utils;
 import javax.swing.*;
@@ -14,10 +15,10 @@ import java.awt.event.ActionListener;
 public class ModifyJPanel extends OperationTemplate {
     private FormDriver formDriver;
     private Driver driverFromForm, selectedDriver;
-    private ButtonsPanel buttonsPanel;
+    private ButtonsJPanel buttonsPanel;
 
     public ModifyJPanel(Container mainContainer) throws Exception {
-        super(mainContainer);
+        super(mainContainer, "Modification d'un pilote", true);
         setNextText("Modifier");
         super.getjTable().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
@@ -30,9 +31,10 @@ public class ModifyJPanel extends OperationTemplate {
         formDriver.setFilledDriverForm(selectedDriver);
         formDriver.setDisablePK();
 
-        buttonsPanel = new ButtonsPanel("Retour", "Modifier");
+        buttonsPanel = new ButtonsJPanel("Retour", "Modifier");
         buttonsPanel.getNext().removeActionListener(buttonsPanel.getNext().getAction());
         buttonsPanel.addActionListener(new ModifyButtonListener());
+        setFillHorizontal(false);
         changePanels(formDriver, buttonsPanel);
 
         return ModifyJPanel.this;
@@ -50,7 +52,7 @@ public class ModifyJPanel extends OperationTemplate {
 
                         // save message + update db
                         JOptionPane.showMessageDialog(null, "Modification effectuée", "Information", JOptionPane.INFORMATION_MESSAGE);
-                        Utils.addToMainContainer(getMainContainer(), new FinaleJPanel(getMainContainer(), new ModifyJPanel(getMainContainer())));
+                        Utils.addToMainContainer(getMainContainer(), new FinalePanel(getMainContainer(), new ModifyJPanel(getMainContainer())));
                     } else {
                         Utils.showErrorMessage(errorMessage);
                         Utils.cleanTextField(formDriver.getWrongTextFields());

@@ -1,18 +1,20 @@
+//region packages & imports
 package DataAccess;
 
 import Model.*;
 import Model.Driver;
 import Exception.*;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
+//endregion
 
 public class DriverDBAccess implements DriverDAO {
     private Connection connection;
     public DriverDBAccess()throws DataException {
         connection = SingletonConnexion.getInstance();
     }
+
 
     public void addDriver(Driver driver) throws AddDriverException {
         try{
@@ -37,10 +39,11 @@ public class DriverDBAccess implements DriverDAO {
             statement.executeUpdate();
 
         } catch (Exception exception){
-            throw new AddDriverException(driver, exception);
+            throw new AddDriverException(driver);
         }
     }
-    public void addDriverToRanking(Ranking ranking) throws RaceException{
+
+    public void addDriverToRanking(Ranking ranking) throws AddDriverToRankingException{
         try{
             String sql = "insert into Ranking\n" +
                     "values(?,?,?,?,?,?,?);";
@@ -54,13 +57,13 @@ public class DriverDBAccess implements DriverDAO {
             statement.setInt(6,ranking.getNbStopsPits());
             statement.setNull(7, Types.NULL);
 
-
             statement.executeUpdate();
 
         } catch (SQLException exception){
-            throw new RaceException(exception);
+            throw new AddDriverToRankingException();
         }
     }
+
     public void updateDriver(Driver driver) throws UpdateException {
         try{
             String sql = "update Driver set last_name_first_name = ?, phone_number = ?, street_and_number = ?, nationality = ?, team = ?, has_renewed_commitment_contract = ?, birthdate = ?, home = ? " +
@@ -80,9 +83,10 @@ public class DriverDBAccess implements DriverDAO {
             statement.executeUpdate();
 
         } catch (SQLException exception){
-           throw new UpdateException(exception, driver); // à vérifier
+           throw new UpdateException(driver);
         }
     }
+
     public void deleteDriver(int driverNumber) throws DeleteDriverException {
         try{
             String sql = "delete from Accident where driver = ?;";
@@ -102,11 +106,11 @@ public class DriverDBAccess implements DriverDAO {
             statement3.executeUpdate();
 
         } catch (SQLException exception){
-           throw new DeleteDriverException(exception);
+           throw new DeleteDriverException();
         }
     }
 
-    public ArrayList<String> getAllDriversNameInARace(String circuitName,String date)throws DataException{
+    public ArrayList<String> getAllDriversNameInARace(String circuitName,String date)throws DriverException{
         ArrayList<String> engagedDriversName = new ArrayList<String>();
         try{
             String sql = "select driver.name\n" +
@@ -126,11 +130,12 @@ public class DriverDBAccess implements DriverDAO {
             }
 
         } catch (SQLException exception) {
-            throw new DataException();
+            throw new DriverException();
         }
         return engagedDriversName;
     }
-    public ArrayList<Driver> getAllDrivers()throws DataException{
+
+    public ArrayList<Driver> getAllDrivers()throws DriverException{
         ArrayList<Driver> drivers = new  ArrayList<Driver>();
         try{
             Driver driver;
@@ -164,10 +169,11 @@ public class DriverDBAccess implements DriverDAO {
             }
 
         } catch (SQLException exception){
-            throw new DataException();
+            throw new DriverException();
         }
         return drivers;
     }
+
     public Driver getADriver(int driverNumber)throws DriverException{
         Driver driver;
         try{
@@ -201,7 +207,8 @@ public class DriverDBAccess implements DriverDAO {
         }
         return driver;
     }
-    public Driver getADriver(String name)throws DataException{
+
+    public Driver getADriver(String name)throws DriverException{
         Driver driver;
         try{
 
@@ -230,25 +237,29 @@ public class DriverDBAccess implements DriverDAO {
             driver = createDriver(data);
 
         } catch (SQLException exception){
-            throw new DataException();
+            throw new DriverException();
         }
         return driver;
     }
 
-    public Driver createDriver(ResultSet data) throws SQLException {
+    private Driver createDriver(ResultSet data) throws SQLException {
         Driver driver;
-        GregorianCalendar birthdate = new GregorianCalendar();
-        birthdate.setTime(data.getDate(9));
+        try {
+            GregorianCalendar birthdate = new GregorianCalendar();
+            birthdate.setTime(data.getDate(9));
 
-        driver = new Driver(data.getInt(1),
-                data.getString(2),
-                data.getString(3),
-                data.getString(4),
-                data.getString(5),
-                new Team(data.getString(6), data.getString(7)),
-                data.getBoolean(8),
-                birthdate,
-                new Locality(data.getInt(10), data.getInt(11), data.getString(12), data.getString(13)));
+            driver = new Driver(data.getInt(1),
+                    data.getString(2),
+                    data.getString(3),
+                    data.getString(4),
+                    data.getString(5),
+                    new Team(data.getString(6), data.getString(7)),
+                    data.getBoolean(8),
+                    birthdate,
+                    new Locality(data.getInt(10), data.getInt(11), data.getString(12), data.getString(13)));
+        }catch (SQLException exception){
+            throw new SQLException();
+        }
         return driver;
     }
 

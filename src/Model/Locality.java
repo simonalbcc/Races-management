@@ -1,6 +1,6 @@
+//region packages & imports
 package Model;
-
-import javax.swing.*;
+//endregion
 
 public class Locality {
     private Integer number;
@@ -9,7 +9,6 @@ public class Locality {
     private String country;
     private Driver drivers[];
 
-
     public Locality(Integer number, Integer postalCode, String city, String country) {
         setNumber(number);
         setPostalCode(postalCode);
@@ -17,7 +16,7 @@ public class Locality {
         setCountry(country);
     }
 
-
+    //region getters & setters
     public String getCountry() {
         return country;
     }
@@ -45,4 +44,6 @@ public class Locality {
     public void setNumber(Integer number) {
         this.number = number;
     }
+    //endregion
+
 }

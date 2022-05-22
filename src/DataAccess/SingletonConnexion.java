@@ -17,11 +17,11 @@ public class SingletonConnexion {
     }
 
 
-
     public static Connection getInstance() throws DataException {
         if(singletonConnexion == null){
             new SingletonConnexion();
         }
         return singletonConnexion;
     }
+
 }

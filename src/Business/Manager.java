@@ -28,6 +28,7 @@ public class Manager {
         carAccess = new CarAccess();
     }
 
+
     //region driver
     public void deleteDriver(int driverNumber) throws Exception { driverAccess.deleteDriver(driverNumber);}
     public void addDriver(Driver driver) throws Exception {
@@ -50,25 +51,36 @@ public class Manager {
     }
     public ArrayList<Accident> getAccidentedDrivers(Date startDate, Date endDate)throws Exception{return accidentAccess.getAccidentedDrivers(startDate,endDate);}
     //endregion
+
+
     //region locality
     public Integer getNumberLocality(Locality locality)throws Exception{
         return localityAccess.getNumberLocality(locality);
     }
-    public HashMap getLocalitiesName() throws DataException{
+    public HashMap getLocalitiesName() throws Exception {
         return localityAccess.getLocalitiesName();
     }
+    public ArrayList<String> getCountries() throws Exception {
+        return localityAccess.getCountries();
+    }
     //endregion
+
+
     //region team
     public ArrayList<Team> getAllTeams()throws Exception{
         return teamAccess.getAllTeams();
     }
     //endregion
+
+
     //region circuit
     public ArrayList<String> getAllCircuitsNames()throws Exception{
         return circuitAccess.getAllCircuitsNames();
     }
     public ArrayList<Race> getWinningSponsorsOfACircuit(String circuitName) throws Exception {return raceAccess.getWinningSponsorsOfACircuit(circuitName);}
     //endregion
+
+
     //region race
     public ArrayList<Date> getRaceDatesOfACircuit(String circuitName) throws Exception {return raceAccess.getRaceDatesOfACircuit(circuitName);}
     public ArrayList<Ranking> getARaceRanking(String circuitName, String raceDate) throws Exception{ return raceAccess.getARaceRankings(circuitName,raceDate);}
@@ -84,6 +96,8 @@ public class Manager {
      return allDriver;
  } */
     //endregion
+
+
     //region car
     public void addCar(Car car) throws Exception {
         carAccess.addCar(car);
@@ -92,6 +106,8 @@ public class Manager {
         return carAccess.getCarFromName(carName);
     }
     //endregion
+
+
     //region ranking
     public ArrayList<Integer> getPositionsRemainingInARanking(String circuitName, String date) throws Exception {
         ArrayList<Integer> positionsTaken = raceAccess.getPositionsRemainingInARanking(circuitName, date);
@@ -113,6 +129,8 @@ public class Manager {
         return allCars;
     }
     //endregion
+
+
     //region connection
     public void closeConnection() throws DataException {
         new DBAccess().closeConnection();

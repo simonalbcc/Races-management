@@ -1,23 +1,24 @@
+//region packages & imports
 package View;
-
-
 import Controller.Controller;
 import Model.*;
-import Utility.JTableUtils;
+import Utility.ButtonsJPanel;
 import Utility.RankingModel;
 import Utility.Utils;
+import jdk.jshell.execution.Util;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
-import java.text.SimpleDateFormat;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Date;
+//endregion
 
 public class AddDriverRanking extends JPanel {
     private Controller controller;
-    private ButtonsPanel buttonsPanel;
+    private ButtonsJPanel buttonsPanel;
     private GridBagConstraints gc;
     private Container mainContainer;
     private JComboBox circuitsCombobox, datesCombobox, driversComboBox, teamsComboBox, carsComboBox, positionCombobox;
@@ -26,11 +27,14 @@ public class AddDriverRanking extends JPanel {
     private JTable jTable;
     private ArrayList <Team>teamsNameList;
     private ArrayList <String>circuitsNameList, carsNameList;
+    private JSpinner record, nbRounds;
+    private JPanel circuitDatePanel, teamCarPanel;
+    private String currentCircuit, currentDate;
 
     public AddDriverRanking(Container mainContainer) throws Exception {
-
+        // main container, buttons panel, controller & layout init
         this.mainContainer = mainContainer;
-        buttonsPanel = new ButtonsPanel("Précédent", "Ajouter");
+        buttonsPanel = new ButtonsJPanel("Précédent", "Ajouter");
         buttonsPanel.addActionListener(new ButtonListener());
 
         controller = new Controller();
@@ -39,21 +43,26 @@ public class AddDriverRanking extends JPanel {
         gc = new GridBagConstraints();
         this.gc.insets = new Insets(10,15,10,15);
 
-
+        // add to the main panel
         gc.gridy = 0;
-        this.add(new JLabel("Sélectionner le pilote à ajouter et dans quelle course"));
+        this.add(new JLabel("<html> <h3 style = 'font-family: Roboto, sans-serif;'> <u> Séléctionner un pilote à ajouter et dans quel classement : </u> </h3> </html>"));
         gc.gridy = 1;
         this.add(new AddPanel(), gc);
         gc.gridy = 2;
         this.add(new RankingTable(), gc);
         gc.gridy = 3;
         this.add(buttonsPanel, gc);
+
         Utils.addToMainContainer(mainContainer, AddDriverRanking.this);
 
     }
 
     private class AddPanel extends JPanel{
         public AddPanel () throws Exception {
+            this.setLayout(new GridLayout(6, 2, 5,5));
+            circuitDatePanel = new JPanel();
+            teamCarPanel = new JPanel();
+
             driversComboBox = new JComboBox(controller.getAllDrivers().stream().map(d -> d.getLastNameFirstName()).toArray());
 
             circuitsNameList = controller.getAllCircuitsNames();
@@ -77,36 +86,85 @@ public class AddDriverRanking extends JPanel {
             carsComboBox.setVisible(false);
             carsComboBox.addItemListener(new ComboBoxItemListener());
 
-
             positionCombobox = new JComboBox();
-            //zhema la longueur
-            this.add(positionCombobox);
+
+
+            record = new JSpinner(new SpinnerNumberModel(1.000,0.000,99999,0.001));
+            JSpinner.NumberEditor editor = (JSpinner.NumberEditor)record.getEditor();
+            DecimalFormat format = editor.getFormat();
+            format.setMinimumFractionDigits(3);
+
+            nbRounds = new JSpinner(new SpinnerNumberModel(0,0,20,1));
+
+
+            circuitDatePanel.add(circuitsCombobox);
+            circuitDatePanel.add(datesCombobox);
+
+            teamCarPanel.add(teamsComboBox);
+            teamCarPanel.add(carsComboBox);
+
+
+            // add the line above the table to select the driver to add and in which ranking
+            this.add(new JLabel("Pilote : "));
             this.add(driversComboBox);
-            this.add(circuitsCombobox);
-            this.add(datesCombobox);
-            this.add(teamsComboBox);
-            this.add(carsComboBox);
-        }
-    }
-    public void updateJTable(){
-        try {
-            tableModel = new RankingModel(controller.getARaceRanking(circuitsCombobox.getSelectedItem().toString(), datesCombobox.getSelectedItem().toString()));
-            jTable.setModel(tableModel);
-            String date = datesCombobox.getSelectedItem().toString();
-            positionsModel = new DefaultComboBoxModel<>(controller.getPositionsRemainingInARanking(circuitsCombobox.getSelectedItem().toString(),date).toArray());
-            positionCombobox.setModel(positionsModel);
-        } catch (Exception exception) {
-            JOptionPane.showMessageDialog(null, exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
+
+            this.add(new JLabel("Circuit : "));
+            this.add(circuitDatePanel);
+
+            this.add(new JLabel("Position : "));
+            this.add(positionCombobox);
+
+            this.add(new JLabel("Equipe : "));
+            this.add(teamCarPanel);
+
+            this.add(new JLabel("Record (en secondes)"));
+            this.add(record);
+
+            this.add(new JLabel("Nombre de tours avant l'abandon : "));
+            this.add(nbRounds);
+
         }
     }
 
-    public void updateCarsListe() throws Exception {
-        carsNameList = controller.getRemainingCarsInARanking(circuitsCombobox.getSelectedItem().toString(), datesCombobox.getSelectedItem().toString(), teamsComboBox.getSelectedItem().toString());
+    public void toggleVisiblily(JComboBox comboBoxParent, JComboBox comboBox){
+        if(comboBoxParent.getSelectedIndex() == 0){
+            comboBox.setVisible(false);
+        } else {
+            comboBox.setVisible(true);
+        }
+    }
+    public void updateJTable() throws Exception {
+        tableModel = new RankingModel(controller.getARaceRanking(currentCircuit, currentDate));
+        jTable.setModel(tableModel);
+    }
+    public void updatePositions() throws Exception {
+        positionsModel = new DefaultComboBoxModel<>(controller.getPositionsRemainingInARanking(currentCircuit,currentDate).toArray());
+        positionCombobox.setModel(positionsModel);
+
+    }
+    public void updateCars() throws Exception {
+        carsNameList = controller.getRemainingCarsInARanking(currentCircuit, currentDate, teamsComboBox.getSelectedItem().toString());
         carsNameList.add(carsNameList.size(), "Ajouter une voiture...");
         carsModel = new DefaultComboBoxModel(carsNameList.toArray());
         carsComboBox.setModel(carsModel);
     }
+    public void updateDates() throws Exception{
+        datesModel = new DefaultComboBoxModel(controller.getRaceDatesOfACircuit(currentCircuit).toArray());
+        datesCombobox.setModel(datesModel);
+    }
+    public String errorMessage(){
+        StringBuilder errorInput = new StringBuilder();
 
+        if(circuitsCombobox.getSelectedIndex() == 0){
+            errorInput.append("- Veuillez sélectionner un circuit");
+        }
+        if(teamsComboBox.getSelectedIndex() == 0){
+            errorInput.append("- Veuillez sélectionner une équipe");
+        }
+
+
+        return errorInput.toString();
+    }
 
     private class RankingTable extends JPanel{
         private JLabel title;
@@ -119,10 +177,10 @@ public class AddDriverRanking extends JPanel {
             title = new JLabel("Classement");
             title.setFont(new Font("Arial",Font.TRUETYPE_FONT,15));
 
-            tableModel = new RankingModel(controller.getARaceRanking(circuitsCombobox.getSelectedItem().toString(), datesCombobox.getSelectedItem().toString()));
+            tableModel = new RankingModel(controller.getARaceRanking(currentCircuit, currentDate));
             jTable = new JTable(tableModel);
 
-            JScrollPane sp = new JTableUtils().centerTableData(jTable);
+            JScrollPane sp = Utils.centerTableData(jTable);
 
             this.add(title,gcTable);
             gcTable.gridy = 1;
@@ -132,72 +190,56 @@ public class AddDriverRanking extends JPanel {
     private class ButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if(e.getSource() == buttonsPanel.getBack()){
-                Utils.addToMainContainer(mainContainer, new WelcomeJPanel());
-            }
+            if(errorMessage().equals("")){
+                if(e.getSource() == buttonsPanel.getBack()){
+                    Utils.addToMainContainer(mainContainer, new WelcomeJPanel());
+                }
 
-            if(e.getSource() == buttonsPanel.getNext()){
-                try {
+                if(e.getSource() == buttonsPanel.getNext()){
                     try {
                         int carSerialNumber = controller.getCarFromName(carsComboBox.getSelectedItem().toString());
                         int raceSerialNumber = controller.getARaceNumber(circuitsCombobox.getSelectedItem().toString(), datesCombobox.getSelectedItem().toString());
                         int driverNumber = controller.getADriver(driversComboBox.getSelectedItem().toString()).getNumber();
-                        controller.addDriverToRanking(new Ranking(carSerialNumber,raceSerialNumber, 5, Integer.parseInt(positionCombobox.getSelectedItem().toString()), driverNumber, 25.5));
-                        tableModel = new RankingModel(controller.getARaceRanking(circuitsCombobox.getSelectedItem().toString(), datesCombobox.getSelectedItem().toString()));
+                        controller.addDriverToRanking(new Ranking(carSerialNumber,raceSerialNumber, Integer.parseInt(nbRounds.getValue().toString()), Integer.parseInt(positionCombobox.getSelectedItem().toString()), driverNumber, Double.parseDouble(record.getValue().toString())));
+                        tableModel = new RankingModel(controller.getARaceRanking(currentCircuit, currentDate));
                         jTable.setModel(tableModel);
                     } catch (Exception exception) {
-                        JOptionPane.showMessageDialog(null, exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
+                        Utils.showErrorMessage(exception.getMessage());
                     }
-                } catch (Exception exception) {
-                    JOptionPane.showMessageDialog(null, exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
                 }
+            } else {
+                Utils.showErrorMessage(errorMessage());
             }
         }
     }
     private class ComboBoxItemListener implements java.awt.event.ItemListener{
         @Override
         public void itemStateChanged(ItemEvent e) {
-            if(e.getSource() == carsComboBox && carsComboBox.getSelectedItem() == "Ajouter une voiture..."){
-                Utils.addToMainContainer(mainContainer, new FormCar(mainContainer, teamsComboBox.getSelectedItem().toString(), controller));
-            }
-            if(e.getSource() == teamsComboBox){
-                if(teamsComboBox.getSelectedIndex() > 0){
-                    try {
-                        updateCarsListe();
-                        carsComboBox.setVisible(true);
-                    } catch (Exception exception) {
-                        JOptionPane.showMessageDialog(null, exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
-                    }
-                } else {
-                    carsComboBox.setVisible(false);
+            try{
+                currentCircuit = circuitsCombobox.getSelectedItem().toString();
+                updateDates();
+                currentDate = datesCombobox.getSelectedItem().toString();
+                if(e.getSource() == circuitsCombobox || e.getSource() == datesCombobox){
+                    toggleVisiblily(circuitsCombobox, datesCombobox);
+                    updatePositions();
+                    updateJTable();
                 }
-            }
-            if(e.getSource() == circuitsCombobox){
-                if(circuitsCombobox.getSelectedIndex() > 0){
-                    try {
-                        datesModel = new DefaultComboBoxModel(controller.getRaceDatesOfACircuit(circuitsCombobox.getSelectedItem().toString()).toArray());
-                        datesCombobox.setModel(datesModel);
-                        datesCombobox.setVisible(true);
-                        updateJTable();
-                        updateCarsListe();
-                    } catch (Exception exception) {
-                        JOptionPane.showMessageDialog(null, exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
-                    }
-                } else {
-                    datesCombobox.setVisible(false);
+                if(e.getSource() == teamsComboBox){
+                    toggleVisiblily(teamsComboBox, carsComboBox);
+                    updateCars();
                 }
-            } else if(e.getSource() == datesCombobox){
-                updateJTable();
-            }
-            try {
-                updateCarsListe();
+                if(e.getSource() == carsComboBox && carsComboBox.getSelectedItem().toString().equals("Ajouter une voiture...")){
+                    Utils.addToMainContainer(mainContainer, new FormCar(mainContainer, teamsComboBox.getSelectedItem().toString(), controller));
+                }
             } catch (Exception exception) {
-                JOptionPane.showMessageDialog(null, exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
+                Utils.showErrorMessage(exception.getMessage());
             }
         }
     }
-
-
 }
+
+
+
+
 
 

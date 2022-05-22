@@ -1,20 +1,30 @@
+//region packages & imports
 package DataAccess;
 
 import Model.Team;
 import Exception.DataException;
+import Exception.TeamException;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+//endregion
 
 public class TeamDBAccess implements TeamDAO{
+    private Connection connection;
 
-    public ArrayList<Team> getAllTeams() throws DataException {
+    public TeamDBAccess()throws DataException {
+        connection = SingletonConnexion.getInstance();
+    }
+
+
+    public ArrayList<Team> getAllTeams() throws TeamException {
         ArrayList<Team> teams = new  ArrayList<Team>();
         try{
             String sql = "select * from Team";
 
-            PreparedStatement statement = SingletonConnexion.getInstance().prepareStatement(sql);
+            PreparedStatement statement = connection.prepareStatement(sql);
             ResultSet data = statement.executeQuery();
 
             while(data.next()){
@@ -23,27 +33,9 @@ public class TeamDBAccess implements TeamDAO{
 
 
         } catch (SQLException exception){
-            throw new DataException();
+            throw new TeamException();
         }
         return teams;
-    }
-    public ArrayList<String> getAllTeamsNames()throws DataException{
-        ArrayList<String> teamsNames = new  ArrayList<String>();
-        try{
-            String sql = "select name from Team";
-
-            PreparedStatement statement = SingletonConnexion.getInstance().prepareStatement(sql);
-            ResultSet data = statement.executeQuery();
-
-            while(data.next()){
-                teamsNames.add(data.getString(1));
-            }
-
-
-        } catch (SQLException exception){
-            throw new DataException();
-        }
-        return teamsNames;
     }
 
 }

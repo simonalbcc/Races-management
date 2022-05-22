@@ -3,6 +3,7 @@ package View;
 import Controller.Controller;
 import Model.Car;
 import Model.Team;
+import Utility.ButtonsJPanel;
 import Utility.Utils;
 
 import javax.swing.*;
@@ -19,7 +20,7 @@ public class FormCar extends JPanel {
     private JButton save;
     private JLabel title;
     private Form formCar;
-    private ButtonsPanel buttonsPanel;
+    private ButtonsJPanel buttonsPanel;
     private GridBagConstraints gc;
     private Container mainContainer;
     private Controller controller;
@@ -29,7 +30,7 @@ public class FormCar extends JPanel {
         this.mainContainer = mainContainer;
         this.controller = controller;
         this.errorInputMessage = new StringBuilder();
-        buttonsPanel = new ButtonsPanel("Retour", "Réinitialiser");
+        buttonsPanel = new ButtonsJPanel("Retour", "Réinitialiser");
         save = new JButton("Sauvegarder");
         buttonsPanel.add(save);
         buttonsPanel.addActionListener(new ButtonsFormListener(), save);

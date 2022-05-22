@@ -1,10 +1,7 @@
 package View;
 
 import Controller.Controller;
-import Utility.FinaleJPanel;
-import Utility.JTableUtils;
-import Utility.RankingModel;
-import Utility.Utils;
+import Utility.*;
 
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicBorders;
@@ -14,7 +11,7 @@ import java.awt.event.ActionListener;
 
 public class ResearchRankingJPanel extends JPanel {
     private Container mainContainer;
-    private ButtonsPanel buttonsPanel;
+    private ButtonsJPanel buttonsPanel;
     private GridBagConstraints gc;
     private JLabel datesLabel;
     private JPanel currentPanel;
@@ -26,7 +23,7 @@ public class ResearchRankingJPanel extends JPanel {
     public ResearchRankingJPanel(Container mainContainer) throws Exception {
 
         this.mainContainer = mainContainer;
-        buttonsPanel = new ButtonsPanel("Précédent", "Suivant");
+        buttonsPanel = new ButtonsJPanel("Précédent", "Suivant");
         buttonsPanel.addActionListener(new ButtonListener());
 
         controller = new Controller();
@@ -67,7 +64,7 @@ public class ResearchRankingJPanel extends JPanel {
                         currentPanel = new RankingTable();
                         break;
                     case 4 :
-                        currentPanel = new FinaleJPanel(mainContainer, new ResearchRankingJPanel(mainContainer));
+                        currentPanel = new FinalePanel(mainContainer, new ResearchRankingJPanel(mainContainer));
                         break;
                 }
                 updatePanel();
@@ -112,7 +109,7 @@ public class ResearchRankingJPanel extends JPanel {
 
             jTable = new JTable(new RankingModel(controller.getARaceRanking(circuitsCombobox.getSelectedItem().toString(), datesCombobox.getSelectedItem().toString())));
 
-            JScrollPane sp = new JTableUtils().centerTableData(jTable);
+            JScrollPane sp = Utils.centerTableData(jTable);
 
             this.add(title,gcTable);
             gcTable.gridy = 1;

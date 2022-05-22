@@ -1,13 +1,13 @@
+//region packages & imports
 package DataAccess;
 
 import java.sql.*;
-
 import Exception.AddCarException;
+import Exception.CarException;
 import Exception.DataException;
 import Model.Car;
-
 import java.util.ArrayList;
-
+//endregion
 
 public class CarAccess implements CarDAO{
     private Connection connection;
@@ -15,8 +15,9 @@ public class CarAccess implements CarDAO{
         connection = SingletonConnexion.getInstance();
     }
 
+
     @Override
-    public ArrayList getAllCarsName(String teamName) throws DataException {
+    public ArrayList getAllCarsName(String teamName) throws CarException {
         ArrayList<String> carsNameAndNumber = new ArrayList<>();
         try{
 
@@ -32,12 +33,12 @@ public class CarAccess implements CarDAO{
             }
 
         } catch (SQLException exception){
-            throw new DataException();
+            throw new CarException();
         }
         return carsNameAndNumber;
     }
 
-    public int getCarFromName(String carName) throws DataException {
+    public int getCarFromName(String carName) throws CarException {
             int car;
             try{
 
@@ -52,10 +53,38 @@ public class CarAccess implements CarDAO{
                 car = data.getInt(1);
 
             } catch (SQLException exception){
-                throw new DataException();
+                throw new CarException();
             }
             return car;
         }
+
+    public ArrayList<String> getEngagedCars(String circuitName, String date, String teamName) throws CarException {
+        ArrayList<String> engagedCarsName = new ArrayList<>();
+        try{
+            String sql = "select car.name\n" +
+                    "from Ranking ranking\n" +
+                    "inner join Car car on ranking.car = car.number\n" +
+                    "inner join Race race on ranking.race = race.serial_number\n" +
+                    "inner join Driver driver on ranking.driver = driver.number\n" +
+                    "where race.circuit = ? and race.date = ? and driver.team = ?";
+
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            statement.setString(1,circuitName);
+            statement.setString(2,date);
+            statement.setString(3,teamName);
+
+            ResultSet data = statement.executeQuery();
+
+            while(data.next()){
+                engagedCarsName.add(data.getString(1));
+            }
+
+        } catch (SQLException exception) {
+            throw new CarException();
+        }
+        return engagedCarsName;
+    }
 
     @Override
     public void addCar(Car car) throws AddCarException {
@@ -79,35 +108,9 @@ public class CarAccess implements CarDAO{
             statement.executeUpdate();
 
         } catch (SQLException exception) {
-            throw new AddCarException(exception);
+            throw new AddCarException();
         }
     }
 
-    public ArrayList<String> getEngagedCars(String circuitName, String date, String teamName) throws AddCarException {
-        ArrayList<String> engagedCarsName = new ArrayList<String>();
-        try{
-            String sql = "select car.name\n" +
-                         "from Ranking ranking\n" +
-                         "inner join Car car on ranking.car = car.number\n" +
-                         "inner join Race race on ranking.race = race.serial_number\n" +
-                         "inner join Driver driver on ranking.driver = driver.number\n" +
-                         "where race.circuit = ? and race.date = ? and driver.team = ?";
-
-            PreparedStatement statement = connection.prepareStatement(sql);
-
-            statement.setString(1,circuitName);
-            statement.setString(2,date);
-            statement.setString(3,teamName);
-
-            ResultSet data = statement.executeQuery();
-
-            while(data.next()){
-                engagedCarsName.add(data.getString(1));
-            }
-
-        } catch (SQLException exception) {
-            throw new AddCarException(exception);
-        }
-        return engagedCarsName;
-    }
 }
+// vérifier si DataException c'est ok

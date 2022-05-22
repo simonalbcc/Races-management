@@ -1,8 +1,10 @@
+//region packages & imports
 package Model;
 
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.GregorianCalendar;
+//endregion
 
 public class Driver {
     private Integer number;
@@ -28,7 +30,6 @@ public class Driver {
         setBirthdate(birthdate);
         setHome(home);
     }
-
     public Driver(String lastNameFirstName){
         this.lastNameFirstName = lastNameFirstName;
     }
@@ -36,6 +37,7 @@ public class Driver {
         this.number = number;
     }
 
+    //region getters & setters
     public Integer getNumber() {
         return number;
     }
@@ -104,6 +106,7 @@ public class Driver {
     public void setHome(Locality home) {
         this.home = home;
     }
+    //endregion
 
     public int getAge(){
         return Period.between(LocalDate.now(), birthdate.toZonedDateTime().toLocalDate()).getYears();

@@ -1,4 +1,6 @@
+//region packages & imports
 package Model;
+//endregion
 
 public class Ranking {
     private Car car;
@@ -10,45 +12,76 @@ public class Ranking {
     private Driver driver;
 
     public Ranking(Car car, Race race, Integer position, Integer nbStopsPits, Integer abandonmentRoundNumber, Double record, Driver driver) {
-        this.car = car;
-        this.race = race;
-        this.position = position;
-        this.nbStopsPits = nbStopsPits;
-        this.abandonmentRoundNumber = abandonmentRoundNumber;
-        this.record = record;
-        this.driver = driver;
+        setCar(car);
+        setRace(race);
+        setPosition(position);
+        setNbStopsPits(nbStopsPits);
+        setAbandonmentRoundNumber(abandonmentRoundNumber);
+        setRecord(record);
+        setDriver(driver);
     }
+    // utilité ?
     public Ranking(Integer carNumber, Integer raceNumber, Integer nbStopsPits, Integer position , Integer driverNumber, Double record){
-
-        this.car = new Car(carNumber,null);
-        this.race = new Race(raceNumber,null,null,null,null,null);
-        this.position = position;
-        this.driver = new Driver(driverNumber);
-        this.nbStopsPits = nbStopsPits;
-        this.record = record;
+        setCar(new Car(carNumber,null));
+        setRace(new Race(raceNumber,null,null,null,null,null));
+        setPosition(position);
+        setDriver(new Driver(driverNumber));
+        setNbStopsPits(nbStopsPits);
+        setRecord(record);
     }
     public Ranking(Car car){
+        setCar(car);
+    }
+
+    //region getters & setters
+    public Car getCar() {
+        return car;
+    }
+    public void setCar(Car car) {
         this.car = car;
     }
 
+    public Race getRace() {
+        return race;
+    }
+    public void setRace(Race race) {
+        this.race = race;
+    }
 
     public Integer getPosition() {
         return position;
     }
-    public Double getRecord() {
-        return record;
-    }
-    public Driver getDriver() {
-        return driver;
-    }
-    public Car getCar() {
-        return car;
-    }
-    public Race getRace() {
-        return race;
+    public void setPosition(Integer position) {
+        this.position = position;
     }
 
     public Integer getNbStopsPits() {
         return nbStopsPits;
     }
+    public void setNbStopsPits(Integer nbStopsPits) {
+        this.nbStopsPits = nbStopsPits;
+    }
+
+    public Integer getAbandonmentRoundNumber() {
+        return abandonmentRoundNumber;
+    }
+    public void setAbandonmentRoundNumber(Integer abandonmentRoundNumber) {
+        this.abandonmentRoundNumber = abandonmentRoundNumber;
+    }
+
+    public Double getRecord() {
+        return record;
+    }
+    public void setRecord(Double record) {
+        this.record = record;
+    }
+
+    public Driver getDriver() {
+        return driver;
+    }
+    public void setDriver(Driver driver) {
+        this.driver = driver;
+    }
+    //endregion
+
 }

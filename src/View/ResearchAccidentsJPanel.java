@@ -14,7 +14,7 @@ import java.util.*;
 public class ResearchAccidentsJPanel extends JPanel {
     private GridBagConstraints gc;
     private Container mainContainer;
-    private ButtonsPanel buttonsPanel;
+    private ButtonsJPanel buttonsPanel;
     private Integer iNumPanel;
     private JLabel subtitleStart, subtitleEnd;
     private JSpinner startSpinner, endSpinner;
@@ -24,7 +24,7 @@ public class ResearchAccidentsJPanel extends JPanel {
     public ResearchAccidentsJPanel(Container mainContainer) {
         // init container & buttonsPanel
         this.mainContainer = mainContainer;
-        buttonsPanel = new ButtonsPanel();
+        buttonsPanel = new ButtonsJPanel();
         buttonsPanel.addActionListener(new ButtonListener());
 
         // create layout
@@ -77,7 +77,7 @@ public class ResearchAccidentsJPanel extends JPanel {
                     iNumPanel--;
                 }
                 if(e.getSource() == buttonsPanel.getNext()){
-                    if(iNumPanel == 0 && DateUtils.dateIsCorrect(startSpinner, endSpinner)){
+                    if(iNumPanel == 0 && Utils.dateIsCorrect(startSpinner, endSpinner)){
                         try {
                             currentPanel = new AccidentsJTable();
                             iNumPanel++;
@@ -87,7 +87,7 @@ public class ResearchAccidentsJPanel extends JPanel {
                     } else if (iNumPanel == 1){
                         int result = JOptionPane.showConfirmDialog(null, "Êtes-vous sûrs de vouloir continuer? Les données seront perdues.", "Avertissement", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
                         if(result == 0){
-                            currentPanel = new FinaleJPanel(mainContainer, new ResearchAccidentsJPanel(mainContainer));
+                            currentPanel = new FinalePanel(mainContainer, new ResearchAccidentsJPanel(mainContainer));
                         } else {
                             iNumPanel = 0;
                         }
@@ -106,7 +106,7 @@ public class ResearchAccidentsJPanel extends JPanel {
             title.setFont(new Font("Arial",Font.TRUETYPE_FONT,20));
             jTable = new JTable(new AccidentModel(new Controller().getAccidentedDrivers((Date)startSpinner.getValue(),(Date)endSpinner.getValue())));
 
-            JScrollPane sp = new JTableUtils().centerTableData(jTable);
+            JScrollPane sp = Utils.centerTableData(jTable);
 
             gc.gridy = 1;
             this.add(title, gc);

@@ -23,21 +23,25 @@ import java.util.stream.Collectors;
 
 public class FormDriver extends JPanel {
     private JTextField number, lastName, firstName, phoneNumber, streetName, streetNumber;
-    private ArrayList<Team> teamsDB;
-    private ArrayList<JComboBox> comboBoxes;
-    private ArrayList<JTextField> wrongTextFields;
-    private HashMap<Integer, String> localities;
-    private JLabel numberLabel, lastNameLabel, firstNameLabel, phoneNumberLabel, streetAddressLabel, cityLabel,
-                   countryLabel, zipCodeLabel, originsLabel, teamsLabel, hasRenewedContractLabel, birthdateLabel, asterisk;
+    private JLabel numberLabel, lastNameLabel, firstNameLabel, phoneNumberLabel, streetAddressLabel, cityLabel, countryLabel, zipCodeLabel, originsLabel, teamsLabel, hasRenewedContractLabel, birthdateLabel, asterisk;
+    private ImageIcon driverIcon, phoneIcone, homeIcone, cityIcone, zipcodeIcone, lastNameIcone, firstNameIcone, countryIcone, originIcone, teamIcone, contractIcone, birthdateIcone;
+
     private JComboBox country, origin, team, city, zipcode;
     private JCheckBox hasRenewedContract;
+
     private JSpinner date;
     private SpinnerDateModel spinnerDateModel;
+
     private JPanel addressJPanel, localityJPanel;
     private Border border, margin;
-    private ImageIcon driverIcon, phoneIcone, homeIcone, cityIcone, zipcodeIcone, lastNameIcone, firstNameIcone, countryIcone, originIcone, teamIcone, contractIcone, birthdateIcone;
     private Controller controller;
     private StringBuilder errorInputMessage;
+
+    private ArrayList<Team> teamsListDB;
+    private ArrayList<JComboBox> comboBoxes;
+    private ArrayList<JTextField> wrongTextFields;
+    private ArrayList<String> countriesListDB;
+    private HashMap<Integer, String> localities;
     private static String[] continents = new String[]{"Séléctionner...", "Europe", "Afrique", "Amérique", "Océanie", "Asie"};
 
     public FormDriver() throws Exception {
@@ -121,14 +125,16 @@ public class FormDriver extends JPanel {
         origin.setName("origine");
         comboBoxes.add(origin);
 
-        country = new JComboBox(Utils.getCountriesArray().toArray());
+        countriesListDB = controller.getCountries();
+        countriesListDB.add(0, "Séléctionner...");
+        country = new JComboBox(countriesListDB.toArray());
         country.setToolTipText("Veuillez entrer le code postal de la ville du pilote (obligatoire)");
         country.setName("pays");
         comboBoxes.add(country);
 
-        teamsDB = controller.getAllTeams();
-        teamsDB.add(0, new Team("Séléctionner..."));
-        team = new JComboBox(teamsDB.stream().map(t -> t.getName()).toArray());
+        teamsListDB = controller.getAllTeams();
+        teamsListDB.add(0, new Team("Séléctionner..."));
+        team = new JComboBox(teamsListDB.stream().map(t -> t.getName()).toArray());
         team.setToolTipText("Choisissez l'équipe du pilote");
         team.setName("équipe");
         comboBoxes.add(team);
@@ -287,7 +293,7 @@ public class FormDriver extends JPanel {
                 (phoneNumber.getText().equals("") ? null : phoneNumber.getText()),
                 streetName.getText().concat(" "+streetNumber.getText()),
                 continents[origin.getSelectedIndex()],
-                teamsDB.get(team.getSelectedIndex()),
+                teamsListDB.get(team.getSelectedIndex()),
                 hasRenewedContract.isSelected(),
                 birthdate,
                 locality);

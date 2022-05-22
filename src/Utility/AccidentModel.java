@@ -10,7 +10,6 @@ import java.util.Date;
 
 public class AccidentModel extends AbstractTableModel {
 
-    //region privates attributes & constructor
     private ArrayList<Accident> accidents;
     private ArrayList<String> columnsName;
 
@@ -25,7 +24,7 @@ public class AccidentModel extends AbstractTableModel {
         columnsName.add("Equipe");
 
     }
-    //endregion
+
 
     //region abstract methods
     public String getColumnName(int col){
@@ -51,10 +50,10 @@ public class AccidentModel extends AbstractTableModel {
             default: return null;
         }
     }
-    public Class getColumnClass (int column)
-    { Class c;
-        switch (column)
-        {
+    @Override
+    public Class getColumnClass (int column) {
+        Class c;
+        switch (column) {
             case 0 : c = Date.class;
                 break;
             default: c = String.class;
@@ -62,4 +61,5 @@ public class AccidentModel extends AbstractTableModel {
         return c;
     }
     //endregion
+
 }

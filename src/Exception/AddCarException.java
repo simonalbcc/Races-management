@@ -1,15 +1,14 @@
+//region packages
 package Exception;
-
-import java.sql.SQLException;
+//endregion
 
 public class AddCarException extends Exception{
-    private SQLException exception;
-    public AddCarException(SQLException exception) {
-        this.exception = exception;
-    }
+
+    public AddCarException() {}
 
     @Override
     public String getMessage() {
-        return "Cette voiture existe déjà (erreur détaillée : "+exception.getMessage()+")";
+        return "Erreur, cette voiture existe déjà.";
     }
+
 }

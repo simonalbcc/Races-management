@@ -5,9 +5,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
-
 import Exception.DataException;
+import Exception.CountryException;
 import Exception.LocalityException;
 import Model.Locality;
 //endregion
@@ -17,6 +18,8 @@ public class LocalityDBAccess implements LocalityDAO{
     public LocalityDBAccess()throws DataException {
         connection = SingletonConnexion.getInstance();
     }
+
+
     public Integer getNumberLocality(Locality locality)throws LocalityException{
         Integer number;
         try{
@@ -32,11 +35,12 @@ public class LocalityDBAccess implements LocalityDAO{
             number = data.getInt("number");
 
         } catch (SQLException exception){
-            throw new LocalityException(exception);
+            throw new LocalityException();
         }
         return number;
     }
-    public HashMap getLocalitiesName() throws DataException {
+
+    public HashMap getLocalitiesName() throws LocalityException {
         HashMap<Integer, String> localities = new HashMap<>();
         localities.put(0, "Séléctionner...");
         try{
@@ -49,8 +53,26 @@ public class LocalityDBAccess implements LocalityDAO{
             }
 
         } catch (SQLException exception){
-            throw new DataException();
+            throw new LocalityException();
         }
         return localities;
     }
+
+    public ArrayList<String> getCountries() throws CountryException {
+        ArrayList<String> countries = new ArrayList<>();
+        try{
+            String sql = "select distinct country from Locality";
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            ResultSet data = statement.executeQuery();
+            while (data.next()){
+                countries.add(data.getString(1));
+            }
+
+        } catch (SQLException exception){
+            throw new CountryException();
+        }
+        return countries;
+    }
+
 }

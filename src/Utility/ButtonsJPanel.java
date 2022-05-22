@@ -1,23 +1,22 @@
 //region packages & imports
-package View;
+package Utility;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;
 //endregion
 
-public class ButtonsPanel extends JPanel {
+public class ButtonsJPanel extends JPanel {
 
-    //region privates attributes & constructors
     private JButton back,next;
-    public ButtonsPanel(String txtBackButton, String txtNextButton){
+    public ButtonsJPanel(String txtBackButton, String txtNextButton){
         setBack(txtBackButton);
         setNext(txtNextButton);
     }
-    public ButtonsPanel() {
+    public ButtonsJPanel() {
         setBack(null);
         setNext(null);
     }
-    //endregion
+
 
     //region getters & setters
     public JButton getBack() {
@@ -51,5 +50,6 @@ public class ButtonsPanel extends JPanel {
         }
     }
     //endregion
+
 }
 

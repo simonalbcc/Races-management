@@ -22,6 +22,7 @@ public class AccidentDBAccess implements AccidentDAO{
         connection = SingletonConnexion.getInstance();
     }
 
+
     @Override
     public ArrayList<Accident> getAccidentedDrivers(Date startDate, Date endDate) throws AccidentException {
         ArrayList<Accident> accidents = new ArrayList<Accident>();
@@ -48,8 +49,9 @@ public class AccidentDBAccess implements AccidentDAO{
                 accidents.add(new Accident(data.getDate("accident.date"), driver));
             }
         } catch (SQLException exception){
-            throw new AccidentException(exception); // vérifier + changer
+            throw new AccidentException();
         }
         return accidents;
     }
+
 }

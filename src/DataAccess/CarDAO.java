@@ -1,7 +1,9 @@
+//region packages & imports
 package DataAccess;
 
 import java.util.ArrayList;
 import Model.Car;
+//endregion
 
 public interface CarDAO {
 

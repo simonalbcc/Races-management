@@ -15,6 +15,6 @@ public interface DriverDAO {
     public Driver getADriver(int driverNumber) throws Exception;
     public Driver getADriver(String name) throws Exception;
     public void updateDriver(Driver driver) throws Exception;
-    public ArrayList<String> getAllDriversNameInARace(String circuitName,String date) throws Exception;
     public void addDriverToRanking(Ranking ranking)throws Exception;
+
 }

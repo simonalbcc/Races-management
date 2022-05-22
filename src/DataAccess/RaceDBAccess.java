@@ -1,21 +1,23 @@
+//region packages & imports
 package DataAccess;
 
 import Model.*;
 import Exception.RaceException;
 import Exception.DataException;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+//endregion
 
 public class RaceDBAccess implements RaceDAO{
     private Connection connection;
     public RaceDBAccess() throws DataException {
         connection = SingletonConnexion.getInstance();
     }
+
 
     public ArrayList<Date> getRaceDatesOfACircuit(String circuitName) throws RaceException {
         ArrayList<Date> dates = new ArrayList<>();
@@ -33,12 +35,13 @@ public class RaceDBAccess implements RaceDAO{
             }
 
         } catch (Exception exception){
-            throw new RaceException(exception);
+            throw new RaceException();
         }
         return dates;
     }
+
     public ArrayList<Ranking> getARaceRankings(String circuitName, String raceDate) throws RaceException {
-        ArrayList<Ranking> rankings = new ArrayList<Ranking>();
+        ArrayList<Ranking> rankings = new ArrayList<>();
         try{
             String sql = "select ranking.position, car.number, car.power, driver.last_name_first_name, ranking.record\n" +
                     "from Ranking ranking\n" +
@@ -61,13 +64,13 @@ public class RaceDBAccess implements RaceDAO{
             }
 
         } catch (SQLException exception){
-            throw new RaceException(exception); // vérifier
+            throw new RaceException();
         }
         return rankings;
     }
 
     public ArrayList<Race> getWinningSponsorsOfACircuit(String circuitName) throws RaceException{
-        ArrayList<Race> races = new ArrayList<Race>();
+        ArrayList<Race> races = new ArrayList<>();
         try{
             String sql = "select race.date, team.name, sponsor.company\n" +
                          "from Race race inner join Ranking ranking on race.serial_number = ranking.race\n" +
@@ -87,7 +90,7 @@ public class RaceDBAccess implements RaceDAO{
             }
 
         } catch (SQLException exception){
-            throw new RaceException(exception); // vérifier
+            throw new RaceException();
         }
         return races;
     }
@@ -108,10 +111,11 @@ public class RaceDBAccess implements RaceDAO{
             }
 
         } catch (SQLException exception){
-            throw new RaceException(exception); // vérifier
+            throw new RaceException();
         }
         return positions;
     }
+
     public Integer getARaceNumber(String circuitName, String date) throws RaceException{
         Integer number = null;
         try{
@@ -126,7 +130,7 @@ public class RaceDBAccess implements RaceDAO{
             number = data.getInt(1);
 
         } catch (SQLException exception){
-            throw new RaceException(exception); // vérifier
+            throw new RaceException(); // vérifier
         }
         return number;
     }

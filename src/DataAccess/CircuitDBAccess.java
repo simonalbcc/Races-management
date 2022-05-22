@@ -15,8 +15,10 @@ public class CircuitDBAccess implements CircuitDAO {
     public CircuitDBAccess()throws DataException {
         connection = SingletonConnexion.getInstance();
     }
+
+
     public ArrayList<String> getAllCircuitsNames() throws CircuitException {
-        ArrayList<String> circuits = new ArrayList<String>();
+        ArrayList<String> circuits = new ArrayList<>();
         try{
             String circuit;
 
@@ -32,7 +34,7 @@ public class CircuitDBAccess implements CircuitDAO {
             }
 
         } catch (SQLException exception){
-            throw new CircuitException(exception); // vérifier + changer
+            throw new CircuitException();
         }
         return circuits;
     }

@@ -15,7 +15,7 @@ import java.awt.event.ActionListener;
 public class ResearchCarJPanel extends JPanel {
     //region private attributes & constructor
     private Container mainContainer;
-    private ButtonsPanel buttonsPanel;
+    private ButtonsJPanel buttonsPanel;
     private CircuitsPanel circuitsPanel;
     private GridBagConstraints gc;
     private Controller controller;
@@ -31,7 +31,7 @@ public class ResearchCarJPanel extends JPanel {
             this.iNumPanel = 0;
             this.controller = new Controller();
 
-            this.buttonsPanel = new ButtonsPanel("Précédent", "Suivant");
+            this.buttonsPanel = new ButtonsJPanel("Précédent", "Suivant");
             this.buttonsPanel.addActionListener(new ButtonListener());
             this.circuitsPanel = new CircuitsPanel();
 
@@ -68,7 +68,7 @@ public class ResearchCarJPanel extends JPanel {
 
             jTable = new JTable(new SponsorModel(controller.getWinningSponsorsOfACircuit(circuitsCombobox.getSelectedItem().toString())));
 
-            JScrollPane sp = new JTableUtils().centerTableData(jTable);
+            JScrollPane sp = Utils.centerTableData(jTable);
             
             this.add(title, gc);
             gc.gridy = 1;
@@ -101,7 +101,7 @@ public class ResearchCarJPanel extends JPanel {
                     }else{
                         int result = JOptionPane.showConfirmDialog(null, "Êtes-vous sûrs de vouloir continuer? Les données seront perdues.", "Avertissement", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
                         if(result == 0){
-                            currentPanel = new FinaleJPanel(mainContainer, new ResearchCarJPanel(mainContainer));
+                            currentPanel = new FinalePanel(mainContainer, new ResearchCarJPanel(mainContainer));
                         }
                     }
                 } catch (Exception exception) {

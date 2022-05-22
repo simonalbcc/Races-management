@@ -3,7 +3,7 @@ package View;
 
 import Controller.Controller;
 import Utility.AllDriverModel;
-import Utility.JTableUtils;
+import Utility.ButtonsJPanel;
 import Utility.Utils;
 
 import javax.swing.*;
@@ -17,7 +17,7 @@ public class DriverJTable extends JPanel {
     private Controller controller;
     private GridBagConstraints gc;
     private ImageIcon imageIcon;
-    private ButtonsPanel buttonsPanel;
+    private ButtonsJPanel buttonsPanel;
     private Container mainContainer;
 
     public DriverJTable(Container mainContainer) throws Exception {
@@ -26,7 +26,7 @@ public class DriverJTable extends JPanel {
         controller = new Controller();
         this.mainContainer = mainContainer;
 
-        buttonsPanel = new ButtonsPanel();
+        buttonsPanel = new ButtonsJPanel();
         buttonsPanel.getNext().setVisible(false);
         buttonsPanel.getBack().addActionListener(e -> Utils.addToMainContainer(mainContainer, new WelcomeJPanel()));
 
@@ -45,7 +45,7 @@ public class DriverJTable extends JPanel {
 
         jTable = new JTable(new AllDriverModel(controller.getAllDrivers()));
 
-        JScrollPane sp = new JTableUtils().centerTableData(jTable);
+        JScrollPane sp = Utils.centerTableData(jTable);
 
         // add to the panel
         this.add(title, gc);
@@ -59,7 +59,7 @@ public class DriverJTable extends JPanel {
     public JTable getjTable() {
         return jTable;
     }
-    public ButtonsPanel getButtonsPanel() {
+    public ButtonsJPanel getButtonsPanel() {
         return buttonsPanel;
     }
 
