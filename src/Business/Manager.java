@@ -87,14 +87,6 @@ public class Manager {
     public Integer getARaceNumber(String circuitName, String date) throws Exception {
         return raceAccess.getARaceNumber(circuitName,date);
     }
-    /* public ArrayList<String> getAllDriversInARace(String circuitName,String date) throws Exception{
-     ArrayList<String> driversEngaged = driverAccess.getAllDriversNameInARace(circuitName, date);
-     ArrayList<Driver> allDriver = driverAccess.getAllDrivers();
-     for(int iCar = 0; iCar < driversEngaged.size(); iCar++){
-         allDriver.remove(driversEngaged.get(iCar));
-     }
-     return allDriver;
- } */
     //endregion
 
 

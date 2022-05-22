@@ -2,10 +2,9 @@
 package View;
 import Controller.Controller;
 import Model.*;
-import Utility.ButtonsJPanel;
-import Utility.RankingModel;
-import Utility.Utils;
-import jdk.jshell.execution.Util;
+import View.Utility.ButtonsJPanel;
+import View.Utility.RankingModel;
+import View.Utility.Utils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -162,7 +161,6 @@ public class AddDriverRanking extends JPanel {
             errorInput.append("- Veuillez sélectionner une équipe");
         }
 
-
         return errorInput.toString();
     }
 
@@ -201,10 +199,9 @@ public class AddDriverRanking extends JPanel {
                         int raceSerialNumber = controller.getARaceNumber(circuitsCombobox.getSelectedItem().toString(), datesCombobox.getSelectedItem().toString());
                         int driverNumber = controller.getADriver(driversComboBox.getSelectedItem().toString()).getNumber();
                         controller.addDriverToRanking(new Ranking(carSerialNumber,raceSerialNumber, Integer.parseInt(nbRounds.getValue().toString()), Integer.parseInt(positionCombobox.getSelectedItem().toString()), driverNumber, Double.parseDouble(record.getValue().toString())));
-                        tableModel = new RankingModel(controller.getARaceRanking(currentCircuit, currentDate));
-                        jTable.setModel(tableModel);
+                        updateJTable();
                     } catch (Exception exception) {
-                        Utils.showErrorMessage(exception.getMessage());
+                        Utils.showErrorMessage(exception.getMessage() + " " +exception.getLocalizedMessage());
                     }
                 }
             } else {
@@ -236,6 +233,7 @@ public class AddDriverRanking extends JPanel {
             }
         }
     }
+
 }
 
 

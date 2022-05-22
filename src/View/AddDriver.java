@@ -1,12 +1,11 @@
 //region packages & imports
 package View;
 
-import Controller.Controller;
 import Model.*;
-import Utility.ButtonsJPanel;
-import Utility.FinalePanel;
-import Utility.OperationTemplate;
-import Utility.Utils;
+import View.Utility.ButtonsJPanel;
+import View.Utility.FinalePanel;
+import View.Utility.OperationTemplate;
+import View.Utility.Utils;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -35,7 +34,6 @@ public class AddDriver extends OperationTemplate {
     public JPanel operation(int driverNumber, JPanel currentPanel, Container mainContainer){
         return null;
     }
-
 
     private class ButtonsFormListener implements ActionListener {
         @Override
@@ -67,5 +65,6 @@ public class AddDriver extends OperationTemplate {
             }
         }
     }
+
 }
 

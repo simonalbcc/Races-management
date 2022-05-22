@@ -1,4 +1,4 @@
-package Utility;
+package View.Utility;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -10,7 +10,6 @@ import java.util.GregorianCalendar;
 public class Utils {
 
     public Utils() {}
-
 
     public static void addToMainContainer(Container mainContainer, JPanel panel){
         if(panel != null){
@@ -25,12 +24,14 @@ public class Utils {
             textField.setText("");
         }
     }
+
     public static void showErrorMessage(String message){
         JOptionPane.showMessageDialog(null, message, "Erreur", JOptionPane.ERROR_MESSAGE);
     }
     public static void showInformationMessage(String message){
         JOptionPane.showMessageDialog(null, message, "Information", JOptionPane.INFORMATION_MESSAGE);
     }
+
     public static boolean dateIsCorrect(JSpinner startSpinner, JSpinner endSpinner) {
         boolean correct = false;
         StringBuilder errorDate = new StringBuilder("Erreur : ");

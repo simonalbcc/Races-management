@@ -1,7 +1,7 @@
 //region packages & imports
 package View;
 
-import Utility.Utils;
+import View.Utility.Utils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,7 +9,6 @@ import java.awt.*;
 
 public class ContactsInfosJPanel extends JPanel {
 
-    //region privates attributes & constructor
     private JLabel contactLabel;
     private JButton returnButton;
     private Container mainContainer;
@@ -39,5 +38,5 @@ public class ContactsInfosJPanel extends JPanel {
         gc.gridy = 1;
         this.add(returnButton, gc);
     }
-    //endregion
+
 }

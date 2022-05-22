@@ -2,7 +2,7 @@
 package View;
 
 import Controller.Controller;
-import Utility.*;
+import View.Utility.*;
 
 import javax.swing.*;
 import java.awt.*;

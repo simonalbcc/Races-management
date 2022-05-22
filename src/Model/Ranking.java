@@ -20,7 +20,7 @@ public class Ranking {
         setRecord(record);
         setDriver(driver);
     }
-    // utilité ?
+
     public Ranking(Integer carNumber, Integer raceNumber, Integer nbStopsPits, Integer position , Integer driverNumber, Double record){
         setCar(new Car(carNumber,null));
         setRace(new Race(raceNumber,null,null,null,null,null));

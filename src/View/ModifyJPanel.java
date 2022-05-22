@@ -2,10 +2,10 @@
 package View;
 
 import Model.Driver;
-import Utility.ButtonsJPanel;
-import Utility.FinalePanel;
-import Utility.OperationTemplate;
-import Utility.Utils;
+import View.Utility.ButtonsJPanel;
+import View.Utility.FinalePanel;
+import View.Utility.OperationTemplate;
+import View.Utility.Utils;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;

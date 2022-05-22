@@ -21,7 +21,6 @@ public class Race {
         setDate(date);
         setNbRounds(nbRounds);
         setRankings(rankings);
-        nbRankings = rankings.length;
     }
     public Race(Date date, Ranking ranking){
         setDate(date);
@@ -55,6 +54,9 @@ public class Race {
     }
     public void setRankings(Ranking[] rankings) {
         this.rankings = rankings;
+        if(rankings != null){
+            nbRankings = this.rankings.length;
+        }
     }
 
     public Integer getSerialNumber() {
@@ -69,5 +71,4 @@ public class Race {
         this.rankings[nbRankings] = ranking;
         nbRankings++;
     }
-
 }

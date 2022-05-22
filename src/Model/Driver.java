@@ -34,7 +34,7 @@ public class Driver {
         this.lastNameFirstName = lastNameFirstName;
     }
     public Driver(Integer number){
-        this.number = number;
+        setNumber(number);
     }
 
     //region getters & setters
@@ -111,6 +111,7 @@ public class Driver {
     public int getAge(){
         return Period.between(LocalDate.now(), birthdate.toZonedDateTime().toLocalDate()).getYears();
     }
+
     @Override
     public String toString() {
         StringBuilder output = new StringBuilder("Pilote : "+getLastNameFirstName()+"\n");

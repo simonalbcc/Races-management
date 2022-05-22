@@ -2,8 +2,8 @@
 package View;
 
 
-import Utility.FinalePanel;
-import Utility.OperationTemplate;
+import View.Utility.FinalePanel;
+import View.Utility.OperationTemplate;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,4 +31,5 @@ public class RemoveDriver extends OperationTemplate {
         return currentPanel;
     }
     //endregion
+
 }

@@ -2,9 +2,9 @@
 package View;
 
 import Controller.Controller;
-import Utility.AllDriverModel;
-import Utility.ButtonsJPanel;
-import Utility.Utils;
+import View.Utility.AllDriverModel;
+import View.Utility.ButtonsJPanel;
+import View.Utility.Utils;
 
 import javax.swing.*;
 import java.awt.*;

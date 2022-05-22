@@ -1,9 +1,7 @@
 //region packages & imports
-package Utility;
+package View.Utility;
 
 import Controller.Controller;
-import Model.Driver;
-import View.AddDriver;
 import View.DriverJTable;
 import View.WelcomeJPanel;
 

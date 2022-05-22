@@ -45,8 +45,7 @@ public class DriverDBAccess implements DriverDAO {
 
     public void addDriverToRanking(Ranking ranking) throws AddDriverToRankingException{
         try{
-            String sql = "insert into Ranking\n" +
-                    "values(?,?,?,?,?,?,?);";
+            String sql = "insert into Ranking values(?,?,?,?,?,?,?);";
 
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1,ranking.getCar().getNumber());

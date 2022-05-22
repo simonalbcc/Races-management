@@ -1,5 +1,5 @@
 //region packages & imports
-package Utility;
+package View.Utility;
 
 import View.WelcomeJPanel;
 

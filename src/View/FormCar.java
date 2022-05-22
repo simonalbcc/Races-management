@@ -3,8 +3,8 @@ package View;
 import Controller.Controller;
 import Model.Car;
 import Model.Team;
-import Utility.ButtonsJPanel;
-import Utility.Utils;
+import View.Utility.ButtonsJPanel;
+import View.Utility.Utils;
 
 import javax.swing.*;
 import javax.swing.border.Border;

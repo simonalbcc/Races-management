@@ -1,5 +1,5 @@
 //region packages & imports
-package Utility;
+package View.Utility;
 
 import Model.*;
 import javax.swing.table.AbstractTableModel;

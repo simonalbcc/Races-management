@@ -1,5 +1,5 @@
 //region packages & imports
-package Utility;
+package View.Utility;
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 //endregion
