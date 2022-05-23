@@ -1,3 +1,4 @@
+//region packages & imports
 package View;
 
 import Controller.Controller;
@@ -8,6 +9,7 @@ import javax.swing.plaf.basic.BasicBorders;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+//endregion
 
 public class ResearchRankingJPanel extends JPanel {
     private Container mainContainer;
@@ -21,7 +23,7 @@ public class ResearchRankingJPanel extends JPanel {
     private Controller controller;
 
     public ResearchRankingJPanel(Container mainContainer) throws Exception {
-
+        // init main container, buttons panel, controller & lauout
         this.mainContainer = mainContainer;
         buttonsPanel = new ButtonsJPanel("Précédent", "Suivant");
         buttonsPanel.addActionListener(new ButtonListener());
@@ -31,8 +33,7 @@ public class ResearchRankingJPanel extends JPanel {
         this.setLayout(new GridBagLayout());
         gc = new GridBagConstraints();
 
-        this.setBorder(new BasicBorders.FieldBorder(Color.BLACK, Color.black, Color.BLACK, Color.BLACK));
-
+        //add all to the main panel of the research
         iPanel = 1;
         this.add(new CircuitsPanel(), gc);
         gc.gridy = 1;
@@ -75,6 +76,7 @@ public class ResearchRankingJPanel extends JPanel {
         }
     }
 
+    //region inner classes
     private class CircuitsPanel extends JPanel{
             public CircuitsPanel() throws Exception {
                 circuitsLabel = new JLabel("Choisissez un circuit");
@@ -130,6 +132,7 @@ public class ResearchRankingJPanel extends JPanel {
             setCurrentPanel();
         }
     }
+    //endregion
 
 
 }

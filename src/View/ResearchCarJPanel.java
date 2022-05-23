@@ -1,6 +1,5 @@
 //region packages and imports
 package View;
-
 import Controller.Controller;
 import View.Utility.*;
 
@@ -8,12 +7,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-
 //endregion
 
 public class ResearchCarJPanel extends JPanel {
-    //region private attributes & constructor
     private Container mainContainer;
     private ButtonsJPanel buttonsPanel;
     private CircuitsPanel circuitsPanel;
@@ -41,7 +37,6 @@ public class ResearchCarJPanel extends JPanel {
             this.add(buttonsPanel, gc);
 
     }
-    //endregion
 
     //region inner classes
     private class CircuitsPanel extends JPanel {
@@ -86,7 +81,7 @@ public class ResearchCarJPanel extends JPanel {
                     try {
                         currentPanel = new ResearchCarJPanel(mainContainer);
                     } catch (Exception exception) {
-                        JOptionPane.showMessageDialog(null, exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
+                       Utils.showErrorMessage(exception.getMessage());
                     }
                 }else{
                     currentPanel = new WelcomeJPanel();
@@ -105,7 +100,7 @@ public class ResearchCarJPanel extends JPanel {
                         }
                     }
                 } catch (Exception exception) {
-                    JOptionPane.showMessageDialog(null, exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
+                   Utils.showErrorMessage(exception.getMessage());
                 }
                 iNumPanel++;
             }
@@ -113,4 +108,5 @@ public class ResearchCarJPanel extends JPanel {
         }
     }
     //endregion
+
 }

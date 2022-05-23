@@ -20,7 +20,7 @@ public class TeamDBAccess implements TeamDAO{
 
 
     public ArrayList<Team> getAllTeams() throws TeamException {
-        ArrayList<Team> teams = new  ArrayList<Team>();
+        ArrayList<Team> teams = new  ArrayList<>();
         try{
             String sql = "select * from Team";
 

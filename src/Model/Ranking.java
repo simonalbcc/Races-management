@@ -21,7 +21,7 @@ public class Ranking {
         setDriver(driver);
     }
 
-    public Ranking(Integer carNumber, Integer raceNumber, Integer nbStopsPits, Integer position , Integer driverNumber, Double record){
+    public Ranking(Integer carNumber, Integer raceNumber, Integer nbStopsPits, Integer position , Integer driverNumber, Double record) throws Exception {
         setCar(new Car(carNumber,null));
         setRace(new Race(raceNumber,null,null,null,null,null));
         setPosition(position);

@@ -213,11 +213,17 @@ public class AddDriverRanking extends JPanel {
         @Override
         public void itemStateChanged(ItemEvent e) {
             try{
-                currentCircuit = circuitsCombobox.getSelectedItem().toString();
-                updateDates();
-                currentDate = datesCombobox.getSelectedItem().toString();
-                if(e.getSource() == circuitsCombobox || e.getSource() == datesCombobox){
+                if(e.getSource() == circuitsCombobox){
+                    currentCircuit = circuitsCombobox.getSelectedItem().toString();
+                    updateDates();
+                    currentDate = datesCombobox.getSelectedItem().toString();
+
                     toggleVisiblily(circuitsCombobox, datesCombobox);
+                    updatePositions();
+                    updateJTable();
+                }
+                if(e.getSource() == datesCombobox){
+                    currentDate = datesCombobox.getSelectedItem().toString();
                     updatePositions();
                     updateJTable();
                 }

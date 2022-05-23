@@ -4,6 +4,7 @@ package DataAccess;
 import Model.*;
 import Exception.RaceException;
 import Exception.DataException;
+import Exception.NumberCarException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -40,7 +41,7 @@ public class RaceDBAccess implements RaceDAO{
         return dates;
     }
 
-    public ArrayList<Ranking> getARaceRankings(String circuitName, String raceDate) throws RaceException {
+    public ArrayList<Ranking> getARaceRankings(String circuitName, String raceDate) throws RaceException, NumberCarException {
         ArrayList<Ranking> rankings = new ArrayList<>();
         try{
             String sql = "select ranking.position, car.number, car.power, driver.last_name_first_name, ranking.record\n" +
@@ -65,6 +66,8 @@ public class RaceDBAccess implements RaceDAO{
 
         } catch (SQLException exception){
             throw new RaceException();
+        } catch (NumberCarException exception) {
+            throw new NumberCarException();
         }
         return rankings;
     }
@@ -85,8 +88,13 @@ public class RaceDBAccess implements RaceDAO{
             ResultSet data = statement.executeQuery();
 
             while(data.next()){
-                races.add(new Race(data.getDate(1),
-                          new Ranking(new Car(new Team(data.getString(2), new Company((data.getString(3))))))));
+                Company company = new Company((data.getString(3)));
+                Team team = new Team(data.getString(2), company);
+                Car car = new Car(team);
+                Ranking ranking = new Ranking(car);
+                Race race = new Race(data.getDate(1), ranking);
+
+                races.add(race);
             }
 
         } catch (SQLException exception){

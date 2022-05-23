@@ -1,9 +1,9 @@
 //region packages & imports
 package Business;
-
 import DataAccess.*;
 import Model.*;
 import Exception.DataException;
+import Exception.NumberCarException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -92,7 +92,11 @@ public class Manager {
 
     //region car
     public void addCar(Car car) throws Exception {
-        carAccess.addCar(car);
+        if(car.getNumber() != null && car.getNumber() > 0){
+
+        } else {
+            throw new NumberCarException();
+        }
     }
     public int getCarFromName(String carName) throws Exception {
         return carAccess.getCarFromName(carName);

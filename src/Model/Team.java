@@ -1,32 +1,35 @@
 package Model;
 
-import java.util.ArrayList;
-
 public class Team {
     private String name;
     private String webSiteAdress;
     private Company[] companies;
     private Driver[] drivers;
     private Car[] cars;
-    private Integer nbCompagnies;
+    private Integer nbCompanies;
+    private static final Integer NB_COMPANIES_MAX = 10;
 
-    public Team(String name) {
-        setName(name);
-        nbCompagnies = 0;
-    }
-    public Team(String name, String webSiteAdress) {
-        setName(name);
-        setWebSiteAdress(webSiteAdress);
-        nbCompagnies = 0;
-    }
     public Team(String name, String webSiteAdress, Company[] companies) {
         setName(name);
         setWebSiteAdress(webSiteAdress);
         setCompanies(companies);
-        nbCompagnies = companies.length;
+    }
+
+    public Team(String name) {
+        setName(name);
+        nbCompanies = 0;
+        companies = new Company[NB_COMPANIES_MAX];
+    }
+    public Team(String name, String webSiteAdress) {
+        setName(name);
+        setWebSiteAdress(webSiteAdress);
+        nbCompanies = 0;
+        companies = new Company[NB_COMPANIES_MAX];
     }
     public Team(String name , Company company){
         setName(name);
+        nbCompanies = 0;
+        companies = new Company[NB_COMPANIES_MAX];
         addCompany(company);
     }
 
@@ -52,8 +55,8 @@ public class Team {
     //endregion
 
     public void addCompany(Company company){
-        companies[nbCompagnies] = company;
-        nbCompagnies++;
+        companies[nbCompanies] = company;
+        nbCompanies++;
     }
 
 }

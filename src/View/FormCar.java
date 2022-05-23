@@ -1,5 +1,5 @@
+//region packages & imports
 package View;
-
 import Controller.Controller;
 import Model.Car;
 import Model.Team;
@@ -14,11 +14,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+//endregion
 
 public class FormCar extends JPanel {
-    private StringBuilder errorInputMessage;
     private JButton save;
-    private JLabel title;
     private Form formCar;
     private ButtonsJPanel buttonsPanel;
     private GridBagConstraints gc;
@@ -26,24 +25,23 @@ public class FormCar extends JPanel {
     private Controller controller;
 
     public FormCar (Container mainContainer, String teamName, Controller controller) {
-        // container, buttons & form init
+        // container,controller, errorMessage, buttons & form init
         this.mainContainer = mainContainer;
         this.controller = controller;
-        this.errorInputMessage = new StringBuilder();
+
         buttonsPanel = new ButtonsJPanel("Retour", "Réinitialiser");
         save = new JButton("Sauvegarder");
         buttonsPanel.add(save);
         buttonsPanel.addActionListener(new ButtonsFormListener(), save);
+
         formCar = new Form(teamName);
+
         // layout & gc init
         this.setLayout(new GridBagLayout());
         gc = new GridBagConstraints();
 
-        // title init
-        title = new JLabel("<html> <h2> <u> Formulaire d'ajout d'une voiture : </u> </h2> </html>");
-
-        // add all
-        this.add(title, gc);
+        // add all to the main panel
+        this.add(new JLabel("<html> <h2> <u> Formulaire d'ajout d'une voiture : </u> </h2> </html>"), gc);
         gc.gridy = 1;
         gc.insets = new Insets(30,0,0,0);
         this.add(formCar, gc);
@@ -53,16 +51,19 @@ public class FormCar extends JPanel {
 
     private class Form extends JPanel {
         private JTextField number,averageConsumption, power, membership, name;
-        private ArrayList<JTextField> textFields;
+        private ArrayList<JTextField> wrongTextFields;
         private JLabel numberLabel, averageConsumptionLabel, powerLabel, membershipLabel, nameLabel ;
         private String teamName;
         private Border border, margin;
+        private StringBuilder errorInput;
 
         public Form (String teamName)  {
-            this.setBounds(10,80,500,150);
+            // set layout, design, bounds & init textfields
+            this.setBounds(10,80,1000,300);
             this.setLayout(new GridLayout(5,2, 5,10));
 
-            textFields = new ArrayList<>();
+            wrongTextFields = new ArrayList<>();
+            errorInput = new StringBuilder();
 
             border = BorderFactory.createRaisedBevelBorder();
             margin = new EmptyBorder(10,10,10,10);
@@ -70,22 +71,20 @@ public class FormCar extends JPanel {
 
             this.teamName = teamName;
 
+            // region init textfield & label
             number = new JTextField();
             number.setToolTipText("Veuillez entrer le numéro de la voiture (obligatoire)");
             number.setName("numéro");
-            textFields.add(number);
             numberLabel = new JLabel("Numéro * : ");
 
             averageConsumption = new JTextField();
             averageConsumption.setToolTipText("Veuillez entrer la consommation moyenne de la voiture (obligatoire)");
             averageConsumption.setName("consommation moyenne");
-            textFields.add(averageConsumption);
             averageConsumptionLabel = new JLabel("Consommation moyenne * : ");
 
             power = new JTextField();
             power.setToolTipText("Veuillez entrer la puissance de la voiture (obligatoire)");
             power.setName("puissance");
-            textFields.add(power);
             powerLabel = new JLabel("Puissance * : ");
 
             membership = new JTextField();
@@ -98,9 +97,10 @@ public class FormCar extends JPanel {
             name = new JTextField();
             name.setToolTipText("Veuillez entrer le nom de la voiture (obligatoire)");
             name.setName("nom");
-            textFields.add(name);
             nameLabel = new JLabel("Nom * : ");
+            //endregion
 
+            //region add on the form panel
             this.add(numberLabel);
             this.add(number);
 
@@ -115,62 +115,41 @@ public class FormCar extends JPanel {
 
             this.add(nameLabel);
             this.add(name);
-        }
-        public boolean isCorrect(StringBuilder errorInputMessage){
-            Checker checkerFactory = new Checker();
-            String regex;
-            for (JTextField textField : textFields) {
-                regex = checkerFactory.createRegex(textField.getName());
+            //endregion
 
-                if(textField.getText().equals("")){
-                    errorInputMessage.append("- Le champs '"+ textField.getName() +"' doit être rempli \n");
-                } else if(!textField.getText().matches(regex)){
-                    errorInputMessage.append("- Le champs '"+ textField.getName() +" est invalide ("+checkerFactory.selectErrorReasonForRegex(textField.getName())+")\n");
-
-                } else if(textField.getText().length() > checkerFactory.chooseSize(textField.getName())){
-                    errorInputMessage.append("- Le champs '"+ textField.getName() +" est invalide (trop long)\n");
-                }
-            }
-            return errorInputMessage.toString().equals("");
         }
-        public Car createCar() {
+        public Car createCar() throws Exception {
             return new Car(Integer.parseInt(number.getText()), Double.parseDouble(averageConsumption.getText()), Integer.parseInt(power.getText()), new Team(membership.getText()), name.getText());
         }
-    }
-    private class Checker{
-        public Checker(){}
-        String createRegex(String textFieldName){
-            switch (textFieldName){
-                case "numéro":
-                case "puissance": return "(?!\\s)\\d+(?!\\s)";
-                case "consommation moyenne": return "(?!\\s)\\d*.?\\d{0,2}(?!\\s)";
-                case "nom":
-                    return "[A-ZÀ-ÖØà-ÿa-z][à-ÿa-z]{1,6}\\s[A-ZÀ-ÖØà-ÿa-z][à-ÿa-z]{1,9}|[A-ZÀ-ÖØà-ÿa-z][à-ÿa-z]+|(\\s?[À-ÖØà-ÿ-a-zA-Z-]+\\s?)+";
-                default:return "";
-            }
-        }
-        Integer chooseSize(String textFieldName){
-            switch (textFieldName){
-                case "numéro": return 4;
-                case "consommation moyenne": return 5;
-                case "puissance": return 4;
-                case "nom": return 20;
+        public StringBuilder errorMessage(){
+            String regName = "^[a-zA-Z0-9_.-]*";
+            String regNumber = "\\d+";
 
-                default:return 0;
+            validateInput(regNumber, 4, number);
+            validateInput(regNumber, 4, averageConsumption);
+            validateInput(regNumber, 4, power);
+            validateInput(regName, 20, name);
+
+            return errorInput;
+        }
+
+        public void validateInput(String regex, Integer size, JTextField textField){
+            String field = "- Le champs '"+textField.getName()+"'";
+            if(textField.getText().trim().equals("")){
+                errorInput.append(field + " est obligatoire\n");
+                wrongTextFields.add(textField);
+                // check if contains what's asked -> numbers/letters
+            } else if(!textField.getText().trim().matches(regex)){
+                errorInput.append(field + " contient des "+(textField.equals(name) ? "":"lettres ou autres ")+"caractères invalides\n");
+                wrongTextFields.add(textField);
+                // then it's a size issue
+            } else if(textField.getText().length() > size){
+                errorInput.append(field + " est trop long\n");
+                wrongTextFields.add(textField);
             }
         }
-        String selectErrorReasonForRegex(String textFieldName){
-            switch (textFieldName){
-                case "numéro":
-                case "puissance":
-                    return "contient des lettres ou caractères invalides";
-                case "consommation moyenne":
-                    return "contient des lettres ou a plus de 2 chiffres après la virgule";
-                case "nom":
-                    return "contient des chiffres ou caractères invalides";
-                default:return "";
-            }
-        }
+
+
     }
     private class ButtonsFormListener implements ActionListener {
 
@@ -181,25 +160,27 @@ public class FormCar extends JPanel {
                     Utils.addToMainContainer(mainContainer, new AddDriverRanking(mainContainer));
                 }
                 if(e.getSource() == save){
-                    if(formCar.isCorrect(errorInputMessage)){
+                    StringBuilder error = formCar.errorMessage();
+                    if(error.toString().equals("")){
                         // create the car to add
                         Car car = formCar.createCar();
-
                         controller.addCar(car);
+
                         // save message + update db
-                        JOptionPane.showMessageDialog(null, "Ajout effectué", "Information", JOptionPane.INFORMATION_MESSAGE);
+                        Utils.showInformationMessage("Ajout de la voiture effectué");
                         Utils.addToMainContainer(mainContainer, new AddDriverRanking(mainContainer));
                     } else {
-                        JOptionPane.showMessageDialog(null, errorInputMessage.toString(), "Erreur", JOptionPane.ERROR_MESSAGE);
-                        errorInputMessage.setLength(0);
+                        Utils.showErrorMessage(error.toString());
+                        error.setLength(0);
                     }
                 }
                 if(e.getSource() == buttonsPanel.getNext()){
-                    Utils.cleanTextField(formCar.textFields);
+                    Utils.cleanTextField(formCar.wrongTextFields);
                 }
             }catch (Exception exception) {
                 JOptionPane.showMessageDialog(null, exception.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
+
 }

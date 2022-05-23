@@ -1,5 +1,6 @@
 //region packages & imports
 package Model;
+import Exception.NumberCarException;
 //endregion
 
 public class Car {
@@ -11,7 +12,7 @@ public class Car {
     private String name;
     private Ranking[] rankings;
 
-    public Car(Integer number, Double averageConsumption, Integer power, Team membership, String name) {
+    public Car(Integer number, Double averageConsumption, Integer power, Team membership, String name) throws NumberCarException {
         setNumber(number);
         setAverageConsumption(averageConsumption);
         setPower(power);
@@ -20,7 +21,7 @@ public class Car {
         setName(name);
         setRankings(rankings);
     }
-    public Car(Integer number, Integer power){
+    public Car(Integer number, Integer power) throws NumberCarException {
         setNumber(number);
         setPower(power);
     }
@@ -32,8 +33,12 @@ public class Car {
     public Integer getNumber() {
         return number;
     }
-    public void setNumber(Integer number) {
-        this.number = number;
+    public void setNumber(Integer number) throws NumberCarException {
+        if(number != null && number > 0){
+            this.number = number;
+        } else {
+            throw new NumberCarException();
+        }
     }
 
     public Integer getPower() {

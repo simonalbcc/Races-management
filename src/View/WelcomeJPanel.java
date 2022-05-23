@@ -19,7 +19,7 @@ public class WelcomeJPanel extends JPanel {
     private GridBagConstraints gc;
 
     public WelcomeJPanel() {
-
+        // set layout
         this.setLayout(new GridBagLayout());
 
         gc = new GridBagConstraints();
@@ -27,6 +27,7 @@ public class WelcomeJPanel extends JPanel {
         carPanel = new CarPanel();
         buttons = new ButtonJPanel();
 
+        // add components
         gc.weighty = 1;
         gc.weightx = 1;
         gc.gridy = 0;
@@ -38,8 +39,6 @@ public class WelcomeJPanel extends JPanel {
 
         gc.gridy = 2;
         this.add(buttons, gc);
-
-        this.setBorder(new BasicBorders.FieldBorder(Color.BLACK, Color.black, Color.BLACK, Color.BLACK));
 
     }
 
@@ -108,7 +107,6 @@ public class WelcomeJPanel extends JPanel {
                 }
             }
         }
-
         private class GraphicCar extends JPanel {
             private BufferedImage carImage;
             private Rectangle rectangle;
@@ -162,7 +160,6 @@ public class WelcomeJPanel extends JPanel {
                 }
             }
         }
-
         private class Wall extends JPanel{
             private Rectangle rectangle;
             private Image line;
@@ -185,4 +182,5 @@ public class WelcomeJPanel extends JPanel {
             }
         }
     }
+
 }

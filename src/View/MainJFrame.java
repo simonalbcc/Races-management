@@ -11,7 +11,6 @@ import java.awt.event.WindowEvent;
 //endregion
 
 public class MainJFrame extends JFrame {
-    //region privates attributes & constructor
     private JMenuBar menuBar;
     private JMenu applicationMenu, helpMenu, driversMenu, researchMenu , rankingManagementMenu;
     private JMenuItem close, contactsInfos, addDriver, removeDriver, modifyDriver, showDriverList, researchAccident, researchCars, researchRanking, rankingManagement;

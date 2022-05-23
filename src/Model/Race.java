@@ -13,6 +13,7 @@ public class Race {
     private Integer nbRounds;
     private Ranking[] rankings;
     private Integer nbRankings;
+    private static final Integer NB_RANKINGS_MAX = 10;
 
     public Race(Integer serialNumber, Circuit circuit, Integer departureHour, Date date, Integer nbRounds,Ranking[] rankings){
         setSerialNumber(serialNumber);
@@ -25,6 +26,7 @@ public class Race {
     public Race(Date date, Ranking ranking){
         setDate(date);
         nbRankings = 0;
+        rankings = new Ranking[NB_RANKINGS_MAX];
         addRanking(ranking);
     }
 

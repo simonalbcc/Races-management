@@ -245,12 +245,13 @@ public class FormDriver extends JPanel {
         this.add(asterisk);
 
         //endregion
+
     }
 
+    //region methods
     public ArrayList<JTextField> getWrongTextFields() {
         return wrongTextFields;
     }
-
     public void resetErrorInputMessage(){
         errorInputMessage.delete(0, errorInputMessage.length());
     }
@@ -281,7 +282,6 @@ public class FormDriver extends JPanel {
     public void setDisablePK(){
         number.setEnabled(false);
     }
-
     public Driver createDriver() throws Exception {
         GregorianCalendar birthdate = new GregorianCalendar(Integer.parseInt(new SimpleDateFormat("yyyy").format(date.getValue())), Integer.parseInt(new SimpleDateFormat("MM").format(date.getValue()))-1, Integer.parseInt(new SimpleDateFormat("dd").format(date.getValue())));
         Locality locality = new Locality(null, Integer.parseInt(zipcode.getSelectedItem().toString()), city.getSelectedItem().toString(), country.getSelectedItem().toString());
@@ -299,7 +299,6 @@ public class FormDriver extends JPanel {
             driver.getHome().setNumber(controller.getNumberLocality(driver.getHome()));
         return driver;
     }
-
     public String errorInputMessageString(){
         wrongTextFields = new ArrayList<>();
 
@@ -350,7 +349,6 @@ public class FormDriver extends JPanel {
             wrongTextFields.add(textField);
         }
     }
-
     private class CityItemListener implements ItemListener{
 
         @Override
@@ -358,4 +356,6 @@ public class FormDriver extends JPanel {
             zipcode.setSelectedIndex(city.getSelectedIndex());
         }
     }
+    //endregion
+
 }
