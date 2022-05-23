@@ -83,8 +83,8 @@ public class Manager {
 
     //region race
     public ArrayList<Date> getRaceDatesOfACircuit(String circuitName) throws Exception {return raceAccess.getRaceDatesOfACircuit(circuitName);}
-    public ArrayList<Ranking> getARaceRanking(String circuitName, String raceDate) throws Exception{ return raceAccess.getARaceRankings(circuitName,raceDate);}
-    public Integer getARaceNumber(String circuitName, String date) throws Exception {
+    public ArrayList<Ranking> getARaceRanking(String circuitName, Date raceDate) throws Exception{ return raceAccess.getARaceRankings(circuitName,raceDate);}
+    public Integer getARaceNumber(String circuitName, Date date) throws Exception {
         return raceAccess.getARaceNumber(circuitName,date);
     }
     //endregion
@@ -92,11 +92,7 @@ public class Manager {
 
     //region car
     public void addCar(Car car) throws Exception {
-        if(car.getNumber() != null && car.getNumber() > 0){
-
-        } else {
-            throw new NumberCarException();
-        }
+        carAccess.addCar(car);
     }
     public int getCarFromName(String carName) throws Exception {
         return carAccess.getCarFromName(carName);
@@ -105,7 +101,7 @@ public class Manager {
 
 
     //region ranking
-    public ArrayList<Integer> getPositionsRemainingInARanking(String circuitName, String date) throws Exception {
+    public ArrayList<Integer> getPositionsRemainingInARanking(String circuitName, Date date) throws Exception {
         ArrayList<Integer> positionsTaken = raceAccess.getPositionsRemainingInARanking(circuitName, date);
         ArrayList<Integer> positionsRemaining = new ArrayList<>();
         for (int position = 1; position < 20; position++){
@@ -115,7 +111,7 @@ public class Manager {
         }
         return positionsRemaining;
     }
-    public ArrayList<String> getRemainingCarsInARanking(String circuitName, String date ,String teamName) throws Exception {
+    public ArrayList<String> getRemainingCarsInARanking(String circuitName, Date date ,String teamName) throws Exception {
         ArrayList<String> allCars = carAccess.getAllCarsName(teamName);
         ArrayList<String> invalidCars = carAccess.getEngagedCars(circuitName,date,teamName);
 

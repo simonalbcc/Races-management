@@ -41,7 +41,7 @@ public class RaceDBAccess implements RaceDAO{
         return dates;
     }
 
-    public ArrayList<Ranking> getARaceRankings(String circuitName, String raceDate) throws RaceException, NumberCarException {
+    public ArrayList<Ranking> getARaceRankings(String circuitName, Date raceDate) throws RaceException, NumberCarException {
         ArrayList<Ranking> rankings = new ArrayList<>();
         try{
             String sql = "select ranking.position, car.number, car.power, driver.last_name_first_name, ranking.record\n" +
@@ -54,7 +54,7 @@ public class RaceDBAccess implements RaceDAO{
 
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1,circuitName);
-            statement.setString(2,raceDate);
+            statement.setDate(2,new java.sql.Date(raceDate.getTime()));
 
             ResultSet data = statement.executeQuery();
 
@@ -103,42 +103,42 @@ public class RaceDBAccess implements RaceDAO{
         return races;
     }
 
-    public ArrayList<Integer> getPositionsRemainingInARanking(String circuitName, String date)throws RaceException{
+    public ArrayList<Integer> getPositionsRemainingInARanking(String circuitName, Date date)throws RaceException {
         ArrayList<Integer> positions = new ArrayList<>();
 
-        try{
+        try {
             String sql = "select position from Ranking where race = ? order by position ";
 
             PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setInt(1,getARaceNumber(circuitName, date));
+            statement.setInt(1, getARaceNumber(circuitName, date));
 
             ResultSet data = statement.executeQuery();
 
-            while(data.next()){
+            while (data.next()) {
                 positions.add(data.getInt(1));
             }
 
-        } catch (SQLException exception){
+        } catch (SQLException exception) {
             throw new RaceException();
         }
         return positions;
     }
 
-    public Integer getARaceNumber(String circuitName, String date) throws RaceException{
+    public Integer getARaceNumber(String circuitName, Date date) throws RaceException{
         Integer number = null;
         try{
             String sql = "select serial_number from Race where circuit = ? and date = ?";
 
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1,circuitName);
-            statement.setString(2, date);
+            statement.setDate(2, new java.sql.Date(date.getTime()));
 
             ResultSet data = statement.executeQuery();
             data.next();
             number = data.getInt(1);
 
         } catch (SQLException exception){
-            throw new RaceException(); // vérifier
+            throw new RaceException();
         }
         return number;
     }

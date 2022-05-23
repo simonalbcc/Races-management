@@ -58,7 +58,7 @@ public class CarAccess implements CarDAO{
             return car;
         }
 
-    public ArrayList<String> getEngagedCars(String circuitName, String date, String teamName) throws CarException {
+    public ArrayList<String> getEngagedCars(String circuitName, java.util.Date date, String teamName) throws CarException {
         ArrayList<String> engagedCarsName = new ArrayList<>();
         try{
             String sql = "select car.name\n" +
@@ -71,7 +71,7 @@ public class CarAccess implements CarDAO{
             PreparedStatement statement = connection.prepareStatement(sql);
 
             statement.setString(1,circuitName);
-            statement.setString(2,date);
+            statement.setDate(2,new java.sql.Date(date.getTime()));
             statement.setString(3,teamName);
 
             ResultSet data = statement.executeQuery();

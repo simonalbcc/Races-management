@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Date;
 //endregion
 
 public class AddDriverRanking extends JPanel {
@@ -28,7 +29,8 @@ public class AddDriverRanking extends JPanel {
     private ArrayList <String>circuitsNameList, carsNameList;
     private JSpinner record, nbRounds;
     private JPanel circuitDatePanel, teamCarPanel;
-    private String currentCircuit, currentDate;
+    private String currentCircuit;
+    private Date currentDate;
 
     public AddDriverRanking(Container mainContainer) throws Exception {
         // main container, buttons panel, controller & layout init
@@ -79,7 +81,7 @@ public class AddDriverRanking extends JPanel {
             teamsComboBox = new JComboBox(teamsNameList.stream().map(t -> t.getName()).toArray());
             teamsComboBox.addItemListener(new ComboBoxItemListener());
 
-            carsNameList = controller.getRemainingCarsInARanking(circuitsCombobox.getSelectedItem().toString(), datesCombobox.getSelectedItem().toString(), teamsComboBox.getSelectedItem().toString());
+            carsNameList = controller.getRemainingCarsInARanking(circuitsCombobox.getSelectedItem().toString(), (Date)datesCombobox.getSelectedItem(), teamsComboBox.getSelectedItem().toString());
             carsModel = new DefaultComboBoxModel(carsNameList.toArray());
             carsComboBox = new JComboBox(carsModel);
             carsComboBox.setVisible(false);
@@ -196,7 +198,7 @@ public class AddDriverRanking extends JPanel {
                 if(e.getSource() == buttonsPanel.getNext()){
                     try {
                         int carSerialNumber = controller.getCarFromName(carsComboBox.getSelectedItem().toString());
-                        int raceSerialNumber = controller.getARaceNumber(circuitsCombobox.getSelectedItem().toString(), datesCombobox.getSelectedItem().toString());
+                        int raceSerialNumber = controller.getARaceNumber(circuitsCombobox.getSelectedItem().toString(), (Date)datesCombobox.getSelectedItem());
                         int driverNumber = controller.getADriver(driversComboBox.getSelectedItem().toString()).getNumber();
                         controller.addDriverToRanking(new Ranking(carSerialNumber,raceSerialNumber, Integer.parseInt(nbRounds.getValue().toString()), Integer.parseInt(positionCombobox.getSelectedItem().toString()), driverNumber, Double.parseDouble(record.getValue().toString())));
                         updateJTable();
@@ -216,14 +218,14 @@ public class AddDriverRanking extends JPanel {
                 if(e.getSource() == circuitsCombobox){
                     currentCircuit = circuitsCombobox.getSelectedItem().toString();
                     updateDates();
-                    currentDate = datesCombobox.getSelectedItem().toString();
+                    currentDate = (Date)datesCombobox.getSelectedItem();
 
                     toggleVisiblily(circuitsCombobox, datesCombobox);
                     updatePositions();
                     updateJTable();
                 }
                 if(e.getSource() == datesCombobox){
-                    currentDate = datesCombobox.getSelectedItem().toString();
+                    currentDate = (Date)datesCombobox.getSelectedItem();
                     updatePositions();
                     updateJTable();
                 }

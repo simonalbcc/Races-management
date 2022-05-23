@@ -9,6 +9,7 @@ import javax.swing.plaf.basic.BasicBorders;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
 //endregion
 
 public class ResearchRankingJPanel extends JPanel {
@@ -109,7 +110,7 @@ public class ResearchRankingJPanel extends JPanel {
             title = new JLabel("Classement");
             title.setFont(new Font("Arial",Font.TRUETYPE_FONT,15));
 
-            jTable = new JTable(new RankingModel(controller.getARaceRanking(circuitsCombobox.getSelectedItem().toString(), datesCombobox.getSelectedItem().toString())));
+            jTable = new JTable(new RankingModel(controller.getARaceRanking(circuitsCombobox.getSelectedItem().toString(), (Date)datesCombobox.getSelectedItem())));
 
             JScrollPane sp = Utils.centerTableData(jTable);
 
