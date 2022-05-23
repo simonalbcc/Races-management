@@ -177,6 +177,7 @@ public class AddDriverRanking extends JPanel {
             title = new JLabel("Classement");
             title.setFont(new Font("Arial",Font.TRUETYPE_FONT,15));
 
+            currentDate = (Date)datesCombobox.getSelectedItem();
             tableModel = new RankingModel(controller.getARaceRanking(currentCircuit, currentDate));
             jTable = new JTable(tableModel);
 
