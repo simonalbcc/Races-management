@@ -266,7 +266,7 @@ public class FormDriver extends JPanel {
         date.setModel(spinnerDateModel);
 
         origin.setSelectedItem(driver.getNationality());
-        phoneNumber.setText(driver.getPhoneNumber().toString());
+        phoneNumber.setText(driver.getPhoneNumber());
 
         String numberOnly = Arrays.stream(driver.getStreetAndNumber().split("([A-Za-zÀ-ÖØ-öø-ÿ]\s?)+")).collect(Collectors.joining());
         streetNumber.setText(numberOnly.trim());

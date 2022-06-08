@@ -44,7 +44,7 @@ public class AllDriverModel extends AbstractTableModel {
         switch (columnIndex){
             case 0: return driver.getNumber();
             case 1: return driver.getLastNameFirstName();
-            case 2: return getPhoneOutput(driver);
+            case 2: return driver.getPhoneNumber();
             case 3: return driver.getStreetAndNumber();
             case 4: return driver.getNationality();
             case 5: return teamNameOfDriver(driver);
@@ -76,13 +76,6 @@ public class AllDriverModel extends AbstractTableModel {
         SimpleDateFormat output = new SimpleDateFormat("dd-MM-yyyy");
         output.setCalendar(driver.getBirthdate());
         return output.format(driver.getBirthdate().getTime());
-    }
-    public String getPhoneOutput(Driver driver){
-        String output = "N/A";
-        if(driver.getPhoneNumber() != null){
-            output = driver.getPhoneNumber() ;
-        }
-        return output;
     }
     public String getCityName(Driver driver){
         return driver.getHome().getCity();

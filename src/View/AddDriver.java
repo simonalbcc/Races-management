@@ -26,7 +26,7 @@ public class AddDriver extends OperationTemplate {
         save = new JButton("Sauvegarder");
         buttonsPanel.add(save);
         buttonsPanel.addActionListener(new ButtonsFormListener(), save);
-
+        setFillHorizontal(false);
         changePanels(form, buttonsPanel);
     }
 

@@ -4,6 +4,8 @@ package DataAccess;
 import Model.*;
 import Model.Driver;
 import Exception.*;
+
+import javax.swing.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
@@ -24,8 +26,8 @@ public class DriverDBAccess implements DriverDAO {
 
             statement.setInt(1, driver.getNumber());
             statement.setString(2, driver.getLastNameFirstName());
-            if(driver.getNumber() == null){
-                statement.setNull(3,Types.INTEGER);
+            if(driver.getPhoneNumber() == ""){
+                statement.setNull(3,Types.VARCHAR);
             }else{
                 statement.setString(3, driver.getPhoneNumber());
             }
@@ -55,7 +57,7 @@ public class DriverDBAccess implements DriverDAO {
             statement.setInt(5,ranking.getDriver().getNumber());
             statement.setInt(6,ranking.getNbStopsPits());
             if(ranking.getAbandonmentRoundNumber() == 0){
-                statement.setNull(7, Types.NULL);
+                statement.setNull(7, Types.INTEGER);
             } else {
                 statement.setInt(7, ranking.getAbandonmentRoundNumber());
             }
@@ -74,7 +76,11 @@ public class DriverDBAccess implements DriverDAO {
             PreparedStatement statement = connection.prepareStatement(sql);
 
             statement.setString(1, driver.getLastNameFirstName());
-            statement.setString(2, driver.getPhoneNumber());
+            if(driver.getPhoneNumber() == ""){
+                statement.setNull(2, Types.VARCHAR);
+            } else {
+                statement.setString(2, driver.getPhoneNumber());
+            }
             statement.setString(3, driver.getStreetAndNumber());
             statement.setString(4, driver.getNationality());
             statement.setString(5, driver.getTeam().getName());
@@ -113,30 +119,6 @@ public class DriverDBAccess implements DriverDAO {
         }
     }
 
-    public ArrayList<String> getAllDriversNameInARace(String circuitName,String date)throws DriverException{
-        ArrayList<String> engagedDriversName = new ArrayList<String>();
-        try{
-            String sql = "select driver.name\n" +
-                    "from Ranking ranking\n" +
-                    "inner join Driver driver on ranking.driver = driver.number\n" +
-                    "where race.circuit = ? and race.date = ?";
-
-            PreparedStatement statement = connection.prepareStatement(sql);
-
-            statement.setString(1,circuitName);
-            statement.setString(2,date);
-
-            ResultSet data = statement.executeQuery();
-
-            while(data.next()){
-                engagedDriversName.add(data.getString(1));
-            }
-
-        } catch (SQLException exception) {
-            throw new DriverException();
-        }
-        return engagedDriversName;
-    }
 
     public ArrayList<Driver> getAllDrivers()throws DriverException{
         ArrayList<Driver> drivers = new  ArrayList<Driver>();

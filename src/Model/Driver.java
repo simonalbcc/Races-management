@@ -73,7 +73,11 @@ public class Driver {
     }
 
     public String getPhoneNumber() {
-        return phoneNumber;
+        if(phoneNumber == null){
+            return "";
+        } else {
+            return phoneNumber;
+        }
     }
     public void setPhoneNumber(String phoneNumber){
         this.phoneNumber = phoneNumber;
